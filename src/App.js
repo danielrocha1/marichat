@@ -1,22 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import HostInfo from './HostInfo';
+import GuestInfo from './GuestInfo';
+import ChatBox from './ChatBox'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className="Box">
+          <div className="flexBox">
+            <div className="columnFlexBox">
+              <GuestInfo name="Delmar Rocha"/>
+              <HostInfo name="Daniel Rocha"/>
+            </div>
+            <ChatBox/>
+          </div>
+        </div>
       </header>
     </div>
   );

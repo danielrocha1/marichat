@@ -1,0 +1,32 @@
+.hostBox {
+ margin-top: 155px;
+ 
+
+ border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
+ border-radius: 8px; /* Adiciona bordas arredondadas */
+ padding: 55px; /* Adiciona espaço interno à caixa */
+
+}
+
+.hostPhoto {
+  height: 19vmin;
+  pointer-events: none;
+}
+
+.nameHost {
+  font-weight: 700;
+  font-size: calc(15px + 3vmin);  
+  
+}
+
+.App-header {
+  background-color: #0a2d71;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
