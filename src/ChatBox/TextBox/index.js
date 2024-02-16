@@ -1,50 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import './index.css';
+import ChatContext from '../../ChatContext'; // Importe o contexto
+import SenderMessage from '../../ChatBox'
+import { render } from 'react-dom';
 
-function TextInput({ setMessages }) {
+
+function TextInput() {
+  const { userData} = useContext(ChatContext);
+  
+
+  
+
   const [text, setText] = useState('');
-  const [socket, setSocket] = useState(null);
 
   const handleChange = (event) => {
     setText(event.target.value);
   };
 
-  const handleSendMessage = () => {
-    if (text.trim() !== '') {
-      const newMessage = { sender: 'usuário', content: text };
-      console.log('aquin', newMessage)
-      setMessages(prevMessages => [...prevMessages, newMessage]);
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+
+  console.log(userData, 'textinput')
+    try {
+      const response = await fetch('http://localhost:8080/sender', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "username": userData.user,
+          "roomname": userData.chatroomName,
+          "message": text // Enviar a mensagem digitada pelo usuário
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+
       setText('');
+    } catch (error) {
+      console.error('Erro:', error.message);
     }
   };
-
-  useEffect(() => {
-    // Cria a conexão WebSocket quando o componente é montado
-    const newSocket = new WebSocket('ws://localhost:8080/ws');
-    setSocket(newSocket);
-
-    // Define os handlers de eventos para a conexão WebSocket
-    newSocket.onopen = () => {
-      console.log('Conexão WebSocket estabelecida');
-    };
-
-    newSocket.onmessage = (event) => {
-      // Quando uma mensagem é recebida do backend, atualiza o estado das mensagens
-      const newMessage = JSON.parse(event.data);
-      setMessages(prevMessages => [...prevMessages, newMessage]);
-    };
-
-    newSocket.onclose = () => {
-      console.log('Conexão WebSocket fechada');
-    };
-
-    // Fecha a conexão WebSocket quando o componente é desmontado
-    return () => {
-      if (newSocket.readyState === WebSocket.OPEN) {
-        newSocket.close();
-      }
-    };
-  }, [setMessages]); // Apenas recria a conexão quando setMessages muda
 
   return (
     <div style={{ display: 'flex' }}>

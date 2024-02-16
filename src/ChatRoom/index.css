@@ -1,0 +1,56 @@
+.App {
+    text-align: center;
+  }
+  
+  .nameHost {
+    font-weight: 700;
+  }
+  
+  .Box {
+    
+    
+    
+    
+  }
+
+  .senderMessage {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 70%;
+    width: max-content;
+    align-self: flex-end; /* Adicionando esta linha para alinhar à direita */
+  }
+  
+  .receiverMessage {
+    background-color: #dda6a6;
+    color: #000;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 60%;
+    width: fit-content;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+  }
+
+
+  
+  .flexBox {
+    display: flex;
+    justify-content: center; /* Alinha os itens ao centro */
+  
+  }
+  
+  .columnFlexBox {
+    display: flex;
+    flex-direction: column; /* Coloca os itens um embaixo do outro */
+    
+  }
+  
+  .ChatBox {
+    margin-left: 0px; /* Adapte conforme necessário para a distância desejada */
+  }
+  
