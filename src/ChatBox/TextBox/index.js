@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import './index.css';
 import ChatContext from '../../ChatContext'; // Importe o contexto
+<<<<<<< HEAD
 
 function TextInput({showEmoji, text, setText}) {
   
@@ -47,6 +48,71 @@ function TextInput({showEmoji, text, setText}) {
     // Quando a mensagem é enviada, o usuário não está mais digitando
     
     // e.preventDefault();
+=======
+
+import { render } from 'react-dom';
+
+let isTyping = false;
+
+
+
+const sendTypingStatus = (userData, isTyping) => {
+  const socket = new WebSocket('ws://localhost:8080/websocket');
+
+  // Verifica se a conexão WebSocket está aberta
+  socket.onopen = () => {
+    console.log('Conexão WebSocket aberta');
+  
+    // Envia os dados do usuário que está digitando e o status de digitação para o servidor via WebSocket
+    const userTyping = {
+      type:"typing",
+      user: userData.user, // Substitua "Nome do usuário aqui" pelo nome do usuário atual
+      isTyping: isTyping
+    };   
+    // Envie os dados para o servidor via WebSocket
+    socket.send(JSON.stringify(userTyping));
+  };
+
+  socket.onerror = (error) => {
+    console.error('Erro:', error.message);
+  };
+};
+
+
+
+function TextInput() {
+
+  const [text, setText] = useState('');
+  const { userData} = useContext(ChatContext);
+
+  const handleChange = (event) => {
+
+
+
+    setText(event.target.value);
+    if (event.target.value.trim() !== '') {
+      console.log(event.target.value)
+      if (!isTyping) {
+    
+        // Se o usuário começou a digitar, atualize o status e envie os dados para o servidor
+        isTyping = true;
+        sendTypingStatus(userData, true); // Passando userData como argumento
+      }
+    } else {
+      if (isTyping) {
+        // Se a caixa de entrada foi limpa e o usuário estava digitando anteriormente,
+        // atualize o status e envie os dados para o servidor
+        isTyping = false;
+        sendTypingStatus(userData, false); // Passando userData como argumento
+      }
+    }
+  };
+
+
+  const handleSendMessage = async (e) => {
+    
+    e.preventDefault();
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
 
     try {
       const response = await fetch('https://marichat-go.onrender.com/sender', {
@@ -55,7 +121,11 @@ function TextInput({showEmoji, text, setText}) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+<<<<<<< HEAD
           "type": "receiver",
+=======
+          "type":"receiver",
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
           "username": userData.user,
           "roomname": userData.chatroomName,
           "message": text
@@ -65,8 +135,12 @@ function TextInput({showEmoji, text, setText}) {
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
+<<<<<<< HEAD
       
       sendTypingStatus(false);
+=======
+      // sendTypingStatus(userData, false)
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
       setText('');
     } catch (error) {
       console.error('Erro:', error.message);
@@ -86,7 +160,11 @@ function TextInput({showEmoji, text, setText}) {
         type="text"
         value={text}
         onChange={handleChange}
+<<<<<<< HEAD
         onKeyDown={handleKeyPress}
+=======
+        // onKeyDown={handleKeyDown}
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
         placeholder="Digite aqui..."
         style={{ marginRight: '10px', fontSize:"24px", backgroundColor:"#b8cad4"}}
       />

@@ -1,9 +1,19 @@
 .hostBox {
+<<<<<<< HEAD
   height: 220px;
   margin-top: auto; /* Define a margem superior automática para empurrar o hostBox para a parte inferior */
   border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
   border-radius: 8px; /* Adiciona bordas arredondadas */
   padding: 5px; /* Adiciona espaço interno à caixa */
+=======
+ margin-top: 5px;
+ 
+
+ border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
+ border-radius: 8px; /* Adiciona bordas arredondadas */
+ padding: 35px; /* Adiciona espaço interno à caixa */
+
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
 }
 
 .hostPhoto {

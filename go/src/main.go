@@ -146,6 +146,7 @@ func main() {
 	app.Post("/kickUser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
+			Type     string `json:"type"`
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
 		}
@@ -396,12 +397,26 @@ func main() {
 			clients[c] = true
 
 			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
+<<<<<<< HEAD
 		for client := range clients {
 		// Verifica se o cliente está presente no mapa de clientes
 		if _, ok := clients[client]; !ok {
 			// Se o cliente não estiver presente, registre um erro e pule para o próximo cliente
 			log.Println("Cliente não autorizado tentando enviar mensagem.")
 			continue
+=======
+			for client := range clients {
+				if client != c {
+					err := client.WriteMessage(websocket.TextMessage, msg)
+					if err != nil {
+						log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+						delete(clients, client) // Remove o cliente do mapa se houver um erro
+						continue
+					}
+					fmt.Println(string(msg))
+				}
+			}
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
 		}
 
 		// Envia a mensagem para o cliente WebSocket

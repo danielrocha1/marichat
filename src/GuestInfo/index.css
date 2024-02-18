@@ -47,6 +47,25 @@
   
 }
 
+<<<<<<< HEAD
+=======
+.guestBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: calc(5px + 2vmin);
+
+  border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
+  border-radius: 8px; /* Adiciona bordas arredondadas */
+  padding: 5px; /* Adiciona espaço interno à caixa */
+
+  background-color: #006eff;
+
+  margin-bottom: 5px;
+}
+
+
+>>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
 .App-header {
   /* background: linear-gradient(to bottom, #590f80, #000000); */
 
