@@ -3,44 +3,41 @@ import React, { useState, useEffect, useContext } from 'react';
 import ChatContext from '../ChatContext';
 import HostInfo from '../HostInfo';
 import GuestInfo from '../GuestInfo';
-import ChatBox from '../ChatBox'
-import { render } from 'react-dom'; 
+import ChatBox from '../ChatBox';
+import { createRoot } from 'react-dom/client'; // Importe createRoot corretamente
 import { format } from 'date-fns';
-
 
 function ReceiverMessage(props) {
   const timestamp = new Date(props.Hour);
   const hora = format(timestamp, 'HH:mm');
-  console.log(props.Message, 'ReceiverMessage')
+  console.log(props.Message, 'ReceiverMessage');
   return (
- 
-
     <div className="receiverMessage">
-      <p style={{ fontSize: '15px', textAlign: 'left' ,fontWeight:"bold" }}>{props.Name}:</p>
+      <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{props.Name}:</p>
       {props.Message}
-      <p style={{ fontSize: '7px', textAlign: 'right' , fontWeight:"bold" }}>{hora}</p>
+      <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
     </div>
   );
 }
 
 function SenderMessage(props) {
-  console.log(props.Message, 'SENDER')
+  const timestamp = new Date();
+  const hora = format(timestamp, 'HH:mm');
+  console.log(props.Message, 'SENDER');
   return (
     <div className="">
       {props.Message}
+      <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
     </div>
   );
 }
 
-
-function ChatRoom({children}) {
+function ChatRoom({ children }) {
   const { userData } = useContext(ChatContext);
-
-  
+  const [userTypingStatus, setUserTypingStatus] = useState({}); // Estado para armazenar o status de digitação de cada usuário
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Função para buscar os usuários na sala de bate-papo do backend
     const fetchUsers = async () => {
       try {
         const response = await fetch('http://localhost:8080/listusers', {
@@ -50,81 +47,54 @@ function ChatRoom({children}) {
           },
           body: JSON.stringify({ "roomname": userData.chatroomName }),
         });
-    
+
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
-    
-        const data = await response.json(); // Correção: obter os dados formatados corretamente
-        
-        setUsers(data.users); // Correção: definir o estado users com os dados corretos
+
+        const data = await response.json();
+        setUsers(data.users);
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
-  
-    // Chamada da função para buscar os usuários ao montar o componente
+
     fetchUsers();
-  
-    // Exemplo de uso de Websockets para atualizar a lista de usuários em tempo real
+
     const socket = new WebSocket('ws://localhost:8080/websocket');
     socket.onmessage = (event) => {
-
       const message = JSON.parse(event.data);
       const tempElement = document.createElement('div');
       const userElement = document.getElementById(message.user);
+
       if (message.type === 'newUser') {
         setUsers((prevUsers) => [...prevUsers, message.user]);
       }
-      if (message.Type === 'receiver' && message.Name !== userData.user ) {
-        
-       
-        const newMessage = message.Message;
-        console.log("Nova mensagem recebida:", newMessage);
-        
-        const chatScreen = document.querySelector(".chatScreen");
 
-        const tempElement = document.createElement('div');
-        render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />, tempElement);
-
-        chatScreen.appendChild(tempElement);
-
-      }if (message.Type === 'receiver' && message.Name === userData.user ) {
+      if (message.Type === 'receiver' && message.Name !== userData.user) {
         const newMessage = message.Message;
         const chatScreen = document.querySelector(".chatScreen");
-
         const tempElement = document.createElement('div');
-        tempElement.className = 'senderMessage'
-        render(<SenderMessage Message={newMessage} />, tempElement);
-        console.log("Nova mensagem ADSFASD:", tempElement);
+        createRoot(tempElement).render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />);
         chatScreen.appendChild(tempElement);
       }
 
-  
-      
-      if (message.type === 'typing' && message.user !== userData.user ) {
-          if (message.isTyping === true) {
-              // Exibe a mensagem de "Digitando..."
-              tempElement.className = 'typing';
-              tempElement.innerHTML = '<p>Digitando...</p>';
-      
-              // Adiciona a mensagem de "Digitando..." ao lado do nome do usuário
-              if (userElement) {
-                  userElement.appendChild(tempElement);
-              }
-          } else if (message.isTyping === false) {
-            var  guestElement = document.getElementById(message.user)
-              // Remove a mensagem de "Digitando..." se ela existir
-              if (guestElement.querySelector('.typing')) {
-                console.log(guestElement.querySelector('.typing'), "GUST")
-                guestElement.querySelector('.typing').remove();
-              }
-            }
+      if (message.Type === 'receiver' && message.Name === userData.user) {
+        const newMessage = message.Message;
+        const chatScreen = document.querySelector(".chatScreen");
+        const tempElement = document.createElement('div');
+        tempElement.className = 'senderMessage';
+        createRoot(tempElement).render(<SenderMessage Message={newMessage} />);
+        chatScreen.appendChild(tempElement);
       }
-      
+
+      if (message.type === 'typing' && message.user !== userData.user) {
+        const updatedTypingStatus = { ...userTypingStatus };
+        updatedTypingStatus[message.user] = message.isTyping;
+        setUserTypingStatus(updatedTypingStatus);
+      }
     };
-  
-    // Função de limpeza ao desmontar o componente
+
     return () => {
       socket.close();
     };
@@ -135,18 +105,24 @@ function ChatRoom({children}) {
       <header className="App-header">
         <div className="Box">
           <div className="flexBox">
-            <div className="columnFlexBox">    
-            <div style={{ maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
-            <ul>
-              {users.map((user) => (
-                user === userData.user ? null : <GuestInfo id={user} key={user} name={user} />
-              ))}
-            </ul>
+            <div className="columnFlexBox">
+              <div style={{ maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+                <ul>
+                  {users.map((user) => (
+                    user === userData.user ? null : (
+                      <GuestInfo
+                        isTyping={userTypingStatus[user]} // Passa o estado de digitação do usuário
+                        id={user}
+                        key={user}
+                        name={user}
+                      />
+                    )
+                  ))}
+                </ul>
+              </div>
+              <HostInfo name={userData.user} />
             </div>
-              <HostInfo name={userData.user}/>
-              
-            </div>
-            <ChatBox/>
+            <ChatBox />
           </div>
         </div>
       </header>
@@ -155,8 +131,3 @@ function ChatRoom({children}) {
 }
 
 export default ChatRoom;
-
-
-
-
-

@@ -108,6 +108,8 @@ func main() {
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
 			Message  string `json:"message"`
+			Timestamp time.Time `json:"timestamp"`
+
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
