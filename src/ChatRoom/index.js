@@ -4,6 +4,7 @@ import ChatContext from '../ChatContext';
 import HostInfo from '../HostInfo';
 import GuestInfo from '../GuestInfo';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import ChatBox from '../ChatBox';
 
 import { FaSignOutAlt } from 'react-icons/fa';
@@ -35,25 +36,43 @@ function ReceiverMessage(props) {
       <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
 =======
   console.log(props.Message, 'ReceiverMessage')
-  return (
- 
+=======
+import ChatBox from '../ChatBox';
+import { createRoot } from 'react-dom/client'; // Importe createRoot corretamente
+import { format } from 'date-fns';
 
+function ReceiverMessage(props) {
+  const timestamp = new Date(props.Hour);
+  const hora = format(timestamp, 'HH:mm');
+  console.log(props.Message, 'ReceiverMessage');
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+  return (
     <div className="receiverMessage">
-      <p style={{ fontSize: '15px', textAlign: 'left' ,fontWeight:"bold" }}>{props.Name}:</p>
+      <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{props.Name}:</p>
       {props.Message}
+<<<<<<< HEAD
       <p style={{ fontSize: '7px', textAlign: 'right' , fontWeight:"bold" }}>{hora}</p>
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
+=======
+      <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
     </div>
   );
 }
 
 function SenderMessage(props) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const timestamp = new Date();
   const hora = format(timestamp, 'HH:mm');
 =======
   console.log(props.Message, 'SENDER')
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
+=======
+  const timestamp = new Date();
+  const hora = format(timestamp, 'HH:mm');
+  console.log(props.Message, 'SENDER');
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
   return (
     <div className="senderMessage">
       {props.Message}
@@ -63,11 +82,15 @@ function SenderMessage(props) {
 }
 
 function ChatRoom({ children }) {
+<<<<<<< HEAD
   const [messages, setMessages] = useState([]); // Estado para armazenar as mensagens
 
   const navigate = useNavigate();
 
   const { userData, setUserData } = useContext(ChatContext);
+=======
+  const { userData } = useContext(ChatContext);
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
   const [userTypingStatus, setUserTypingStatus] = useState({}); // Estado para armazenar o status de digitação de cada usuário
   const [users, setUsers] = useState([]);
   const [colors, setColors] = useState({
@@ -100,9 +123,12 @@ function ChatRoom({ children }) {
 
     fetchUsers();
 
+<<<<<<< HEAD
     const socket = new WebSocket('wss://localhost:8080/websocket');
+=======
+    const socket = new WebSocket('ws://localhost:8080/websocket');
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
     socket.onmessage = (event) => {
-
       const message = JSON.parse(event.data);
 <<<<<<< HEAD
 
@@ -149,17 +175,12 @@ function ChatRoom({ children }) {
 =======
       const tempElement = document.createElement('div');
       const userElement = document.getElementById(message.user);
+
       if (message.type === 'newUser') {
         setUsers((prevUsers) => [...prevUsers, message.user]);
       }
-      if (message.Type === 'receiver' && message.Name !== userData.user ) {
-        
-       
-        const newMessage = message.Message;
-        console.log("Nova mensagem recebida:", newMessage);
-        
-        const chatScreen = document.querySelector(".chatScreen");
 
+<<<<<<< HEAD
         const tempElement = document.createElement('div');
         render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />, tempElement);
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
@@ -198,30 +219,30 @@ function ChatRoom({ children }) {
         const updatedTypingStatus = { ...userTypingStatus };
         updatedTypingStatus[message.user] = message.isTyping;
         setUserTypingStatus(updatedTypingStatus);
+=======
+      if (message.Type === 'receiver' && message.Name !== userData.user) {
+        const newMessage = message.Message;
+        const chatScreen = document.querySelector(".chatScreen");
+        const tempElement = document.createElement('div');
+        createRoot(tempElement).render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />);
+        chatScreen.appendChild(tempElement);
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
       }
 
-  
-      
-      if (message.type === 'typing' && message.user !== userData.user ) {
-          if (message.isTyping === true) {
-              // Exibe a mensagem de "Digitando..."
-              tempElement.className = 'typing';
-              tempElement.innerHTML = '<p>Digitando...</p>';
-      
-              // Adiciona a mensagem de "Digitando..." ao lado do nome do usuário
-              if (userElement) {
-                  userElement.appendChild(tempElement);
-              }
-          } else if (message.isTyping === false) {
-            var  guestElement = document.getElementById(message.user)
-              // Remove a mensagem de "Digitando..." se ela existir
-              if (guestElement.querySelector('.typing')) {
-                console.log(guestElement.querySelector('.typing'), "GUST")
-                guestElement.querySelector('.typing').remove();
-              }
-            }
+      if (message.Type === 'receiver' && message.Name === userData.user) {
+        const newMessage = message.Message;
+        const chatScreen = document.querySelector(".chatScreen");
+        const tempElement = document.createElement('div');
+        tempElement.className = 'senderMessage';
+        createRoot(tempElement).render(<SenderMessage Message={newMessage} />);
+        chatScreen.appendChild(tempElement);
       }
-      
+
+      if (message.type === 'typing' && message.user !== userData.user) {
+        const updatedTypingStatus = { ...userTypingStatus };
+        updatedTypingStatus[message.user] = message.isTyping;
+        setUserTypingStatus(updatedTypingStatus);
+      }
     };
 
     return () => {
@@ -282,19 +303,32 @@ function ChatRoom({ children }) {
       <header className="App-header">
         <div className="Box">
           <div className="flexBox">
-            <div className="columnFlexBox">    
-            <div style={{ maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
-            <ul>
-              {users.map((user) => (
-                user === userData.user ? null : <GuestInfo id={user} key={user} name={user} />
-              ))}
-            </ul>
+            <div className="columnFlexBox">
+              <div style={{ maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+                <ul>
+                  {users.map((user) => (
+                    user === userData.user ? null : (
+                      <GuestInfo
+                        isTyping={userTypingStatus[user]} // Passa o estado de digitação do usuário
+                        id={user}
+                        key={user}
+                        name={user}
+                      />
+                    )
+                  ))}
+                </ul>
+              </div>
+              <HostInfo name={userData.user} />
             </div>
+<<<<<<< HEAD
               <HostInfo name={userData.user}/>
               
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
             </div>
             <ChatBox messages={messages} theme={colors} setColors={setColors} />
+=======
+            <ChatBox />
+>>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
           </div>
         </div>
       </header>
