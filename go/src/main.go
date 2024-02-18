@@ -15,7 +15,13 @@ type Chatroom struct {
 	Users []string
 }
 
+type MessageTyping struct {
+	User     string `json:"user"`
+	IsTyping bool   `json:"isTyping"`
+}
+
 type Message struct {
+	Type      string
 	Name      string
 	Message   string
 	Chatroom  string
@@ -98,6 +104,7 @@ func main() {
 	app.Post("/sender", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
+			Type     string `json:"type"`
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
 			Message  string `json:"message"`
@@ -119,6 +126,7 @@ func main() {
 
 		// Constrói a mensagem
 		message := Message{
+			Type:      requestData.Type,
 			Name:      requestData.Username,
 			Message:   requestData.Message,
 			Chatroom:  chatroom.Name,
@@ -199,13 +207,16 @@ func main() {
 			// Adiciona ou atualiza o cliente com o seu username no mapa de clientes
 			clients[c] = true
 
-			// Envia a mensagem para todos os clientes WebSocket
+			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
 			for client := range clients {
-				err := client.WriteMessage(websocket.TextMessage, msg)
-				if err != nil {
-					log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-					delete(clients, client) // Remove o cliente do mapa se houver um erro
-					continue
+				if client != c {
+					err := client.WriteMessage(websocket.TextMessage, msg)
+					if err != nil {
+						log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+						delete(clients, client) // Remove o cliente do mapa se houver um erro
+						continue
+					}
+					fmt.Println(string(msg))
 				}
 			}
 		}

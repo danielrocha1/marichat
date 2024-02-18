@@ -5,18 +5,26 @@ import HostInfo from '../HostInfo';
 import GuestInfo from '../GuestInfo';
 import ChatBox from '../ChatBox'
 import { render } from 'react-dom'; 
+import { format } from 'date-fns';
+
 
 function ReceiverMessage(props) {
-  console.log(props.Message, 'SENDER')
+  const timestamp = new Date(props.Hour);
+  const hora = format(timestamp, 'HH:mm');
+  console.log(props.Message, 'ReceiverMessage')
   return (
+ 
+
     <div className="receiverMessage">
+      <p style={{ fontSize: '15px', textAlign: 'left' ,fontWeight:"bold" }}>{props.Name}:</p>
       {props.Message}
+      <p style={{ fontSize: '7px', textAlign: 'right' , fontWeight:"bold" }}>{hora}</p>
     </div>
   );
 }
 
 function SenderMessage(props) {
-  
+  console.log(props.Message, 'SENDER')
   return (
     <div className="">
       {props.Message}
@@ -61,29 +69,27 @@ function ChatRoom({children}) {
     // Exemplo de uso de Websockets para atualizar a lista de usuários em tempo real
     const socket = new WebSocket('ws://localhost:8080/websocket');
     socket.onmessage = (event) => {
-      
+
       const message = JSON.parse(event.data);
-      
+      const tempElement = document.createElement('div');
+      const userElement = document.getElementById(message.user);
       if (message.type === 'newUser') {
         setUsers((prevUsers) => [...prevUsers, message.user]);
       }
-      console.log('message.Name ', userData)
-      if (!message.type && message.Name !== userData.user ) {
+      if (message.Type === 'receiver' && message.Name !== userData.user ) {
         
        
         const newMessage = message.Message;
         console.log("Nova mensagem recebida:", newMessage);
         
-       
-        
         const chatScreen = document.querySelector(".chatScreen");
 
         const tempElement = document.createElement('div');
-        render(<ReceiverMessage Message={newMessage} />, tempElement);
+        render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />, tempElement);
 
         chatScreen.appendChild(tempElement);
 
-      }else{
+      }if (message.Type === 'receiver' && message.Name === userData.user ) {
         const newMessage = message.Message;
         const chatScreen = document.querySelector(".chatScreen");
 
@@ -93,6 +99,29 @@ function ChatRoom({children}) {
         console.log("Nova mensagem ADSFASD:", tempElement);
         chatScreen.appendChild(tempElement);
       }
+
+  
+      
+      if (message.type === 'typing' && message.user !== userData.user ) {
+          if (message.isTyping === true) {
+              // Exibe a mensagem de "Digitando..."
+              tempElement.className = 'typing';
+              tempElement.innerHTML = '<p>Digitando...</p>';
+      
+              // Adiciona a mensagem de "Digitando..." ao lado do nome do usuário
+              if (userElement) {
+                  userElement.appendChild(tempElement);
+              }
+          } else if (message.isTyping === false) {
+            var  guestElement = document.getElementById(message.user)
+              // Remove a mensagem de "Digitando..." se ela existir
+              if (guestElement.querySelector('.typing')) {
+                console.log(guestElement.querySelector('.typing'), "GUST")
+                guestElement.querySelector('.typing').remove();
+              }
+            }
+      }
+      
     };
   
     // Função de limpeza ao desmontar o componente
@@ -107,14 +136,13 @@ function ChatRoom({children}) {
         <div className="Box">
           <div className="flexBox">
             <div className="columnFlexBox">    
-            <div style={{ maxHeight: '150px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
-  <ul>
-    {users.map((user) => (
-      <GuestInfo key={user} name={user} />
-    ))}
-  </ul>
-</div>
-
+            <div style={{ maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+            <ul>
+              {users.map((user) => (
+                user === userData.user ? null : <GuestInfo id={user} key={user} name={user} />
+              ))}
+            </ul>
+            </div>
               <HostInfo name={userData.user}/>
               
             </div>
