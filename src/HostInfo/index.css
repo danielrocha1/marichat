@@ -1,4 +1,5 @@
 .hostBox {
+  height: 220px;
   margin-top: auto; /* Define a margem superior automática para empurrar o hostBox para a parte inferior */
   border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
   border-radius: 8px; /* Adiciona bordas arredondadas */
@@ -6,13 +7,13 @@
 }
 
 .hostPhoto {
-  height: 19vmin;
+  height: 17vmin;
   pointer-events: none;
 }
 
 .nameHost {
   font-weight: 700;
-  font-size: calc(15px + 3vmin);  
+
 }
 
 .App-header {
@@ -22,6 +23,43 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+
   color: white;
+}
+
+
+@media (max-width: 768px) {
+  .nameHost{
+    font-size: 21px;
+  }
+  .hostBox {
+    height: 190px;
+   
+  }
+  
+
+}  
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nameHost{
+    font-size: 19px;
+    }
+    .hostBox {
+      height: 190px;
+  
+    }
+    
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .nameHost{  
+    font-size: 17px;
+  }
+  .hostBox {
+    height: 220px;
+   
+  }
+  
+
 }

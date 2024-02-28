@@ -2,14 +2,32 @@
     text-align: center;
     
   }
+
+/* Estilização da barra de rolagem */
+::-webkit-scrollbar {
+  
+  width: 7px; /* Largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+  border: 1px solid #060000; /* Define a borda com 2px de largura e cor preta */
+  background-color: #ffffff; /* Cor do indicador da barra de rolagem */
+  border-radius: 5px; /* Borda arredondada do indicador da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666666; /* Cor do indicador da barra de rolagem ao passar o mouse sobre ele */
+}
   
   .nameHost {
     font-weight: 700;
   }
   
   .Box {
-    
-    
+  border: 2px;
+  background-color: #7d3e5d;
+  border-radius: 17px;
+  border: 1px outset #ffffff;  
     
     
   }
@@ -29,9 +47,11 @@
     background-color: #dda6a6;
     color: #000;
     border-radius: 10px;
+
     padding: 10px;
     margin-bottom: 10px;
     max-width: 60%;
+    
     width: fit-content;
     flex-wrap: wrap;
     word-wrap: break-word;
@@ -55,4 +75,36 @@
     
     margin-left: 0px; /* Adapte conforme necessário para a distância desejada */
   }
+
+
   
+  @media (max-width: 768px) {
+    .senderMessage {
+      font-size: 13px;
+    }
+    .receiverMessage {
+      font-size: 13px;
+    }
+  
+  }  
+  /* Estilos para telas médias */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .senderMessage {
+      font-size: 16px;
+    }
+    .receiverMessage {
+      font-size: 16px;
+    }
+  
+  }
+  
+  /* Estilos para telas grandes */
+  @media (min-width: 1025px) {
+    .senderMessage {
+      font-size: 19px;
+    }
+    .receiverMessage {
+      font-size: 19px;
+    }
+  
+  }

@@ -9,29 +9,33 @@
   font-weight: 700;
   margin-left: 15px;
   margin-right: 10px;
-  margin-top: 25px;
+  margin-top: 20px;
   
   
 }
 
 .guestBox {
+  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: calc(5px + 2vmin);
-
+  margin-right: 10px;
   border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
   border-radius: 8px; /* Adiciona bordas arredondadas */
   padding: 1px; /* Adiciona espaço interno à caixa */
+  width: 140px ;
+  background-color: #6d2082;
 
-  background-color: #006eff;
-
-  margin-bottom: 5px;
 }
 
 
 .App-header {
-  background-color: #0a2d71;
+  background: linear-gradient(to bottom, #590f80, #000000);
+
+
+
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -41,3 +45,26 @@
   color: white;
 }
 
+@media (max-width: 768px) {
+  .guestName{
+    font-size: 14px;
+  }
+
+}  
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .guestName{
+    font-size: 12px;
+  }
+ 
+
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .guestName{
+    
+    font-size: 13px;
+  }
+
+}

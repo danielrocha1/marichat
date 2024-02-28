@@ -6,7 +6,7 @@ function HostInfo(props) {
   return (
     <div className="hostBox">
       
-      <p>{props.name}</p>
+      <p className='nameHost'>{props.name}</p>
         <img src={logo} className="hostPhoto" alt="logo" />  
         
         

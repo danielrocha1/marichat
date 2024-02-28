@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import './index.css';
 import ChatContext from '../../ChatContext'; // Importe o contexto
 
-function TextInput() {
-  const [text, setText] = useState('');
+function TextInput({showEmoji, text, setText}) {
+  
   const [isTyping, setIsTyping] = useState(false); // Estado local para controlar se o usuário está digitando
   const { userData } = useContext(ChatContext);
 
@@ -46,7 +46,7 @@ function TextInput() {
   const handleSendMessage = async (e) => {
     // Quando a mensagem é enviada, o usuário não está mais digitando
     
-    e.preventDefault();
+    // e.preventDefault();
 
     try {
       const response = await fetch('http://localhost:8080/sender', {
@@ -65,6 +65,7 @@ function TextInput() {
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
+      
       sendTypingStatus(false);
       setText('');
     } catch (error) {
@@ -87,7 +88,7 @@ function TextInput() {
         onChange={handleChange}
         onKeyDown={handleKeyPress}
         placeholder="Digite aqui..."
-        style={{ marginRight: '10px' }}
+        style={{ marginRight: '10px', fontSize:"24px" }}
       />
       <div className="submitButton" onClick={handleSendMessage}>
         <span role="img" aria-label="Enviar">➡️</span>

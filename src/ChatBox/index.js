@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, {useState} from 'react';
 import TextInput from './TextBox';
 import Toolbar from './ToolBar';
 
@@ -8,7 +8,8 @@ import './index.css';
 
 
 function ChatBox() {
-  
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [text, setText] = useState('');
 
   return (
     <div className="chatBox">
@@ -19,9 +20,10 @@ function ChatBox() {
         <div className="line" />
         <div className="line" />
       </div>
-      <Toolbar />
-      <TextInput />
+      <Toolbar setShowEmoji={setShowEmoji} setText={setText} />
+      <TextInput showEmoji={showEmoji} text={text} setText={setText} />
     </div>
+    
   );
 }
 

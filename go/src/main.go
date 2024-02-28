@@ -6,6 +6,8 @@ import (
 	"log"
 	"time"
 
+	"io/ioutil"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 )
@@ -28,15 +30,35 @@ type Message struct {
 	Timestamp time.Time
 }
 
+type MessageFile struct {
+	Type      string
+	Label		string
+	Name      string
+	Message   string
+	Chatroom  string
+	Upload    bool `json:"upload"`
+	Timestamp time.Time
+
+	File []byte `json:"file,omitempty"`
+}
+
 type WebSocketMessage struct {
 	Sender  string `json:"sender"`
 	Message string `json:"message"`
 }
 
+
+// Definir um tempo limite de inatividade
+const (
+    readTimeout  = 5 * time.Minute
+    writeTimeout = 10 * time.Second
+)
+
 var chatrooms map[string]*Chatroom
 
 var (
 	clients = make(map[*websocket.Conn]bool) // Mapa para armazenar os clientes conectados
+
 )
 
 func main() {
@@ -104,12 +126,11 @@ func main() {
 	app.Post("/sender", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
-			Type     string `json:"type"`
-			Username string `json:"username"`
-			RoomName string `json:"roomname"`
-			Message  string `json:"message"`
+			Type      string    `json:"type"`
+			Username  string    `json:"username"`
+			RoomName  string    `json:"roomname"`
+			Message   string    `json:"message"`
 			Timestamp time.Time `json:"timestamp"`
-
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -146,7 +167,6 @@ func main() {
 		fmt.Println(string(messageJSON))
 		// Envia a mensagem para todos os clientes WebSocket na sala de bate-papo
 		for client := range clients {
-			fmt.Println(string(messageJSON))
 			err := client.WriteMessage(websocket.TextMessage, messageJSON)
 			if err != nil {
 				fmt.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
@@ -154,6 +174,75 @@ func main() {
 			}
 		}
 
+		return nil // retorno nil para indicar sucesso na resposta
+	})
+
+	app.Post("/upload", func(c *fiber.Ctx) error {
+
+		var requestData struct {
+			Type      string    `json:"type"`
+			Label  string    `json:"label"`
+			Username  string    `json:"username"`
+			RoomName  string    `json:"roomname"`
+			Message   string    `json:"message"`
+			Upload    bool      `json:"upload"`
+			Timestamp time.Time `json:"timestamp"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Falha ao fazer o parsing do corpo da requisição",
+			})
+		}
+		
+
+		// Constrói a mensagem
+		message := MessageFile{
+			Type:      requestData.Type,
+			Label:	   requestData.Label,
+			Name:      requestData.Username,
+			Chatroom:  requestData.RoomName,
+			Message:   requestData.Message,
+			Upload:    requestData.Upload,
+			Timestamp: time.Now(),
+		}
+
+		// Verifica se existe um arquivo no corpo da requisição
+		file, err := c.FormFile("file")
+		if err == nil {
+			// Lê o conteúdo do arquivo
+			fileContent, err := file.Open()
+			if err != nil {
+				log.Println("Erro ao abrir o arquivo:", err)
+				return err
+			}
+			defer fileContent.Close()
+
+			// Lê o conteúdo do arquivo
+			fileBytes, err := ioutil.ReadAll(fileContent)
+			if err != nil {
+				log.Println("Erro ao ler o conteúdo do arquivo:", err)
+				return err
+			}
+
+			// Adiciona os bytes do arquivo à mensagem
+			message.File = fileBytes
+		}
+
+		messageJSON, err := json.Marshal(message)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to serialize message data",
+			})
+		}
+
+		// Envia a mensagem para todos os clientes WebSocket na sala de bate-papo
+		for client := range clients {
+			err := client.WriteMessage(websocket.TextMessage, messageJSON)
+			if err != nil {
+				fmt.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+				continue
+			}
+		}
 		return nil // retorno nil para indicar sucesso na resposta
 	})
 
@@ -183,39 +272,44 @@ func main() {
 	})
 
 	app.Get("/websocket", websocket.New(func(c *websocket.Conn) {
-		// Adiciona o cliente ao mapa de clientes
+		// Definir timeout de leitura e escrita
+		c.SetReadDeadline(time.Now().Add(readTimeout))
+		c.SetWriteDeadline(time.Now().Add(writeTimeout))
+	
+		// Adicionar o cliente ao mapa de clientes
 		clients[c] = true
-
-		// Fecha a conexão e remove o cliente do mapa ao encerrar
+	
+		// Fechar a conexão e remover o cliente do mapa ao encerrar
 		defer func() {
 			delete(clients, c)
 			c.Close()
 		}()
-
+	
 		for {
 			_, msg, err := c.ReadMessage()
 			if err != nil {
 				log.Println("Erro ao ler mensagem:", err)
 				break
 			}
-
-			// Parse da mensagem WebSocket
+	
+			// Analisar a mensagem WebSocket
 			var wsMsg WebSocketMessage
 			if err := json.Unmarshal(msg, &wsMsg); err != nil {
-				log.Println("Erro ao fazer o unmarshal da mensagem:", err)
+				log.Println("Erro ao fazer unmarshal da mensagem:", err)
 				continue
 			}
-
-			// Adiciona ou atualiza o cliente com o seu username no mapa de clientes
+	
+			// Adicionar ou atualizar o cliente com o seu nome de usuário no mapa de clientes
 			clients[c] = true
-
-			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
+	
+			fmt.Println("SEGUNDO", string(msg))
+			// Enviar a mensagem para todos os clientes WebSocket, exceto o cliente atual
 			for client := range clients {
 				if client != c {
 					err := client.WriteMessage(websocket.TextMessage, msg)
 					if err != nil {
 						log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-						delete(clients, client) // Remove o cliente do mapa se houver um erro
+						delete(clients, client) // Remover o cliente do mapa se houver um erro
 						continue
 					}
 					fmt.Println(string(msg))

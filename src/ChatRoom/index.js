@@ -7,10 +7,13 @@ import ChatBox from '../ChatBox';
 import { createRoot } from 'react-dom/client'; // Importe createRoot corretamente
 import { format } from 'date-fns';
 
+import ReceiverImage from '../ChatBox/ReceiverImage';
+import SenderImage from '../ChatBox/SenderImage';
+
+
 function ReceiverMessage(props) {
   const timestamp = new Date(props.Hour);
   const hora = format(timestamp, 'HH:mm');
-  console.log(props.Message, 'ReceiverMessage');
   return (
     <div className="receiverMessage">
       <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{props.Name}:</p>
@@ -23,7 +26,6 @@ function ReceiverMessage(props) {
 function SenderMessage(props) {
   const timestamp = new Date();
   const hora = format(timestamp, 'HH:mm');
-  console.log(props.Message, 'SENDER');
   return (
     <div className="">
       {props.Message}
@@ -63,23 +65,31 @@ function ChatRoom({ children }) {
 
     const socket = new WebSocket('ws://localhost:8080/websocket');
     socket.onmessage = (event) => {
+      
       const message = JSON.parse(event.data);
       const tempElement = document.createElement('div');
       const userElement = document.getElementById(message.user);
 
-      if (message.type === 'newUser') {
-        setUsers((prevUsers) => [...prevUsers, message.user]);
+
+      if (message.type === 'newUser' ) {
+        if (message.ChatRoom === userData.chatroomName){
+          setUsers((prevUsers) => [...prevUsers, message.user]);
+        }
       }
 
-      if (message.Type === 'receiver' && message.Name !== userData.user) {
+      if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.ChatRoom === userData.chatroomName ) {
+        console.log("TEST",message.ChatRoom === userData.chatroomName)
+
         const newMessage = message.Message;
         const chatScreen = document.querySelector(".chatScreen");
         const tempElement = document.createElement('div');
+        tempElement.className = 'receiverMessage';
         createRoot(tempElement).render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />);
         chatScreen.appendChild(tempElement);
       }
 
-      if (message.Type === 'receiver' && message.Name === userData.user) {
+      if (message.Type === 'receiver' && message.Name === userData.user && !message.upload) {
+        console.log(message, "MENSAGEM PORRA")
         const newMessage = message.Message;
         const chatScreen = document.querySelector(".chatScreen");
         const tempElement = document.createElement('div');
@@ -87,6 +97,26 @@ function ChatRoom({ children }) {
         createRoot(tempElement).render(<SenderMessage Message={newMessage} />);
         chatScreen.appendChild(tempElement);
       }
+
+      if (message.Type === 'receiver' && message.Name === userData.user && message.upload === true) {
+        const newMessage = message.Message;
+        const chatScreen = document.querySelector(".chatScreen");
+        const tempElement = document.createElement('div');
+        tempElement.className = 'senderMessage';
+        createRoot(tempElement).render(<SenderImage imageData={newMessage}  Hour={message.Timestamp}/>);
+        chatScreen.appendChild(tempElement);
+    }
+
+
+    if (message.Type === 'receiver' && message.Name !== userData.user && message.upload === true) {
+      console.log("AQUI CARAIO")
+      const newMessage = message.Message;
+      const chatScreen = document.querySelector(".chatScreen");
+      const tempElement = document.createElement('div');
+      tempElement.className = 'receiverMessage';
+      createRoot(tempElement).render(<ReceiverImage Name={message.Name} imageData={newMessage}  Hour={message.Timestamp}/>);
+      chatScreen.appendChild(tempElement);
+    }
 
       if (message.type === 'typing' && message.user !== userData.user) {
         const updatedTypingStatus = { ...userTypingStatus };
@@ -106,7 +136,7 @@ function ChatRoom({ children }) {
         <div className="Box">
           <div className="flexBox">
             <div className="columnFlexBox">
-              <div style={{ maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+              <div style={{borderBottom:"1px solid white", borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
                   {users.map((user) => (
                     user === userData.user ? null : (
