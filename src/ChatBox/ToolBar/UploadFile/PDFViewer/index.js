@@ -39,6 +39,12 @@ function PDFViewer({ Message, Hour }) {
   const timestamp = new Date(Hour);
   const hora = format(timestamp, 'HH:mm');
 
+<<<<<<< HEAD
+=======
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 
   const openPDFInNewTab = () => {
     window.open(pdfUrl, '_blank');
@@ -66,7 +72,11 @@ function PDFViewer({ Message, Hour }) {
         />
       </div>
       <p style={{ fontSize: '14px', textAlign: 'right', fontWeight: 'bold', margin: '0' }}>{hora}</p>
+<<<<<<< HEAD
       <button style={{ fontSize: '12px', marginTop: '5px' }} onClick={expanded ? 'toggleExpansion' : openPDFInNewTab}>
+=======
+      <button style={{ fontSize: '12px', marginTop: '5px' }} onClick={expanded ? toggleExpansion : openPDFInNewTab}>
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
         {expanded ? 'Fechar arquivo' : 'Abrir arquivo'}
       </button>
     </div>

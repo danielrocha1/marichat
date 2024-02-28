@@ -8,10 +8,15 @@ import (
 	"io"
 	"io/ioutil"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 	"log"
 	"strings"
 	"time"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	"net/http"
 	"bytes"
@@ -19,6 +24,11 @@ import (
 	"io/ioutil"
 
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+
+	"net/http"
+	"bytes"
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 
@@ -47,10 +57,14 @@ type Message struct {
 type MessageFile struct {
 	Type      string
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Label     string
 =======
 	Label		string
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+	Label     string
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 	Name      string
 	Message   string
 	Chatroom  string
@@ -64,13 +78,6 @@ type WebSocketMessage struct {
 	Sender  string `json:"sender"`
 	Message string `json:"message"`
 }
-
-
-// Definir um tempo limite de inatividade
-const (
-    readTimeout  = 5 * time.Minute
-    writeTimeout = 10 * time.Second
-)
 
 var chatrooms map[string]*Chatroom
 
@@ -283,6 +290,7 @@ func main() {
 	app.Post("/upload", func(c *fiber.Ctx) error {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
 		var requestData struct {
 			Type      string    `json:"type"`
@@ -292,6 +300,12 @@ func main() {
 			Type      string    `json:"type"`
 			Label  string    `json:"label"`
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+		
+		var requestData struct {
+			Type      string    `json:"type"`
+			Label     string    `json:"label"`
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 			Username  string    `json:"username"`
 			RoomName  string    `json:"roomname"`
 			Message   string    `json:"message"`
@@ -300,6 +314,7 @@ func main() {
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+<<<<<<< HEAD
 <<<<<<< HEAD
 				"error": "Failed to parse request body",
 			})
@@ -310,15 +325,21 @@ func main() {
 			Type: requestData.Type,
 =======
 				"error": "Falha ao fazer o parsing do corpo da requisição",
+=======
+				"error": "Failed to parse request body",
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 			})
 		}
-		
 
 		// Constrói a mensagem
 		message := MessageFile{
+<<<<<<< HEAD
 			Type:      requestData.Type,
 			Label:	   requestData.Label,
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+			Type: requestData.Type,
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 			Name:      requestData.Username,
 			Chatroom:  requestData.RoomName,
 			Message:   requestData.Message,
@@ -327,6 +348,9 @@ func main() {
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 		// Decodifica a string base64
 		data, err := base64.StdEncoding.DecodeString(strings.Split(requestData.Message, ",")[1])
 		if err != nil {
@@ -346,17 +370,24 @@ func main() {
 		
 		fmt.Println("Tipo MIME do arquivo:", mime)
 
+<<<<<<< HEAD
 =======
 		// Verifica se existe um arquivo no corpo da requisição
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 		file, err := c.FormFile("file")
 		if err == nil {
 			// Lê o conteúdo do arquivo
 			fileContent, err := file.Open()
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 			if err != nil {
 				log.Println("Erro ao abrir o arquivo:", err)
 				return err
@@ -373,6 +404,7 @@ func main() {
 			// Adiciona os bytes do arquivo à mensagem
 			message.File = fileBytes
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
 
 		}
@@ -382,6 +414,13 @@ func main() {
 		}
 
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+		
+
+		}
+		message.Label = mime
+		// Serializa a mensagem para JSON
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 		messageJSON, err := json.Marshal(message)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -390,9 +429,13 @@ func main() {
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		fmt.Println(string(messageJSON))
 =======
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+		fmt.Println(string(messageJSON))
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 		// Envia a mensagem para todos os clientes WebSocket na sala de bate-papo
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, messageJSON)
@@ -402,11 +445,16 @@ func main() {
 			}
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		return nil // Retorna nil para indicar sucesso na resposta
 =======
 		return nil // retorno nil para indicar sucesso na resposta
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+
+		return nil // Retorna nil para indicar sucesso na resposta
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 	})
 
 	app.Post("/listusers", func(c *fiber.Ctx) error {
@@ -436,35 +484,32 @@ func main() {
 	
 
 	app.Get("/websocket", websocket.New(func(c *websocket.Conn) {
-		// Definir timeout de leitura e escrita
-		c.SetReadDeadline(time.Now().Add(readTimeout))
-		c.SetWriteDeadline(time.Now().Add(writeTimeout))
-	
-		// Adicionar o cliente ao mapa de clientes
+		// Adiciona o cliente ao mapa de clientes
 		clients[c] = true
-	
-		// Fechar a conexão e remover o cliente do mapa ao encerrar
+
+		// Fecha a conexão e remove o cliente do mapa ao encerrar
 		defer func() {
 			delete(clients, c)
 			c.Close()
 		}()
-	
+
 		for {
 			_, msg, err := c.ReadMessage()
 			if err != nil {
 				log.Println("Erro ao ler mensagem:", err)
 				break
 			}
-	
-			// Analisar a mensagem WebSocket
+
+			// Parse da mensagem WebSocket
 			var wsMsg WebSocketMessage
 			if err := json.Unmarshal(msg, &wsMsg); err != nil {
-				log.Println("Erro ao fazer unmarshal da mensagem:", err)
+				log.Println("Erro ao fazer o unmarshal da mensagem:", err)
 				continue
 			}
-	
-			// Adicionar ou atualizar o cliente com o seu nome de usuário no mapa de clientes
+
+			// Adiciona ou atualiza o cliente com o seu username no mapa de clientes
 			clients[c] = true
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
@@ -481,12 +526,16 @@ func main() {
 			fmt.Println("SEGUNDO", string(msg))
 			// Enviar a mensagem para todos os clientes WebSocket, exceto o cliente atual
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+
+			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 			for client := range clients {
 				if client != c {
 					err := client.WriteMessage(websocket.TextMessage, msg)
 					if err != nil {
 						log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-						delete(clients, client) // Remover o cliente do mapa se houver um erro
+						delete(clients, client) // Remove o cliente do mapa se houver um erro
 						continue
 					}
 					fmt.Println(string(msg))
@@ -494,6 +543,7 @@ func main() {
 			}
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
 		}
+<<<<<<< HEAD
 
 		// Envia a mensagem para o cliente WebSocket
 		err := client.WriteMessage(websocket.TextMessage, msg)
@@ -506,6 +556,8 @@ func main() {
 		}
 
 		}
+=======
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
 		
 	}))
 	

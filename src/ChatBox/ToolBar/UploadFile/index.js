@@ -32,9 +32,12 @@ function UploadFile({ id }) {
           body: JSON.stringify({
             type:"receiver",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             label: "image",
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+>>>>>>> e981b78 (enviando arquivos pdf e imagens)
             username: userData.user,
             roomname: userData.chatroomName,
             message: fileContent,
