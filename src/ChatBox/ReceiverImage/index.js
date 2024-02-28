@@ -49,7 +49,11 @@ class ReceiverImage extends React.Component {
     }
     // Renderizar a imagem
     return (
+<<<<<<< HEAD
       <div className='receiverMessage'>
+=======
+      <div>
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{this.props.Name}:</p>
         <img src={imageData.data} alt={this.props.imageName} style={{ width: '100%' }} />
         <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>

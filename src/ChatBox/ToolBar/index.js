@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import { Smile, Paperclip, Edit2, Camera, Mic } from 'react-feather';
 import Picker from '@emoji-mart/react';
 import UploadFile from './UploadFile'; // Importe o componente UploadFile
+<<<<<<< HEAD
 import ColorSelector from './ColorSelector';
 import './index.css';
 
 function Toolbar({ setShowEmoji, setText, theme, setColors}) {
+=======
+import './index.css';
+
+function Toolbar({ setShowEmoji, setText }) {
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleEmojiClick = () => {
@@ -15,6 +21,7 @@ function Toolbar({ setShowEmoji, setText, theme, setColors}) {
   const handleSelectEmoji = (event) => {
     console.log('Emoji selecionado:', event.native);
     setText((prevText) => prevText + event.native);
+<<<<<<< HEAD
     // setShowEmojiPicker(false);
   };
 
@@ -57,6 +64,36 @@ function Toolbar({ setShowEmoji, setText, theme, setColors}) {
     <div className="toolbar" style={{color:theme.border}}>
       <div className="icon" onClick={handleEmojiClick}>
         <Smile />
+=======
+    setShowEmojiPicker(false);
+  };
+
+  return (
+    <div className="toolbar">
+      <div className="icon" onClick={handleEmojiClick}>
+        <Smile />
+      </div>
+      {showEmojiPicker && (
+        <div className="emoji-picker-container">
+          <Picker
+            set="apple"
+            onEmojiSelect={handleSelectEmoji}
+            emojiSize={24}
+            title="Pick your emoji…"
+            emoji="point_up"
+            showSkinTones={false}
+          />
+        </div>
+      )}
+      {/* Renderize o componente UploadFile */}
+      <label htmlFor="file-upload" className="icon">
+        <Paperclip />
+      </label>
+      {/* Renderize o componente UploadFile */}
+      <UploadFile id="file-upload" setText={setText} />
+      <div className="icon">
+        <Edit2 />
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       </div>
       {showEmojiPicker && (
         <div className="emoji-picker-container">
@@ -78,8 +115,15 @@ function Toolbar({ setShowEmoji, setText, theme, setColors}) {
       {/* Renderize o componente UploadFile */}
       <UploadFile id="file-upload" setText={setText} />
       <div className="icon">
+<<<<<<< HEAD
         <Edit2 onClick={handleOpenModal} />
       <ColorSelector isOpen={isModalOpen} onClose={handleCloseModal} onSelectColor={handleSelectColor} />
+=======
+        <Camera />
+      </div>
+      <div className="icon">
+        <Mic />
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       </div>
     </div>
   );

@@ -17,7 +17,11 @@
 
   width: 700px;
   height: 400px;
+<<<<<<< HEAD
   background-image: url('../Image/txture.jpg');
+=======
+  background-image: url('/home/warlord/Downloads/txture.jpg');
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
   background-color: rgb(255, 255, 255);
   overflow-y: auto;
   display: flex;

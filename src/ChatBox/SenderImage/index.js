@@ -1,13 +1,20 @@
 import React from 'react';
+<<<<<<< HEAD
 import ReactDOM from 'react-dom';
+=======
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 import { format } from 'date-fns';
 
 class SenderImage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
       imageData: null,
       expanded: false  // Estado para controlar a expansão
+=======
+      imageData: null
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
     };
   }
 
@@ -41,6 +48,7 @@ class SenderImage extends React.Component {
     };
   }
 
+<<<<<<< HEAD
   toggleExpanded = (event) => {
     event.preventDefault(); // Evitar o comportamento padrão do link
     this.setState(prevState => ({
@@ -85,10 +93,13 @@ class SenderImage extends React.Component {
     );
   }
 
+=======
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
   render() {
     const timestamp = new Date(this.props.Hour);
     const hora = format(timestamp, 'HH:mm');
 
+<<<<<<< HEAD
     const { expanded } = this.state;
 
     return (
@@ -101,6 +112,17 @@ class SenderImage extends React.Component {
         />
         {expanded && ReactDOM.createPortal(this.renderExpandedImage(), document.getElementById('chatScreen'))}
         <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px'}}>{hora}</p>
+=======
+    const { imageData } = this.state;
+    if (!imageData) {
+      return <div>Loading...</div>;
+    }
+    // Renderizar a imagem
+    return (
+      <div>
+        <img src={imageData.data} alt={this.props.imageName} style={{ width: '80%' }} />
+        <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       </div>
     );
   }

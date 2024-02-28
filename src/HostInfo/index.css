@@ -1,9 +1,13 @@
 .hostBox {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   height: 220px;
 =======
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+=======
+  height: 220px;
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
   margin-top: auto; /* Define a margem superior automática para empurrar o hostBox para a parte inferior */
   border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
   border-radius: 8px; /* Adiciona bordas arredondadas */
@@ -30,10 +34,14 @@
 .nameHost {
   font-weight: 700;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
   font-size: calc(15px + 3vmin);  
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+=======
+
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 }
 
 .App-header {
@@ -47,6 +55,9 @@
   color: white;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 
 
 @media (max-width: 768px) {
@@ -84,5 +95,8 @@
   
 
 }
+<<<<<<< HEAD
 =======
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+=======
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)

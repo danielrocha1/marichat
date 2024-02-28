@@ -50,8 +50,8 @@ function TextInput({showEmoji, text, setText}) {
     // e.preventDefault();
 =======
 
-function TextInput() {
-  const [text, setText] = useState('');
+function TextInput({showEmoji, text, setText}) {
+  
   const [isTyping, setIsTyping] = useState(false); // Estado local para controlar se o usuário está digitando
   const { userData } = useContext(ChatContext);
 
@@ -94,8 +94,12 @@ function TextInput() {
   const handleSendMessage = async (e) => {
     // Quando a mensagem é enviada, o usuário não está mais digitando
     
+<<<<<<< HEAD
     e.preventDefault();
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
+=======
+    // e.preventDefault();
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 
     try {
       const response = await fetch('https://marichat-go.onrender.com/sender', {
@@ -124,6 +128,9 @@ function TextInput() {
       }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       
       sendTypingStatus(false);
 =======
@@ -161,7 +168,11 @@ function TextInput() {
         onKeyDown={handleKeyPress}
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
         placeholder="Digite aqui..."
+<<<<<<< HEAD
         style={{ marginRight: '10px', fontSize:"24px", backgroundColor:"#b8cad4"}}
+=======
+        style={{ marginRight: '10px', fontSize:"24px" }}
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       />
       <div className="submitButton" onClick={handleSendMessage}>
         <span role="img" aria-label="Enviar">➡️</span>

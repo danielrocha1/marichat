@@ -44,30 +44,38 @@
   margin-left: 15px;
   margin-right: 10px;
   margin-top: 20px;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
   
 }
 
 <<<<<<< HEAD
 =======
 .guestBox {
+  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: calc(5px + 2vmin);
-
+  margin-right: 10px;
   border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
   border-radius: 8px; /* Adiciona bordas arredondadas */
   padding: 1px; /* Adiciona espaço interno à caixa */
+  width: 140px ;
+  background-color: #6d2082;
 
-  background-color: #006eff;
-
-  margin-bottom: 5px;
 }
 
 
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
 .App-header {
+<<<<<<< HEAD
   /* background: linear-gradient(to bottom, #590f80, #000000); */
+=======
+  background: linear-gradient(to bottom, #590f80, #000000);
+>>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 
 
 
