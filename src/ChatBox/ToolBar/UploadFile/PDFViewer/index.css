@@ -1,0 +1,34 @@
+/* PDFViewer.css */
+
+.pdf-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .thumbnail {
+    cursor: pointer;
+  }
+  
+  .thumbnail-image {
+    width: 200px; /* Tamanho inicial da miniatura */
+    height: auto;
+    border: 1px solid #ccc;
+  }
+  
+  .expand-button {
+    margin-top: 10px;
+    text-align: center;
+    color: blue;
+  }
+  
+  .full-pdf {
+    width: 80%; /* Tamanho expandido */
+    height: 80vh;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  

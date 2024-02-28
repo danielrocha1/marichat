@@ -1,16 +1,27 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"log"
-	"time"
 
+	"io"
 	"io/ioutil"
 
+
+	"log"
+	"strings"
+	"time"
+
+
+	"net/http"
+	"bytes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
+
 )
+
+
 
 type Chatroom struct {
 	Name  string
@@ -32,7 +43,7 @@ type Message struct {
 
 type MessageFile struct {
 	Type      string
-	Label		string
+	Label     string
 	Name      string
 	Message   string
 	Chatroom  string
@@ -47,13 +58,6 @@ type WebSocketMessage struct {
 	Message string `json:"message"`
 }
 
-
-// Definir um tempo limite de inatividade
-const (
-    readTimeout  = 5 * time.Minute
-    writeTimeout = 10 * time.Second
-)
-
 var chatrooms map[string]*Chatroom
 
 var (
@@ -61,7 +65,24 @@ var (
 
 )
 
+func detectFileType(reader io.Reader) (string, error) {
+	// Lê os primeiros 512 bytes para determinar o tipo MIME
+	buffer := make([]byte, 512)
+	_, err := reader.Read(buffer)
+	if err != nil && err != io.EOF {
+		return "", err
+	}
+
+	// Detecta o tipo MIME
+	mime := http.DetectContentType(buffer)
+
+	return mime, nil
+}
+
 func main() {
+
+
+	
 	app := fiber.New()
 
 	// Middleware para adicionar headers comuns a todas as rotas
@@ -102,8 +123,9 @@ func main() {
 			chatroom.Users = append(chatroom.Users, requestData.Username)
 		}
 		userJSON, err := json.Marshal(map[string]interface{}{
-			"type": "newUser",
-			"user": requestData.Username,
+			"type":     "newUser",
+			"user":     requestData.Username,
+			"chatRoom": requestData.RoomName,
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -179,9 +201,10 @@ func main() {
 
 	app.Post("/upload", func(c *fiber.Ctx) error {
 
+		
 		var requestData struct {
 			Type      string    `json:"type"`
-			Label  string    `json:"label"`
+			Label     string    `json:"label"`
 			Username  string    `json:"username"`
 			RoomName  string    `json:"roomname"`
 			Message   string    `json:"message"`
@@ -190,15 +213,13 @@ func main() {
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Falha ao fazer o parsing do corpo da requisição",
+				"error": "Failed to parse request body",
 			})
 		}
-		
 
 		// Constrói a mensagem
 		message := MessageFile{
-			Type:      requestData.Type,
-			Label:	   requestData.Label,
+			Type: requestData.Type,
 			Name:      requestData.Username,
 			Chatroom:  requestData.RoomName,
 			Message:   requestData.Message,
@@ -206,11 +227,30 @@ func main() {
 			Timestamp: time.Now(),
 		}
 
-		// Verifica se existe um arquivo no corpo da requisição
+		// Decodifica a string base64
+		data, err := base64.StdEncoding.DecodeString(strings.Split(requestData.Message, ",")[1])
+		if err != nil {
+			fmt.Println("Erro ao decodificar a string base64:", err)
+			return err
+		}
+		
+		// Cria um leitor para os bytes decodificados
+		reader := bytes.NewReader(data)
+		
+		// Detecta o tipo MIME do arquivo
+		mime, err := detectFileType(reader)
+		if err != nil {
+			fmt.Println("Erro ao detectar o tipo MIME do arquivo:", err)
+			return err
+		}
+		
+		fmt.Println("Tipo MIME do arquivo:", mime)
+
 		file, err := c.FormFile("file")
 		if err == nil {
 			// Lê o conteúdo do arquivo
 			fileContent, err := file.Open()
+
 			if err != nil {
 				log.Println("Erro ao abrir o arquivo:", err)
 				return err
@@ -226,8 +266,11 @@ func main() {
 
 			// Adiciona os bytes do arquivo à mensagem
 			message.File = fileBytes
-		}
+		
 
+		}
+		message.Label = mime
+		// Serializa a mensagem para JSON
 		messageJSON, err := json.Marshal(message)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -235,6 +278,7 @@ func main() {
 			})
 		}
 
+		fmt.Println(string(messageJSON))
 		// Envia a mensagem para todos os clientes WebSocket na sala de bate-papo
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, messageJSON)
@@ -243,7 +287,8 @@ func main() {
 				continue
 			}
 		}
-		return nil // retorno nil para indicar sucesso na resposta
+
+		return nil // Retorna nil para indicar sucesso na resposta
 	})
 
 	app.Post("/listusers", func(c *fiber.Ctx) error {
@@ -270,57 +315,58 @@ func main() {
 			"users":    roomName.Users,
 		})
 	})
+	
 
 	app.Get("/websocket", websocket.New(func(c *websocket.Conn) {
-		// Definir timeout de leitura e escrita
-		c.SetReadDeadline(time.Now().Add(readTimeout))
-		c.SetWriteDeadline(time.Now().Add(writeTimeout))
-	
-		// Adicionar o cliente ao mapa de clientes
+		// Adiciona o cliente ao mapa de clientes
 		clients[c] = true
-	
-		// Fechar a conexão e remover o cliente do mapa ao encerrar
+
+		// Fecha a conexão e remove o cliente do mapa ao encerrar
 		defer func() {
 			delete(clients, c)
 			c.Close()
 		}()
-	
+
 		for {
 			_, msg, err := c.ReadMessage()
 			if err != nil {
 				log.Println("Erro ao ler mensagem:", err)
 				break
 			}
-	
-			// Analisar a mensagem WebSocket
+
+			// Parse da mensagem WebSocket
 			var wsMsg WebSocketMessage
 			if err := json.Unmarshal(msg, &wsMsg); err != nil {
-				log.Println("Erro ao fazer unmarshal da mensagem:", err)
+				log.Println("Erro ao fazer o unmarshal da mensagem:", err)
 				continue
 			}
-	
-			// Adicionar ou atualizar o cliente com o seu nome de usuário no mapa de clientes
+
+			// Adiciona ou atualiza o cliente com o seu username no mapa de clientes
 			clients[c] = true
-	
-			fmt.Println("SEGUNDO", string(msg))
-			// Enviar a mensagem para todos os clientes WebSocket, exceto o cliente atual
+
+			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
 			for client := range clients {
 				if client != c {
 					err := client.WriteMessage(websocket.TextMessage, msg)
 					if err != nil {
 						log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-						delete(clients, client) // Remover o cliente do mapa se houver um erro
+						delete(clients, client) // Remove o cliente do mapa se houver um erro
 						continue
 					}
 					fmt.Println(string(msg))
 				}
 			}
 		}
+		
 	}))
-
+	
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 
 	// Inicia o servidor
 	app.Listen(":8080")
+
+	
 }
+
+

@@ -18,7 +18,6 @@ function UploadFile({ id }) {
           },
           body: JSON.stringify({
             type:"receiver",
-            label: "image",
             username: userData.user,
             roomname: userData.chatroomName,
             message: fileContent,
