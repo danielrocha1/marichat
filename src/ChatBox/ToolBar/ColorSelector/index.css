@@ -1,0 +1,54 @@
+/* styles.css */
+.modal-overlay {
+  
+    position: fixed;
+    top: 299px;
+    left: 890px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .modal-content {
+    border: 9px double rgb(188, 81, 0);
+    background-color: rgb(198, 163, 119);
+    padding: 20px;
+    border-radius: 5px;
+    max-height: 130px;
+    box-shadow: 0 7px 24px rgba(0, 0, 0, 1.2);
+    overflow-y: auto;
+  }
+
+  .hex-color-picker-container {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
+  }
+  
+  
+  .color-options {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .color-option {
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .selected-color {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .color-option.selected {
+    border: 3px groove rgb(112, 181, 221);
+  }
+  

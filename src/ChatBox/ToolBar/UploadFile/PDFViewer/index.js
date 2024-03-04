@@ -39,9 +39,6 @@ function PDFViewer({ Message, Hour }) {
   const timestamp = new Date(Hour);
   const hora = format(timestamp, 'HH:mm');
 
-  const toggleExpansion = () => {
-    setExpanded(!expanded);
-  };
 
   const openPDFInNewTab = () => {
     window.open(pdfUrl, '_blank');
@@ -69,7 +66,7 @@ function PDFViewer({ Message, Hour }) {
         />
       </div>
       <p style={{ fontSize: '14px', textAlign: 'right', fontWeight: 'bold', margin: '0' }}>{hora}</p>
-      <button style={{ fontSize: '12px', marginTop: '5px' }} onClick={expanded ? toggleExpansion : openPDFInNewTab}>
+      <button style={{ fontSize: '12px', marginTop: '5px' }} onClick={expanded ? 'toggleExpansion' : openPDFInNewTab}>
         {expanded ? 'Fechar arquivo' : 'Abrir arquivo'}
       </button>
     </div>

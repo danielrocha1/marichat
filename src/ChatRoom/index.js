@@ -16,7 +16,7 @@ function ReceiverMessage(props) {
   const timestamp = new Date(props.Hour);
   const hora = format(timestamp, 'HH:mm');
   return (
-    <div className="receiverMessage">
+    <div className="receiverMessage" >
       <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{props.Name}:</p>
       {props.Message}
       <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
@@ -28,7 +28,7 @@ function SenderMessage(props) {
   const timestamp = new Date();
   const hora = format(timestamp, 'HH:mm');
   return (
-    <div className="">
+    <div className="senderMessage">
       {props.Message}
       <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
     </div>
@@ -36,9 +36,16 @@ function SenderMessage(props) {
 }
 
 function ChatRoom({ children }) {
+  const [messages, setMessages] = useState([]); // Estado para armazenar as mensagens
+
   const { userData } = useContext(ChatContext);
   const [userTypingStatus, setUserTypingStatus] = useState({}); // Estado para armazenar o status de digitação de cada usuário
   const [users, setUsers] = useState([]);
+  const [colors, setColors] = useState({
+    chatBox: '#7d3e5d', // Cor primária
+    background: 'linear-gradient(to bottom, #482436, #000000)',
+    border:"white", // Gradiente linear para o plano de fundo
+  });
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -81,42 +88,32 @@ function ChatRoom({ children }) {
 
       if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.Chatroom === userData.chatroomName ) {
         console.log("TEST",message.ChatRoom === userData.chatroomName)
+        const Message = (<ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />)
+        // chatScreen.appendChild(tempElement);
 
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        
-        createRoot(tempElement).render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />);
-        chatScreen.appendChild(tempElement);
+        setMessages(prevMessages => [...prevMessages, Message]);
       }
 
       if (message.Type === 'receiver' && message.Name === userData.user && !message.upload) {
-        console.log(message, "MENSAGEM PORRA")
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'senderMessage';
-        createRoot(tempElement).render(<SenderMessage Message={newMessage} />);
-        chatScreen.appendChild(tempElement);
+        console.log(message, "MENSAGEM PORRA")     
+        const Message = (<SenderMessage Message={message.Message} />);
+        
+        console.log(Message)
+        setMessages(prevMessages => [...prevMessages, Message]);
       }
 
       if (message.Type === 'receiver' && message.Name === userData.user && message.upload === true ) {
         if(message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ){
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'senderMessage';
-        createRoot(tempElement).render(<SenderImage imageData={newMessage}  Hour={message.Timestamp}/>);
-        chatScreen.appendChild(tempElement);
+        const Message = (<SenderImage imageData={message.Message}  Hour={message.Timestamp}/>);
+
+
+        setMessages(prevMessages => [...prevMessages, Message]);
       }else if (message.Label === 'application/pdf' ){
       console.log("usuario mandou um pdf")
-      const newMessage = message.Message;
-      const chatScreen = document.querySelector(".chatScreen");
-      const tempElement = document.createElement('div');
-      tempElement.className = 'senderMessage';
-      createRoot(tempElement).render(<PDFViewer Name={message.Name} Message={newMessage}  Hour={message.Timestamp}/>);
-      chatScreen.appendChild(tempElement);
+      const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message}  Hour={message.Timestamp}/></div>);
+    
 
+      setMessages(prevMessages => [...prevMessages, Message]);
     }
   }
 
@@ -124,19 +121,11 @@ function ChatRoom({ children }) {
     if (message.Type === 'receiver' && message.Name !== userData.user && message.upload === true && message.Chatroom === userData.chatroomName ) {
       if(message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ){
         console.log("AQUI CARAIO")
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'receiverMessage';
-        createRoot(tempElement).render(<ReceiverImage Name={message.Name} imageData={newMessage}  Hour={message.Timestamp}/>);
-        chatScreen.appendChild(tempElement);
+        const Message = (<ReceiverImage Name={message.Name} imageData={message.Message}  Hour={message.Timestamp}/>);
+        setMessages(prevMessages => [...prevMessages, Message]);
       }else if (message.Label === 'application/pdf' ){
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'receiverMessage';
-        createRoot(tempElement).render(<PDFViewer Name={message.Name} Message={newMessage}  Hour={message.Timestamp}/>);
-        chatScreen.appendChild(tempElement);
+        const Message = (<div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message}  Hour={message.Timestamp}/></div>);
+        setMessages(prevMessages => [...prevMessages, Message]);
 
       }
     }
@@ -155,11 +144,11 @@ function ChatRoom({ children }) {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="Box">
-          <div className="flexBox">
-            <div className="columnFlexBox">
-              <div style={{borderBottom:"1px solid white", borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+      <header className="App-header" style={{ background: colors.background }} >
+        <div className="Box"  style={{backgroundColor:colors.chatBox, borderColor:colors.border }}>
+          <div className="flexBox" >
+            <div className="columnFlexBox" >
+              <div style={{borderBottom:colors.border, borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain'}}>
                 <ul>
                   {users.map((user) => (
                     user === userData.user ? null : (
@@ -173,9 +162,9 @@ function ChatRoom({ children }) {
                   ))}
                 </ul>
               </div>
-              <HostInfo name={userData.user} />
+              <HostInfo name={userData.user} theme={colors.border}/>
             </div>
-            <ChatBox />
+            <ChatBox messages={messages} theme={colors} setColors={setColors} />
           </div>
         </div>
       </header>

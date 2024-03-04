@@ -25,7 +25,7 @@
   
   .Box {
   border: 2px;
-  background-color: #7d3e5d;
+  background-color: #482436;
   border-radius: 17px;
   border: 1px outset #ffffff;  
     
@@ -43,6 +43,17 @@
     align-self: flex-end; /* Adicionando esta linha para alinhar à direita */
   }
   
+  .senderImage {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 10px;
+    padding-top: 0px;
+    margin-bottom: 10px;
+    max-width: 50%;
+    width: max-content;
+    align-self: flex-end; /* Adicionando esta linha para alinhar à direita */
+  }
+
   .receiverMessage {
     background-color: #dda6a6;
     color: #000;

@@ -88,7 +88,7 @@ function TextInput({showEmoji, text, setText}) {
         onChange={handleChange}
         onKeyDown={handleKeyPress}
         placeholder="Digite aqui..."
-        style={{ marginRight: '10px', fontSize:"24px" }}
+        style={{ marginRight: '10px', fontSize:"24px", backgroundColor:"#b8cad4"}}
       />
       <div className="submitButton" onClick={handleSendMessage}>
         <span role="img" aria-label="Enviar">➡️</span>

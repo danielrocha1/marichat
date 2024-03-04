@@ -1,8 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import ChatContext from '../../../ChatContext';
 
 function UploadFile({ id }) {
   const { userData } = useContext(ChatContext);
+  const [uploadStatus, setUploadStatus] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
@@ -10,7 +12,6 @@ function UploadFile({ id }) {
     if (file) {
       try {
         const fileContent = await readFileAsDataURL(file);
-
         const response = await fetch('http://localhost:8080/upload', {
           method: 'POST',
           headers: {
@@ -28,8 +29,13 @@ function UploadFile({ id }) {
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
+
+        setUploadStatus('Arquivo enviado com sucesso!');
+        // Limpar o valor do input de arquivo
+        fileInputRef.current.value = '';
       } catch (error) {
         console.error('Erro ao enviar arquivo:', error);
+        setUploadStatus('Erro ao enviar o arquivo. Por favor, tente novamente.');
       }
     }
   };
@@ -51,13 +57,17 @@ function UploadFile({ id }) {
   };
 
   return (
-    <input
-      id={id}
-      type="file"
-      accept="image/*, .pdf" // Aceita imagens e arquivos PDF
-      onChange={handleUpload}
-      style={{ display: 'none' }} // Esconde o input
-    />
+    <div>
+      <input
+        ref={fileInputRef}
+        id={id}
+        type="file"
+        accept="image/*, .pdf" // Aceita imagens e arquivos PDF
+        onChange={handleUpload}
+        style={{ display: 'none' }} // Esconde o input
+      />
+      
+    </div>
   );
 }
 
