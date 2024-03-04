@@ -3,6 +3,7 @@ import { Smile, Paperclip, Edit2, Camera, Mic } from 'react-feather';
 import Picker from '@emoji-mart/react';
 import UploadFile from './UploadFile'; // Importe o componente UploadFile
 <<<<<<< HEAD
+<<<<<<< HEAD
 import ColorSelector from './ColorSelector';
 import './index.css';
 
@@ -12,6 +13,12 @@ import './index.css';
 
 function Toolbar({ setShowEmoji, setText }) {
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+import ColorSelector from './ColorSelector';
+import './index.css';
+
+function Toolbar({ setShowEmoji, setText, theme, setColors}) {
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleEmojiClick = () => {
@@ -22,6 +29,9 @@ function Toolbar({ setShowEmoji, setText }) {
     console.log('Emoji selecionado:', event.native);
     setText((prevText) => prevText + event.native);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
     // setShowEmojiPicker(false);
   };
 
@@ -58,6 +68,7 @@ function Toolbar({ setShowEmoji, setText }) {
       }));  
     }
     
+<<<<<<< HEAD
   };
 
   return (
@@ -66,10 +77,12 @@ function Toolbar({ setShowEmoji, setText }) {
         <Smile />
 =======
     setShowEmojiPicker(false);
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   };
 
   return (
-    <div className="toolbar">
+    <div className="toolbar" style={{color:theme.border}}>
       <div className="icon" onClick={handleEmojiClick}>
         <Smile />
       </div>
@@ -82,6 +95,7 @@ function Toolbar({ setShowEmoji, setText }) {
             title="Pick your emoji…"
             emoji="point_up"
             showSkinTones={false}
+            style={{ maxWidth: '100%', border: '10px solid #ccc', borderRadius: '5px' }}
           />
         </div>
       )}
@@ -92,6 +106,7 @@ function Toolbar({ setShowEmoji, setText }) {
       {/* Renderize o componente UploadFile */}
       <UploadFile id="file-upload" setText={setText} />
       <div className="icon">
+<<<<<<< HEAD
         <Edit2 />
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
       </div>
@@ -124,6 +139,10 @@ function Toolbar({ setShowEmoji, setText }) {
       <div className="icon">
         <Mic />
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+        <Edit2 onClick={handleOpenModal} />
+      <ColorSelector isOpen={isModalOpen} onClose={handleCloseModal} onSelectColor={handleSelectColor} />
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
       </div>
     </div>
   );

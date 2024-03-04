@@ -55,7 +55,7 @@ function ReceiverMessage(props) {
 =======
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
   return (
-    <div className="receiverMessage">
+    <div className="receiverMessage" >
       <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{props.Name}:</p>
       {props.Message}
 <<<<<<< HEAD
@@ -94,12 +94,17 @@ function SenderMessage(props) {
 
 function ChatRoom({ children }) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [messages, setMessages] = useState([]); // Estado para armazenar as mensagens
 
   const navigate = useNavigate();
 
   const { userData, setUserData } = useContext(ChatContext);
 =======
+=======
+  const [messages, setMessages] = useState([]); // Estado para armazenar as mensagens
+
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   const { userData } = useContext(ChatContext);
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
   const [userTypingStatus, setUserTypingStatus] = useState({}); // Estado para armazenar o status de digitação de cada usuário
@@ -245,7 +250,10 @@ function ChatRoom({ children }) {
       if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.Chatroom === userData.chatroomName ) {
 >>>>>>> e981b78 (enviando arquivos pdf e imagens)
         console.log("TEST",message.ChatRoom === userData.chatroomName)
+        const Message = (<ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />)
+        // chatScreen.appendChild(tempElement);
 
+<<<<<<< HEAD
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
         const newMessage = message.Message;
         const chatScreen = document.querySelector(".chatScreen");
@@ -254,35 +262,31 @@ function ChatRoom({ children }) {
         createRoot(tempElement).render(<ReceiverMessage Name={message.Name} Message={newMessage} Hour={message.Timestamp} />);
         chatScreen.appendChild(tempElement);
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+=======
+        setMessages(prevMessages => [...prevMessages, Message]);
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
       }
 
       if (message.Type === 'receiver' && message.Name === userData.user && !message.upload) {
-        console.log(message, "MENSAGEM PORRA")
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'senderMessage';
-        createRoot(tempElement).render(<SenderMessage Message={newMessage} />);
-        chatScreen.appendChild(tempElement);
+        console.log(message, "MENSAGEM PORRA")     
+        const Message = (<SenderMessage Message={message.Message} />);
+        
+        console.log(Message)
+        setMessages(prevMessages => [...prevMessages, Message]);
       }
 
       if (message.Type === 'receiver' && message.Name === userData.user && message.upload === true ) {
         if(message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ){
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'senderMessage';
-        createRoot(tempElement).render(<SenderImage imageData={newMessage}  Hour={message.Timestamp}/>);
-        chatScreen.appendChild(tempElement);
+        const Message = (<SenderImage imageData={message.Message}  Hour={message.Timestamp}/>);
+
+
+        setMessages(prevMessages => [...prevMessages, Message]);
       }else if (message.Label === 'application/pdf' ){
       console.log("usuario mandou um pdf")
-      const newMessage = message.Message;
-      const chatScreen = document.querySelector(".chatScreen");
-      const tempElement = document.createElement('div');
-      tempElement.className = 'senderMessage';
-      createRoot(tempElement).render(<PDFViewer Name={message.Name} Message={newMessage}  Hour={message.Timestamp}/>);
-      chatScreen.appendChild(tempElement);
+      const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message}  Hour={message.Timestamp}/></div>);
+    
 
+      setMessages(prevMessages => [...prevMessages, Message]);
     }
   }
 
@@ -290,19 +294,11 @@ function ChatRoom({ children }) {
     if (message.Type === 'receiver' && message.Name !== userData.user && message.upload === true && message.Chatroom === userData.chatroomName ) {
       if(message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ){
         console.log("AQUI CARAIO")
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'receiverMessage';
-        createRoot(tempElement).render(<ReceiverImage Name={message.Name} imageData={newMessage}  Hour={message.Timestamp}/>);
-        chatScreen.appendChild(tempElement);
+        const Message = (<ReceiverImage Name={message.Name} imageData={message.Message}  Hour={message.Timestamp}/>);
+        setMessages(prevMessages => [...prevMessages, Message]);
       }else if (message.Label === 'application/pdf' ){
-        const newMessage = message.Message;
-        const chatScreen = document.querySelector(".chatScreen");
-        const tempElement = document.createElement('div');
-        tempElement.className = 'receiverMessage';
-        createRoot(tempElement).render(<PDFViewer Name={message.Name} Message={newMessage}  Hour={message.Timestamp}/>);
-        chatScreen.appendChild(tempElement);
+        const Message = (<div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message}  Hour={message.Timestamp}/></div>);
+        setMessages(prevMessages => [...prevMessages, Message]);
 
       }
     }
@@ -344,15 +340,20 @@ function ChatRoom({ children }) {
   return (
     <div className="App">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <header className="App-header" style={{ background: colors.background }} >
       <div>
         <chatroom style={{marginLeft:"710px" }} >  {userData.chatroomName} </chatroom>
         <FaSignOutAlt size={24} color={"white"} style={{marginLeft:"15px", cursor:"pointer" }} onClick={() => kickUser()} />
       </div>
+=======
+      <header className="App-header" style={{ background: colors.background }} >
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
         <div className="Box"  style={{backgroundColor:colors.chatBox, borderColor:colors.border }}>
           <div className="flexBox" >
             <div className="columnFlexBox" >
               <div style={{borderBottom:colors.border, borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain'}}>
+<<<<<<< HEAD
               <ul>
               {users.map((user) => (
               user === userData.user ? null : (
@@ -374,6 +375,8 @@ function ChatRoom({ children }) {
           <div className="flexBox">
             <div className="columnFlexBox">
               <div style={{borderBottom:"1px solid white", borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
                 <ul>
                   {users.map((user) => (
                     user === userData.user ? null : (
@@ -387,8 +390,9 @@ function ChatRoom({ children }) {
                   ))}
                 </ul>
               </div>
-              <HostInfo name={userData.user} />
+              <HostInfo name={userData.user} theme={colors.border}/>
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
               <HostInfo name={userData.user}/>
               
@@ -398,6 +402,9 @@ function ChatRoom({ children }) {
 =======
             <ChatBox />
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+=======
+            <ChatBox messages={messages} theme={colors} setColors={setColors} />
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
           </div>
         </div>
       </header>

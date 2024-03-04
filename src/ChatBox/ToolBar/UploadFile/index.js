@@ -1,17 +1,26 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useContext, useState, useRef } from 'react';
 =======
 import React, { useContext } from 'react';
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+import React, { useContext, useState, useRef } from 'react';
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
 import ChatContext from '../../../ChatContext';
 
 function UploadFile({ id }) {
   const { userData } = useContext(ChatContext);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [uploadStatus, setUploadStatus] = useState(null);
   const fileInputRef = useRef(null);
 =======
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+  const [uploadStatus, setUploadStatus] = useState(null);
+  const fileInputRef = useRef(null);
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
@@ -20,9 +29,12 @@ function UploadFile({ id }) {
       try {
         const fileContent = await readFileAsDataURL(file);
 <<<<<<< HEAD
+<<<<<<< HEAD
         const response = await fetch('https://marichat-go.onrender.com/upload', {
 =======
 
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
         const response = await fetch('http://localhost:8080/upload', {
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
           method: 'POST',
@@ -49,6 +61,9 @@ function UploadFile({ id }) {
           throw new Error('Erro ao enviar os dados');
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
 
         setUploadStatus('Arquivo enviado com sucesso!');
         // Limpar o valor do input de arquivo
@@ -56,10 +71,13 @@ function UploadFile({ id }) {
       } catch (error) {
         console.error('Erro ao enviar arquivo:', error);
         setUploadStatus('Erro ao enviar o arquivo. Por favor, tente novamente.');
+<<<<<<< HEAD
 =======
       } catch (error) {
         console.error('Erro ao enviar arquivo:', error);
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
       }
     }
   };
@@ -82,6 +100,9 @@ function UploadFile({ id }) {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
     <div>
       <input
         ref={fileInputRef}
@@ -93,6 +114,7 @@ function UploadFile({ id }) {
       />
       
     </div>
+<<<<<<< HEAD
 =======
     <input
       id={id}
@@ -102,6 +124,8 @@ function UploadFile({ id }) {
       style={{ display: 'none' }} // Esconde o input
     />
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   );
 }
 

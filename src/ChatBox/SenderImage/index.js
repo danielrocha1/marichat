@@ -1,8 +1,12 @@
 import React from 'react';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import ReactDOM from 'react-dom';
 =======
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+import ReactDOM from 'react-dom';
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
 import { format } from 'date-fns';
 
 class SenderImage extends React.Component {
@@ -10,11 +14,16 @@ class SenderImage extends React.Component {
     super(props);
     this.state = {
 <<<<<<< HEAD
+<<<<<<< HEAD
       imageData: null,
       expanded: false  // Estado para controlar a expansão
 =======
       imageData: null
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+      imageData: null,
+      expanded: false  // Estado para controlar a expansão
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
     };
   }
 
@@ -49,6 +58,9 @@ class SenderImage extends React.Component {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   toggleExpanded = (event) => {
     event.preventDefault(); // Evitar o comportamento padrão do link
     this.setState(prevState => ({
@@ -93,12 +105,16 @@ class SenderImage extends React.Component {
     );
   }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   render() {
     const timestamp = new Date(this.props.Hour);
     const hora = format(timestamp, 'HH:mm');
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     const { expanded } = this.state;
 
@@ -123,6 +139,20 @@ class SenderImage extends React.Component {
         <img src={imageData.data} alt={this.props.imageName} style={{ width: '80%' }} />
         <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+    const { expanded } = this.state;
+
+    return (
+      <div className='senderImage' style={{ position: 'relative' }}>
+        <img
+          src={this.props.imageData} 
+          alt={this.props.imageName} 
+          style={{ width: '80%', cursor: 'pointer' }}
+          onClick={this.toggleExpanded}
+        />
+        {expanded && ReactDOM.createPortal(this.renderExpandedImage(), document.getElementById('chatScreen'))}
+        <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px'}}>{hora}</p>
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
       </div>
     );
   }

@@ -169,10 +169,14 @@ function TextInput({showEmoji, text, setText}) {
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
         placeholder="Digite aqui..."
 <<<<<<< HEAD
+<<<<<<< HEAD
         style={{ marginRight: '10px', fontSize:"24px", backgroundColor:"#b8cad4"}}
 =======
         style={{ marginRight: '10px', fontSize:"24px" }}
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+        style={{ marginRight: '10px', fontSize:"24px", backgroundColor:"#b8cad4"}}
+>>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
       />
       <div className="submitButton" onClick={handleSendMessage}>
         <span role="img" aria-label="Enviar">➡️</span>
