@@ -49,7 +49,7 @@ function TextInput({showEmoji, text, setText}) {
     // e.preventDefault();
 
     try {
-      const response = await fetch('http://marichat-go.onrender.com/sender', {
+      const response = await fetch('https://marichat-go.onrender.com/sender', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
