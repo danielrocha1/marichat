@@ -50,7 +50,7 @@ function ChatRoom({ children }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('https://marichat-go.onrender.com/listusers', {
+        const response = await fetch('http://marichat-go.onrender.com/listusers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function ChatRoom({ children }) {
 
     fetchUsers();
 
-    const socket = new WebSocket('ws://marichat-go.onrender.com/websocket');
+    const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
     socket.onmessage = (event) => {
       
       const message = JSON.parse(event.data);
