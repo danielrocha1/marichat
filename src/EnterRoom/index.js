@@ -14,7 +14,7 @@ function EnterRoom() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://marichat-go.onrender.com/adduser', {
+      const response = await fetch('http://marichat-go.onrender.com/adduser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
