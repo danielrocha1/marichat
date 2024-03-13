@@ -1,0 +1,76 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px;
+  margin-top: 5px;
+  width: 550px;
+  margin-left: 60px;
+
+}
+
+
+input {
+  font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "Android Emoji";
+}
+  
+  .icon {
+    margin-left: 12px;
+    margin-right: 125px;
+    cursor: pointer;
+    font-size: 1px;
+  }
+
+  p{
+    font-size: 9px;
+  }
+  
+  .icon:last-child {
+    margin-right: 0px;
+  }
+  
+
+
+
+
+/* Estilos para telas pequenas */
+@media (max-width: 768px) {
+  .icon {
+    margin-left: 12px;
+    margin-right: 12px;
+    cursor: pointer;
+    font-size: 1px;
+  }
+
+}
+
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .icon {
+    margin-left: 12px;
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 1px;
+  }
+
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .icon {
+    margin-left: 12px;
+    margin-right: 125px;
+    cursor: pointer;
+    font-size: 1px;
+  }
+
+}
+
+.emoji-picker-container {
+
+  position: absolute;
+  top: 0px; /* Ajuste conforme necessário */
+  margin-left: 60px;
+   z-index: 999; /* Certifique-se de que o z-index seja maior do que o restante do conteúdo */
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(196, 194, 191, 0.1);
+}

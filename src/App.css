@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+}
+
+.nameHost {
+  font-weight: 700;
+}
+
+.Box {
+  
+  
+  
+  
+}
+
+.flexBox {
+  display: flex;
+  justify-content: center; /* Alinha os itens ao centro */
+
+}
+
+.columnFlexBox {
+  display: flex;
+  flex-direction: column; /* Coloca os itens um embaixo do outro */
+  
+}
+
+.ChatBox {
+  margin-left: 0px; /* Adapte conforme necessário para a distância desejada */
+}
