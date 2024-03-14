@@ -10,28 +10,19 @@
   flex-direction: column;
 }
 
-
 .chatScreen {
   border: 2px outset #442424;
   border-radius: 15px;
-
   width: 700px;
   height: 400px;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  background-image: url('../Image/txture.jpg');
-=======
-  background-image: url('/home/warlord/Downloads/txture.jpg');
->>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
-=======
-  background-image: url('../Image/txture.jpg');
->>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
+  background-image: url('../Image/txture.jpg'); /* Escolha a imagem que deseja usar */
   background-color: rgb(255, 255, 255);
   overflow-y: auto;
   display: flex;
   padding: 15px;
   flex-direction: column;
 }
+
 
 
 .menu {

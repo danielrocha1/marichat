@@ -1,12 +1,12 @@
 /* Estilo padrão do elemento .kick */
-.kick{
+.kick {
   display: none; /* Inicialmente, esconde o elemento */
   width: 15px;
   height: 80px;
   border-radius: 5px 0px 0px 5px;
   margin-top: 8px;
   background-color: red;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 /* Quando .guestBox estiver em estado de hover, mostra o elemento .kick */
@@ -19,7 +19,7 @@
   background-color: rgb(145, 3, 3);
 }
 
-/* Restante do seu estilo .guestBox */
+/* Estilo dos elementos .guestBox */
 .guestBox {
   display: flex;
   flex-direction: row;
@@ -33,7 +33,6 @@
   background-color: #6d2082;
 }
 
-
 .guestPhoto {
   height: 12vmin;
   pointer-events: none;
@@ -44,51 +43,9 @@
   margin-left: 15px;
   margin-right: 10px;
   margin-top: 20px;
-<<<<<<< HEAD
-=======
-  
-<<<<<<< HEAD
->>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
-  
 }
 
-<<<<<<< HEAD
-=======
-.guestBox {
-  
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-size: calc(5px + 2vmin);
-  margin-right: 10px;
-  border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
-  border-radius: 8px; /* Adiciona bordas arredondadas */
-  padding: 1px; /* Adiciona espaço interno à caixa */
-  width: 140px ;
-  background-color: #6d2082;
-
-}
-
-
->>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
-=======
-}
-
->>>>>>> 4d3b67d (commit)
 .App-header {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  /* background: linear-gradient(to bottom, #590f80, #000000); */
-=======
-  background: linear-gradient(to bottom, #590f80, #000000);
->>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
-=======
-  /* background: linear-gradient(to bottom, #590f80, #000000); */
->>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
-
-
-
-
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -99,25 +56,21 @@
 }
 
 @media (max-width: 768px) {
-  .guestName{
+  .guestName {
     font-size: 14px;
   }
+}
 
-}  
 /* Estilos para telas médias */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .guestName{
+  .guestName {
     font-size: 12px;
   }
- 
-
 }
 
 /* Estilos para telas grandes */
 @media (min-width: 1025px) {
-  .guestName{
-    
+  .guestName {
     font-size: 13px;
   }
-
 }

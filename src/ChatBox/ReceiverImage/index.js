@@ -49,15 +49,7 @@ class ReceiverImage extends React.Component {
     }
     // Renderizar a imagem
     return (
-<<<<<<< HEAD
-<<<<<<< HEAD
       <div className='receiverMessage'>
-=======
-      <div>
->>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
-=======
-      <div className='receiverMessage'>
->>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
       <p style={{ fontSize: '15px', textAlign: 'left', fontWeight: 'bold' }}>{this.props.Name}:</p>
         <img src={imageData.data} alt={this.props.imageName} style={{ width: '100%' }} />
         <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold' }}>{hora}</p>
