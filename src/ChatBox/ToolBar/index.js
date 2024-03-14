@@ -66,7 +66,7 @@ function Toolbar({ setShowEmoji, setText, theme, setColors}) {
             emojiSize={24}
             title="Pick your emoji…"
             emoji="point_up"
-            showSkinTones={false}
+            showsskinTones={false}
             style={{ maxWidth: '100%', border: '10px solid #ccc', borderRadius: '5px' }}
           />
         </div>

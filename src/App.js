@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChatRoom from './ChatRoom';
 import EnterRoom from './EnterRoom';
+
+import OfflineChat from './OfflineChat';
+
 import ChatContext from './ChatContext';
 
 function App() {
@@ -15,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<EnterRoom />} />
             <Route path="/chatroom" element={<ChatRoom />} />
+            <Route path="/offline" element={<OfflineChat />} />
           </Routes>
         </ChatContext.Provider>
       </div>

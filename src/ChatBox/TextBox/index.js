@@ -8,7 +8,7 @@ function TextInput({showEmoji, text, setText}) {
   const { userData } = useContext(ChatContext);
 
   const sendTypingStatus = (isTyping) => {
-    const socket = new WebSocket('ws://localhost:8080/websocket');
+    const socket = new WebSocket('wss://localhost:8080/websocket');
 
     socket.onopen = () => {
       console.log('Conexão WebSocket aberta');
@@ -49,7 +49,7 @@ function TextInput({showEmoji, text, setText}) {
     // e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/sender', {
+      const response = await fetch('https://marichat-go.onrender.com/sender', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

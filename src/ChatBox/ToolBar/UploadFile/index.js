@@ -12,7 +12,7 @@ function UploadFile({ id }) {
     if (file) {
       try {
         const fileContent = await readFileAsDataURL(file);
-        const response = await fetch('http://localhost:8080/upload', {
+        const response = await fetch('https://marichat-go.onrender.com/upload', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

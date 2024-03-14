@@ -1,5 +1,6 @@
 
 import logo from  './avataaars.png';
+import logo2 from '../GuestInfo/guestAvatar.png';
 import './index.css'
 
 function HostInfo(props) {
@@ -7,7 +8,7 @@ function HostInfo(props) {
     <div className="hostBox" style={{borderColor:`${props.theme}`}}>
       
       <p className='nameHost'>{props.name}</p>
-        <img src={logo} className="hostPhoto" alt="logo" />  
+        {props.name === "Daniel" ? <img src={logo} className="hostPhoto" alt="logo" /> : <img src={logo2} className="hostPhoto" alt="logo" /> } 
         
         
       

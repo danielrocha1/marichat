@@ -8,11 +8,9 @@ import (
 	"io"
 	"io/ioutil"
 
-
 	"log"
 	"strings"
 	"time"
-
 
 	"net/http"
 	"bytes"
@@ -144,6 +142,59 @@ func main() {
 
 		return nil // retorno nil para indicar sucesso na resposta
 	})
+
+	app.Post("/kickUser", func(c *fiber.Ctx) error {
+		// Parse dos dados do corpo da requisição
+		var requestData struct {
+			Username string `json:"username"`
+			RoomName string `json:"roomname"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
+	
+		// Verifica se a sala de bate-papo existe
+		chatroom, exists := chatrooms[requestData.RoomName]
+		if !exists {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Chatroom not found",
+			})
+		}
+	
+		// Remove o usuário da sala de bate-papo
+		var updatedUsers []string
+		for _, user := range chatroom.Users {
+			if user != requestData.Username {
+				updatedUsers = append(updatedUsers, user)
+			}
+		}
+		chatroom.Users = updatedUsers
+	
+		// Envia uma mensagem informando aos clientes WebSocket sobre a remoção do usuário
+		userJSON, err := json.Marshal(map[string]interface{}{
+			"type":     "removeUser",
+			"user":     requestData.Username,
+			"chatRoom": requestData.RoomName,
+		})
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to serialize user data",
+			})
+		}
+		for client := range clients {
+			err := client.WriteMessage(websocket.TextMessage, userJSON)
+			if err != nil {
+				log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+				continue
+			}
+		}
+	
+		// Retorna uma resposta indicando sucesso
+		return c.SendStatus(fiber.StatusOK)
+	})
+	
 
 	app.Post("/sender", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
@@ -345,17 +396,24 @@ func main() {
 			clients[c] = true
 
 			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
-			for client := range clients {
-				if client != c {
-					err := client.WriteMessage(websocket.TextMessage, msg)
-					if err != nil {
-						log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-						delete(clients, client) // Remove o cliente do mapa se houver um erro
-						continue
-					}
-					fmt.Println(string(msg))
-				}
-			}
+		for client := range clients {
+		// Verifica se o cliente está presente no mapa de clientes
+		if _, ok := clients[client]; !ok {
+			// Se o cliente não estiver presente, registre um erro e pule para o próximo cliente
+			log.Println("Cliente não autorizado tentando enviar mensagem.")
+			continue
+		}
+
+		// Envia a mensagem para o cliente WebSocket
+		err := client.WriteMessage(websocket.TextMessage, msg)
+		if err != nil {
+			log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+			delete(clients, client) // Remove o cliente do mapa se houver um erro
+			continue
+		}
+		fmt.Println(string(msg))
+		}
+
 		}
 		
 	}))

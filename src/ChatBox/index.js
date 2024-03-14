@@ -40,8 +40,7 @@ function ChatBox({ messages, theme, color,  setColors }) {
       </div>*/}
       <Toolbar setShowEmoji={setShowEmoji} setText={setText} theme={theme} setColors={setColors} />
       <TextInput showEmoji={showEmoji} text={text} setText={setText} />
-      {/* Adicione um evento de clique ao botão */}
-      {/* <button onClick={handleButtonClick}>Change Color to Blue</button> */}
+
     </div>
   );
 }

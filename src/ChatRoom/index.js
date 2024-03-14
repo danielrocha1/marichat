@@ -4,6 +4,11 @@ import ChatContext from '../ChatContext';
 import HostInfo from '../HostInfo';
 import GuestInfo from '../GuestInfo';
 import ChatBox from '../ChatBox';
+
+import { FaSignOutAlt } from 'react-icons/fa';
+
+import { useNavigate } from 'react-router-dom';
+
 import { createRoot } from 'react-dom/client'; // Importe createRoot corretamente
 import { format } from 'date-fns';
 
@@ -38,7 +43,9 @@ function SenderMessage(props) {
 function ChatRoom({ children }) {
   const [messages, setMessages] = useState([]); // Estado para armazenar as mensagens
 
-  const { userData } = useContext(ChatContext);
+  const navigate = useNavigate();
+
+  const { userData, setUserData } = useContext(ChatContext);
   const [userTypingStatus, setUserTypingStatus] = useState({}); // Estado para armazenar o status de digitação de cada usuário
   const [users, setUsers] = useState([]);
   const [colors, setColors] = useState({
@@ -50,7 +57,7 @@ function ChatRoom({ children }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/listusers', {
+        const response = await fetch('https://marichat-go.onrender.com/listusers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,18 +78,29 @@ function ChatRoom({ children }) {
 
     fetchUsers();
 
-    const socket = new WebSocket('ws://localhost:8080/websocket');
+    const socket = new WebSocket('wss://localhost:8080/websocket');
     socket.onmessage = (event) => {
       
       const message = JSON.parse(event.data);
-      const tempElement = document.createElement('div');
-      const userElement = document.getElementById(message.user);
-      console.log("TESTASYDvgsyv",message, userData)
 
 
       if (message.type === 'newUser' ) {
         if (message.chatRoom === userData.chatroomName){
           setUsers((prevUsers) => [...prevUsers, message.user]);
+        }
+      }
+
+      if (message.type === 'removeUser') {
+        if (message.chatRoom === userData.chatroomName) {
+          
+              setUsers(prevUsers => {
+                const updatedUsers = prevUsers.filter(user => user !== message.user);
+                return updatedUsers;
+            });
+          if( userData.user === message.user){
+            navigate(`/offline`);
+            setUserData(null)
+        }
         }
       }
 
@@ -142,25 +160,52 @@ function ChatRoom({ children }) {
     };
   }, []);
 
+
+  const kickUser = async () => {
+    try {
+      const response = await fetch('https://marichat-go.onrender.com/kickUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          "username": userData.user,
+          "roomname": userData.chatroomName,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header" style={{ background: colors.background }} >
+      <div>
+        <chatroom style={{marginLeft:"710px" }} >  {userData.chatroomName} </chatroom>
+        <FaSignOutAlt size={24} color={"white"} style={{marginLeft:"15px", cursor:"pointer" }} onClick={() => kickUser()} />
+      </div>
         <div className="Box"  style={{backgroundColor:colors.chatBox, borderColor:colors.border }}>
           <div className="flexBox" >
             <div className="columnFlexBox" >
               <div style={{borderBottom:colors.border, borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain'}}>
-                <ul>
-                  {users.map((user) => (
-                    user === userData.user ? null : (
-                      <GuestInfo
-                        isTyping={userTypingStatus[user]} // Passa o estado de digitação do usuário
-                        id={user}
-                        key={user}
-                        name={user}
-                      />
-                    )
-                  ))}
-                </ul>
+              <ul>
+              {users.map((user) => (
+              user === userData.user ? null : (
+              <GuestInfo
+                isTyping={userTypingStatus[user]} // Passa o estado de digitação do usuário
+                id={user}
+                key={user}
+                name={user}
+                roomname={userData.chatroomName}
+              />
+              )
+              ))}
+              </ul>
               </div>
               <HostInfo name={userData.user} theme={colors.border}/>
             </div>

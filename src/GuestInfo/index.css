@@ -1,3 +1,37 @@
+/* Estilo padrão do elemento .kick */
+.kick{
+  display: none; /* Inicialmente, esconde o elemento */
+  width: 15px;
+  height: 80px;
+  border-radius: 5px 0px 0px 5px;
+  margin-top: 8px;
+  background-color: red;
+  cursor:pointer;
+}
+
+/* Quando .guestBox estiver em estado de hover, mostra o elemento .kick */
+.box:hover .kick {
+  display: block;
+}
+
+/* Estilo quando .kick está em estado de hover */
+.kick:hover {
+  background-color: rgb(145, 3, 3);
+}
+
+/* Restante do seu estilo .guestBox */
+.guestBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: calc(5px + 2vmin);
+  margin-right: 10px;
+  border: 7px double #ffffff;
+  border-radius: 8px;
+  padding: 1px;
+  width: 140px;
+  background-color: #6d2082;
+}
 
 
 .guestPhoto {
@@ -11,24 +45,7 @@
   margin-right: 10px;
   margin-top: 20px;
   
-  
 }
-
-.guestBox {
-  
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-size: calc(5px + 2vmin);
-  margin-right: 10px;
-  border: 7px double #ffffff; /* Define a borda com 2px de largura e cor preta */
-  border-radius: 8px; /* Adiciona bordas arredondadas */
-  padding: 1px; /* Adiciona espaço interno à caixa */
-  width: 140px ;
-  background-color: #6d2082;
-
-}
-
 
 .App-header {
   /* background: linear-gradient(to bottom, #590f80, #000000); */
