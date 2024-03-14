@@ -34,7 +34,7 @@ const GuestInfo = (props) => {
 
   return (
     <div className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
-  {props.name === "Daniel" ? '' : <div className="kick" onClick={() => kickUser(props.name, props.roomname)}>
+  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name, props.roomname)}>
         <p style={{ marginTop: "35px" }}>X</p>
       </div> }
       <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
