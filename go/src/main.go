@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	// "io/ioutil"
 	"log"
 	"net/http"
 	"strings"
@@ -40,7 +40,7 @@ type MessageFile struct {
 	Name      string
 	Message   string
 	Chatroom  string
-	Upload    bool      `json:"upload"`
+	Upload    bool `json:"upload"`
 	Timestamp time.Time
 	File      []byte `json:"file,omitempty"`
 }
@@ -234,7 +234,7 @@ func main() {
 		}
 
 		// Verifica se a sala de bate-papo existe
-		chatroom, exists := chatrooms[requestData.RoomName]
+		_, exists := chatrooms[requestData.RoomName]
 		if !exists {
 			// Se não existir, retorna um erro
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -264,7 +264,7 @@ func main() {
 		reader := bytes.NewReader(data)
 
 		// Detecta o tipo MIME do arquivo
-		mime, err := detectFileType(reader)
+		_, err = detectFileType(reader)
 		if err != nil {
 			fmt.Println("Erro ao detectar o tipo MIME do arquivo:", err)
 			return err
