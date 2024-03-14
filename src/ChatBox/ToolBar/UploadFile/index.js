@@ -30,6 +30,7 @@ function UploadFile({ id }) {
         const fileContent = await readFileAsDataURL(file);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         const response = await fetch('https://marichat-go.onrender.com/upload', {
 =======
 
@@ -37,6 +38,9 @@ function UploadFile({ id }) {
 >>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
         const response = await fetch('http://localhost:8080/upload', {
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+        const response = await fetch('https://marichat-go.onrender.com/upload', {
+>>>>>>> 4d3b67d (commit)
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

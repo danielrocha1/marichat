@@ -38,6 +38,11 @@ function ReceiverMessage(props) {
   console.log(props.Message, 'ReceiverMessage')
 =======
 import ChatBox from '../ChatBox';
+
+import { FaSignOutAlt } from 'react-icons/fa';
+
+import { useNavigate } from 'react-router-dom';
+
 import { createRoot } from 'react-dom/client'; // Importe createRoot corretamente
 import { format } from 'date-fns';
 
@@ -100,6 +105,7 @@ function ChatRoom({ children }) {
   const navigate = useNavigate();
 
   const { userData, setUserData } = useContext(ChatContext);
+<<<<<<< HEAD
 =======
 =======
   const [messages, setMessages] = useState([]); // Estado para armazenar as mensagens
@@ -107,6 +113,8 @@ function ChatRoom({ children }) {
 >>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
   const { userData } = useContext(ChatContext);
 >>>>>>> 33eeb19 (sender e receivermessage com nome e hora)
+=======
+>>>>>>> 4d3b67d (commit)
   const [userTypingStatus, setUserTypingStatus] = useState({}); // Estado para armazenar o status de digitação de cada usuário
   const [users, setUsers] = useState([]);
   const [colors, setColors] = useState({
@@ -139,6 +147,7 @@ function ChatRoom({ children }) {
 
     fetchUsers();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     const socket = new WebSocket('wss://localhost:8080/websocket');
 =======
@@ -193,6 +202,12 @@ function ChatRoom({ children }) {
       const tempElement = document.createElement('div');
       const userElement = document.getElementById(message.user);
       console.log("TESTASYDvgsyv",message, userData)
+=======
+    const socket = new WebSocket('wss://localhost:8080/websocket');
+    socket.onmessage = (event) => {
+      
+      const message = JSON.parse(event.data);
+>>>>>>> 4d3b67d (commit)
 
 
       if (message.type === 'newUser' ) {
@@ -201,6 +216,7 @@ function ChatRoom({ children }) {
         }
       }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -247,6 +263,22 @@ function ChatRoom({ children }) {
 =======
       if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.ChatRoom === userData.chatroomName ) {
 =======
+=======
+      if (message.type === 'removeUser') {
+        if (message.chatRoom === userData.chatroomName) {
+          
+              setUsers(prevUsers => {
+                const updatedUsers = prevUsers.filter(user => user !== message.user);
+                return updatedUsers;
+            });
+          if( userData.user === message.user){
+            navigate(`/offline`);
+            setUserData(null)
+        }
+        }
+      }
+
+>>>>>>> 4d3b67d (commit)
       if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.Chatroom === userData.chatroomName ) {
 >>>>>>> e981b78 (enviando arquivos pdf e imagens)
         console.log("TEST",message.ChatRoom === userData.chatroomName)
@@ -346,14 +378,20 @@ function ChatRoom({ children }) {
         <chatroom style={{marginLeft:"710px" }} >  {userData.chatroomName} </chatroom>
         <FaSignOutAlt size={24} color={"white"} style={{marginLeft:"15px", cursor:"pointer" }} onClick={() => kickUser()} />
       </div>
+<<<<<<< HEAD
 =======
       <header className="App-header" style={{ background: colors.background }} >
 >>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
+=======
+>>>>>>> 4d3b67d (commit)
         <div className="Box"  style={{backgroundColor:colors.chatBox, borderColor:colors.border }}>
           <div className="flexBox" >
             <div className="columnFlexBox" >
               <div style={{borderBottom:colors.border, borderRadius:"5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain'}}>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4d3b67d (commit)
               <ul>
               {users.map((user) => (
               user === userData.user ? null : (
@@ -367,6 +405,7 @@ function ChatRoom({ children }) {
               )
               ))}
               </ul>
+<<<<<<< HEAD
               </div>
               <HostInfo name={userData.user} theme={colors.border}/>
 =======
@@ -389,6 +428,8 @@ function ChatRoom({ children }) {
                     )
                   ))}
                 </ul>
+=======
+>>>>>>> 4d3b67d (commit)
               </div>
               <HostInfo name={userData.user} theme={colors.border}/>
             </div>

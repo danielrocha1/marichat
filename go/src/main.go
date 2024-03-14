@@ -9,13 +9,17 @@ import (
 	"io/ioutil"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> e981b78 (enviando arquivos pdf e imagens)
+=======
+>>>>>>> 4d3b67d (commit)
 	"log"
 	"strings"
 	"time"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	"net/http"
@@ -26,6 +30,8 @@ import (
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 =======
 
+=======
+>>>>>>> 4d3b67d (commit)
 	"net/http"
 	"bytes"
 >>>>>>> e981b78 (enviando arquivos pdf e imagens)
@@ -170,10 +176,15 @@ func main() {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			Type     string `json:"type"`
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
 <<<<<<< HEAD
+=======
+			Username string `json:"username"`
+			RoomName string `json:"roomname"`
+>>>>>>> 4d3b67d (commit)
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -514,12 +525,16 @@ func main() {
 
 			// Envia a mensagem para todos os clientes WebSocket, exceto o cliente atual
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4d3b67d (commit)
 		for client := range clients {
 		// Verifica se o cliente está presente no mapa de clientes
 		if _, ok := clients[client]; !ok {
 			// Se o cliente não estiver presente, registre um erro e pule para o próximo cliente
 			log.Println("Cliente não autorizado tentando enviar mensagem.")
 			continue
+<<<<<<< HEAD
 =======
 =======
 	
@@ -542,6 +557,20 @@ func main() {
 				}
 			}
 >>>>>>> 896cfa7 (Status Digitando e mais informações na mensagem)
+=======
+		}
+
+		// Envia a mensagem para o cliente WebSocket
+		err := client.WriteMessage(websocket.TextMessage, msg)
+		if err != nil {
+			log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+			delete(clients, client) // Remove o cliente do mapa se houver um erro
+			continue
+		}
+		fmt.Println(string(msg))
+		}
+
+>>>>>>> 4d3b67d (commit)
 		}
 <<<<<<< HEAD
 

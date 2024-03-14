@@ -9,10 +9,14 @@ function HostInfo(props) {
       
       <p className='nameHost'>{props.name}</p>
 <<<<<<< HEAD
+<<<<<<< HEAD
         {props.name === "Daniel" ? <img src={logo} className="hostPhoto" alt="logo" /> : <img src={logo2} className="hostPhoto" alt="logo" /> } 
 =======
         <img src={logo} className="hostPhoto" alt="logo" />  
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
+=======
+        {props.name === "Daniel" ? <img src={logo} className="hostPhoto" alt="logo" /> : <img src={logo2} className="hostPhoto" alt="logo" /> } 
+>>>>>>> 4d3b67d (commit)
         
         
       

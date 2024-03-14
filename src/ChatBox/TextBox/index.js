@@ -56,7 +56,7 @@ function TextInput({showEmoji, text, setText}) {
   const { userData } = useContext(ChatContext);
 
   const sendTypingStatus = (isTyping) => {
-    const socket = new WebSocket('ws://localhost:8080/websocket');
+    const socket = new WebSocket('wss://localhost:8080/websocket');
 
     socket.onopen = () => {
       console.log('Conexão WebSocket aberta');

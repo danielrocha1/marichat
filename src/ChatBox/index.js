@@ -81,9 +81,13 @@ function ChatBox({ messages, theme, color,  setColors }) {
 >>>>>>> 7f77aca (Enviando arquivos, como imagens e PDF)
 =======
       <TextInput showEmoji={showEmoji} text={text} setText={setText} />
+<<<<<<< HEAD
       {/* Adicione um evento de clique ao botão */}
       {/* <button onClick={handleButtonClick}>Change Color to Blue</button> */}
 >>>>>>> 2a2e5d3 (Chat podendo alterar as cores)
+=======
+
+>>>>>>> 4d3b67d (commit)
     </div>
   );
 }
