@@ -61,7 +61,7 @@ function ChatRoom() {
         if (message.chatRoom === userData.chatroomName) {
           setUsers((prevUsers) => prevUsers.filter(user => user !== message.user));
           if (userData.user === message.user) {
-            navigate(`/offline`);
+            navigate(`/`);
             setUserData(null);
           }
         }
