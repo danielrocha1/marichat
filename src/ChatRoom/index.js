@@ -35,8 +35,9 @@ function SenderMessage(props) {
 }
 
 function ChatRoom() {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
-  const { userData } = useContext(ChatContext);
+  const { userData, setUserData } = useContext(ChatContext);
   const [userTypingStatus, setUserTypingStatus] = useState({});
   const [users, setUsers] = useState([]);
   const [colors, setColors] = useState({
