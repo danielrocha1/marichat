@@ -112,6 +112,14 @@ func main() {
 			}
 		}
 	}))
+	app.Get("/chatrooms", func(c *fiber.Ctx) error {
+		chatroomNames := make([]string, 0, len(chatrooms))
+		for name := range chatrooms {
+			chatroomNames = append(chatroomNames, name)
+		}
+		return c.JSON(chatroomNames)
+	})
+	
 
 	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/adduser", func(c *fiber.Ctx) error {
