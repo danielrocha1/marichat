@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+
 	// "io/ioutil"
 	"log"
 	"net/http"
@@ -172,7 +173,7 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-	
+
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.RoomName]
 		if !exists {
@@ -180,7 +181,7 @@ func main() {
 				"error": "Chatroom not found",
 			})
 		}
-	
+
 		// Remove o usuário da sala de bate-papo
 		var updatedUsers []string
 		for _, user := range chatroom.Users {
@@ -189,7 +190,7 @@ func main() {
 			}
 		}
 		chatroom.Users = updatedUsers
-	
+
 		// Envia uma mensagem informando aos clientes WebSocket sobre a remoção do usuário
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "removeUser",
@@ -208,7 +209,7 @@ func main() {
 				continue
 			}
 		}
-	
+
 		// Retorna uma resposta indicando sucesso
 		return c.SendStatus(fiber.StatusOK)
 	})
