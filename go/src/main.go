@@ -19,6 +19,7 @@ import (
 type Chatroom struct {
 	Name  string
 	Users []string
+	HostID string
 }
 
 type MessageTyping struct {
@@ -113,9 +114,20 @@ func main() {
 		}
 	}))
 	app.Get("/chatrooms", func(c *fiber.Ctx) error {
+		var requestData struct {
+			HostID 	 string `json:"hostid"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
 		chatroomNames := make([]string, 0, len(chatrooms))
-		for name := range chatrooms {
-			chatroomNames = append(chatroomNames, name)
+		for name, chatRoom := range chatrooms {
+			if requestData.HostID == chatRoom.HostID {
+				chatroomNames = append(chatroomNames, name)
+			}
+			
 		}
 		return c.JSON(chatroomNames)
 	})
@@ -127,6 +139,7 @@ func main() {
 		var requestData struct {
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
+			HostID 	 string `json:"hostid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -141,6 +154,7 @@ func main() {
 			chatroom = &Chatroom{
 				Name:  requestData.RoomName,
 				Users: []string{requestData.Username},
+				HostID: requestData.HostID,
 			}
 			chatrooms[requestData.RoomName] = chatroom
 		} else {
