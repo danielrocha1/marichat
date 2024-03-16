@@ -6,10 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-<<<<<<< HEAD
-
-=======
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 	// "io/ioutil"
 	"log"
 	"net/http"
@@ -23,10 +19,7 @@ import (
 type Chatroom struct {
 	Name  string
 	Users []string
-<<<<<<< HEAD
-=======
 	HostID string
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 }
 
 type MessageTyping struct {
@@ -120,8 +113,6 @@ func main() {
 			}
 		}
 	}))
-<<<<<<< HEAD
-=======
 	app.Get("/chatrooms", func(c *fiber.Ctx) error {
 		var requestData struct {
 			HostID 	 string `json:"hostid"`
@@ -141,7 +132,6 @@ func main() {
 		return c.JSON(chatroomNames)
 	})
 	
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 
 	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/adduser", func(c *fiber.Ctx) error {
@@ -149,10 +139,7 @@ func main() {
 		var requestData struct {
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
-<<<<<<< HEAD
-=======
 			HostID 	 string `json:"hostid"`
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -167,10 +154,7 @@ func main() {
 			chatroom = &Chatroom{
 				Name:  requestData.RoomName,
 				Users: []string{requestData.Username},
-<<<<<<< HEAD
-=======
 				HostID: requestData.HostID,
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 			}
 			chatrooms[requestData.RoomName] = chatroom
 		} else {
@@ -199,11 +183,7 @@ func main() {
 
 		return nil // retorno nil para indicar sucesso na resposta
 	})
-<<<<<<< HEAD
-	app.Post("/kickUser", func(c *fiber.Ctx) error {
-=======
 	app.Post("/kickuser", func(c *fiber.Ctx) error {
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
 			Username string `json:"username"`
@@ -214,11 +194,7 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.RoomName]
 		if !exists {
@@ -226,11 +202,7 @@ func main() {
 				"error": "Chatroom not found",
 			})
 		}
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 		// Remove o usuário da sala de bate-papo
 		var updatedUsers []string
 		for _, user := range chatroom.Users {
@@ -239,11 +211,7 @@ func main() {
 			}
 		}
 		chatroom.Users = updatedUsers
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 		// Envia uma mensagem informando aos clientes WebSocket sobre a remoção do usuário
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "removeUser",
@@ -262,11 +230,7 @@ func main() {
 				continue
 			}
 		}
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> 0a6142cdcebca01a555b5b279085c71d276f6548
 		// Retorna uma resposta indicando sucesso
 		return c.SendStatus(fiber.StatusOK)
 	})
