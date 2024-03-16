@@ -35,6 +35,7 @@ function EnterRoom() {
 
       // Se o envio do formulário for bem-sucedido, atualize o contexto e navegue para a página ChatRoom com os parâmetros na URL
       setUserData({ user, chatroomName });
+      console.log(user, chatroomName, fakeChatId, fakeHostId)
       navigate(`/chatroom`);
     } catch (error) {
       console.error('Erro:', error.message);
