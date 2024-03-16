@@ -3,7 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import  ChatContext  from '../ChatContext'; // Importe o contexto aqui
 import './index.css'; // Arquivo de estilo CSS para centralizar o formulário
 
+
+
 function EnterRoom() {
+  const { v4: uuidv4 } = require('uuid');
+  const fakeChatId = uuidv4();
+  const fakeHostId = uuidv4();
+
+
   const navigate = useNavigate();
   const { setUserData } = useContext(ChatContext); // Use o hook useContext para acessar os dados do contexto
 
@@ -19,7 +26,7 @@ function EnterRoom() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "username": user, "roomname": chatroomName }),
+        body: JSON.stringify({ "username": user, "roomname": chatroomName, "hostid":fakeHostId, "chatid":fakeChatId }),
       });
 
       if (!response.ok) {
