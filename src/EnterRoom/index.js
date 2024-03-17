@@ -6,16 +6,19 @@ import './index.css'; // Arquivo de estilo CSS para centralizar o formulário
 
 
 function EnterRoom() {
-  const { v4: uuidv4 } = require('uuid');
-  const fakeChatId = uuidv4();
-  const fakeHostId = uuidv4();
-
 
   const navigate = useNavigate();
   const { setUserData } = useContext(ChatContext); // Use o hook useContext para acessar os dados do contexto
 
   const [user, setUser] = useState('');
   const [chatroomName, setChatroomName] = useState('');
+
+  const [fakeHostId, setFakeHostId] = useState('');
+  const [fakeChatId, setFakeChatId] = useState('');
+
+  const { v4: uuidv4 } = require('uuid');
+  setFakeHostId(uuidv4())
+  setFakeChatId(uuidv4())
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,8 +37,7 @@ function EnterRoom() {
       }
 
       // Se o envio do formulário for bem-sucedido, atualize o contexto e navegue para a página ChatRoom com os parâmetros na URL
-      setUserData({ user, chatroomName });
-      console.log(user, chatroomName, fakeChatId, fakeHostId)
+      setUserData({ user, chatroomName,fakeChatId, fakeHostId});
       navigate(`/chatroom`);
     } catch (error) {
       console.error('Erro:', error.message);

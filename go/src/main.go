@@ -375,7 +375,7 @@ func main() {
 	app.Post("/listusers", func(c *fiber.Ctx) error {
 		// Obtém o nome da sala de bate-papo da URL
 		var requestData struct {
-			RoomName string `json:"roomname"`
+			ChatID string `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -384,7 +384,7 @@ func main() {
 		}
 
 		// Verifica se a sala de bate-papo existe
-		room, exists := chatrooms[requestData.RoomName]
+		room, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"error": "Chatroom not found",
