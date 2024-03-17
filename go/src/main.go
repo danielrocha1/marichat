@@ -155,16 +155,25 @@ func main() {
 		if !exists {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
-				Name:  requestData.RoomName,
-				Users: []string{requestData.Username},
+				Name:   requestData.RoomName,
+				Users:  []string{requestData.Username},
 				HostID: requestData.HostID,
-				ChatID: requestData.ChatID,
-
 			}
-			chatrooms[requestData.ChatID] = chatroom
+			chatrooms[requestData.RoomName] = chatroom
 		} else {
-			// Adiciona o usuário à sala de bate-papo existente
-			chatroom.Users = append(chatroom.Users, requestData.Username)
+			if chatroom.HostID != requestData.HostID {
+				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
+				newRoomName := requestData.RoomName + "_" + requestData.HostID
+				newChatroom := &Chatroom{
+					Name:   newRoomName,
+					Users:  []string{requestData.Username},
+					HostID: requestData.HostID,
+				}
+				chatrooms[newRoomName] = newChatroom
+			} else {
+				// Se o ID do host for o mesmo, apenas adicione o usuário à sala de bate-papo existente
+				chatroom.Users = append(chatroom.Users, requestData.Username)
+			}
 		}
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
