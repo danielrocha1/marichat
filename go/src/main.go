@@ -17,12 +17,11 @@ import (
 )
 
 type Chatroom struct {
-	ChatID string
 	Name  string
 	Users []string
 	HostID string
+	ChatID string
 }
-
 
 type MessageTyping struct {
 	User     string `json:"user"`
@@ -115,6 +114,7 @@ func main() {
 			}
 		}
 	}))
+	
 	app.Get("/chatrooms", func(c *fiber.Ctx) error {
 		var requestData struct {
 			HostID 	 string `json:"hostid"`
@@ -124,13 +124,12 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-		chatroomNames := make([]string, 0, len(chatrooms))
-
-		for name, chatRoom := range chatrooms {
+		chatroomNames := make([]*Chatroom, 0, len(chatrooms))
+		for _, chatRoom := range chatrooms {
 			if requestData.HostID == chatRoom.HostID {
-				chatroomNames = append(chatroomNames, name)
+				chatroomNames = append(chatroomNames, chatRoom)
 			}
-			fmt.Println(chatRoom)
+			
 		}
 		return c.JSON(chatroomNames)
 	})
@@ -142,64 +141,65 @@ func main() {
 		var requestData struct {
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
-			HostID   string `json:"hostid"`
+			HostID 	 string `json:"hostid"`
+			ChatID 	 string `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Failed to parse request body",
 			})
 		}
-	
+
 		// Verifica se a sala de bate-papo existe
-		chatroom, exists := chatrooms[requestData.RoomName]
-	
+		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
 				Name:   requestData.RoomName,
 				Users:  []string{requestData.Username},
 				HostID: requestData.HostID,
+				ChatID: requestData.ChatID,
 			}
-			chatrooms[requestData.RoomName] = chatroom
+			chatrooms[requestData.ChatID] = chatroom
 		} else {
 			if chatroom.HostID != requestData.HostID {
 				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
-				newRoomName := requestData.RoomName + "_" + requestData.HostID
 				newChatroom := &Chatroom{
-					Name:   newRoomName,
+					Name:   requestData.RoomName,
 					Users:  []string{requestData.Username},
 					HostID: requestData.HostID,
+					ChatID: requestData.ChatID, // Mantendo o ChatID igual
 				}
-				chatrooms[newRoomName] = newChatroom
+				chatrooms[requestData.ChatID] = newChatroom
 			} else {
 				// Se o ID do host for o mesmo, apenas adicione o usuário à sala de bate-papo existente
 				chatroom.Users = append(chatroom.Users, requestData.Username)
 			}
 		}
-	
-		// Preparando a mensagem JSON para notificar os clientes WebSocket sobre o novo usuário
-		userJSON, err := json.Marshal(map[string]interface{}{
-			"type":     "newUser",
-			"user":     requestData.Username,
-			"chatRoom": requestData.RoomName,
-		})
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to serialize user data",
-			})
-		}
-	
-		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
-		for client := range clients {
-			err := client.WriteMessage(websocket.TextMessage, userJSON)
-			if err != nil {
-				log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-				continue
-			}
-		}
-	
+		
+		// userJSON, err := json.Marshal(map[string]interface{}{
+		// 	"type":     "newUser",
+		// 	"user":     requestData.Username,
+		// 	"chatRoom": requestData.RoomName,
+		// })
+		// if err != nil {
+		// 	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		// 		"error": "Failed to serialize user data",
+		// 	})
+		// }
+
+		// // Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
+		// for client := range clients {
+		// 	err := client.WriteMessage(websocket.TextMessage, userJSON)
+		// 	if err != nil {
+		// 		log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+		// 		continue
+		// 	}
+		// }
+
 		return nil // retorno nil para indicar sucesso na resposta
 	})
+
 	
 	app.Post("/kickuser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
@@ -388,7 +388,7 @@ func main() {
 	app.Post("/listusers", func(c *fiber.Ctx) error {
 		// Obtém o nome da sala de bate-papo da URL
 		var requestData struct {
-			RoomName string `json:"roomname"`
+			ChatID string `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -397,7 +397,7 @@ func main() {
 		}
 
 		// Verifica se a sala de bate-papo existe
-		room, exists := chatrooms[requestData.RoomName]
+		room, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"error": "Chatroom not found",
