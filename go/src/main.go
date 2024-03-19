@@ -17,10 +17,12 @@ import (
 )
 
 type Chatroom struct {
+	ChatID string
 	Name  string
 	Users []string
 	HostID string
 }
+
 
 type MessageTyping struct {
 	User     string `json:"user"`
@@ -123,11 +125,12 @@ func main() {
 			})
 		}
 		chatroomNames := make([]string, 0, len(chatrooms))
+
 		for name, chatRoom := range chatrooms {
 			if requestData.HostID == chatRoom.HostID {
 				chatroomNames = append(chatroomNames, name)
 			}
-			
+			fmt.Println(chatRoom)
 		}
 		return c.JSON(chatroomNames)
 	})
@@ -139,28 +142,42 @@ func main() {
 		var requestData struct {
 			Username string `json:"username"`
 			RoomName string `json:"roomname"`
-			HostID 	 string `json:"hostid"`
+			HostID   string `json:"hostid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Failed to parse request body",
 			})
 		}
-
+	
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.RoomName]
+	
 		if !exists {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
-				Name:  requestData.RoomName,
-				Users: []string{requestData.Username},
+				Name:   requestData.RoomName,
+				Users:  []string{requestData.Username},
 				HostID: requestData.HostID,
 			}
 			chatrooms[requestData.RoomName] = chatroom
 		} else {
-			// Adiciona o usuário à sala de bate-papo existente
-			chatroom.Users = append(chatroom.Users, requestData.Username)
+			if chatroom.HostID != requestData.HostID {
+				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
+				newRoomName := requestData.RoomName + "_" + requestData.HostID
+				newChatroom := &Chatroom{
+					Name:   newRoomName,
+					Users:  []string{requestData.Username},
+					HostID: requestData.HostID,
+				}
+				chatrooms[newRoomName] = newChatroom
+			} else {
+				// Se o ID do host for o mesmo, apenas adicione o usuário à sala de bate-papo existente
+				chatroom.Users = append(chatroom.Users, requestData.Username)
+			}
 		}
+	
+		// Preparando a mensagem JSON para notificar os clientes WebSocket sobre o novo usuário
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     requestData.Username,
@@ -171,7 +188,7 @@ func main() {
 				"error": "Failed to serialize user data",
 			})
 		}
-
+	
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
@@ -180,9 +197,10 @@ func main() {
 				continue
 			}
 		}
-
+	
 		return nil // retorno nil para indicar sucesso na resposta
 	})
+	
 	app.Post("/kickuser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
