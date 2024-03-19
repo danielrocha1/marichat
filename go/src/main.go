@@ -177,6 +177,26 @@ func main() {
 			}
 		}
 		
+		userJSON, err := json.Marshal(map[string]interface{}{
+			"type":     "newUser",
+			"user":     requestData.Username,
+			"chatRoom": requestData.RoomName,
+		})
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to serialize user data",
+			})
+		}
+
+		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
+		for client := range clients {
+			err := client.WriteMessage(websocket.TextMessage, userJSON)
+			if err != nil {
+				log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+				continue
+			}
+		}
+		
 		// userJSON, err := json.Marshal(map[string]interface{}{
 		// 	"type":     "newUser",
 		// 	"user":     requestData.Username,
@@ -200,7 +220,7 @@ func main() {
 		return nil // retorno nil para indicar sucesso na resposta
 	})
 
-	
+
 	app.Post("/kickuser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
