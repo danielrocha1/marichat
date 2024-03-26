@@ -13,8 +13,7 @@ import (
 	"time"
 
 	"database/sql"
-    _ "github.com/lib/pq"
-
+	_ "github.com/lib/pq"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
@@ -35,6 +34,7 @@ type Chatroom struct {
 
 type MessageTyping struct {
 	User     string `json:"user"`
+	HostID 	string  `json:"hostid"`
 	IsTyping bool   `json:"isTyping"`
 }
 
@@ -43,6 +43,8 @@ type Message struct {
 	Name      string
 	Message   string
 	Chatroom  string
+	HostID  string    
+	ChatID  string    
 	Timestamp time.Time
 }
 
@@ -50,16 +52,13 @@ type MessageFile struct {
 	Type      string
 	Label     string
 	Name      string
+	HostID	  string
 	Message   string
 	Chatroom  string
+	ChatID	  string
 	Upload    bool `json:"upload"`
 	Timestamp time.Time
 	File      []byte `json:"file,omitempty"`
-}
-
-type WebSocketMessage struct {
-	Sender  string `json:"sender"`
-	Message string `json:"message"`
 }
 
 var chatrooms map[string]*Chatroom
@@ -74,14 +73,13 @@ const (
 )
 
 type UserInfo struct {
-	ID    int    `json:"id"`
-	HostID string `json:"hostid"`
-	FullName string `json:"fullname"`
-	Username string `json:"username"`
-	Email string `json:"email"`
-	Password string `json:"password"`
+	ID        int    `json:"id"`
+	HostID    string `json:"hostid"`
+	FullName  string `json:"fullname"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
 	Birthdate string `json:"birthdate"`
-	
 }
 
 func detectFileType(reader io.Reader) (string, error) {
@@ -123,7 +121,7 @@ func main() {
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
 		type RegisterRequest struct {
-			HostID  string `json:"hostid"`
+			HostID    string `json:"hostid"`
 			FullName  string `json:"fullname"`
 			Username  string `json:"username"`
 			Email     string `json:"email"`
@@ -131,23 +129,22 @@ func main() {
 			Birthdate string `json:"birthdate"`
 			// Adicione outros campos conforme necessário
 		}
-	
+
 		// Parsear os dados do corpo da solicitação para a estrutura RegisterRequest
 		var registerReq RegisterRequest
 		if err := c.BodyParser(&registerReq); err != nil {
 			return err
 		}
-	
+
 		// Executar a consulta SQL para inserir os dados do usuário na tabela UserInfo
 		_, err := db.Exec("INSERT INTO UserInfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
-		registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
+			registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
 		if err != nil {
 			return err
 		}
-	
+
 		return c.SendString("Usuário registrado com  sucesso!")
 	})
-	
 
 	app.Post("/login", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
@@ -175,13 +172,13 @@ func main() {
 			var userInfo UserInfo
 			err := db.QueryRow("SELECT * FROM UserInfo WHERE email = $1", loginReq.Email).Scan(
 				&userInfo.ID,
-				&userInfo.HostID, 
-				&userInfo.FullName, 
+				&userInfo.HostID,
+				&userInfo.FullName,
 				&userInfo.Username,
 				&userInfo.Email,
 				&userInfo.Password,
 				&userInfo.Birthdate)
-				
+
 			if err != nil {
 				return err // Trate o erro adequadamente
 			}
@@ -349,7 +346,9 @@ func main() {
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     requestData.Name,
+			"hostid":   requestData.HostID,
 			"chatRoom": requestData.RoomName,
+			"chatid": requestData.ChatID,
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -366,25 +365,6 @@ func main() {
 			}
 		}
 
-		// userJSON, err := json.Marshal(map[string]interface{}{
-		// 	"type":     "newUser",
-		// 	"user":     requestData.Username,
-		// 	"chatRoom": requestData.RoomName,
-		// })
-		// if err != nil {
-		// 	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-		// 		"error": "Failed to serialize user data",
-		// 	})
-		// }
-
-		// // Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
-		// for client := range clients {
-		// 	err := client.WriteMessage(websocket.TextMessage, userJSON)
-		// 	if err != nil {
-		// 		log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
-		// 		continue
-		// 	}
-		// }
 
 		return nil // retorno nil para indicar sucesso na resposta
 	})
@@ -394,6 +374,7 @@ func main() {
 		var requestData struct {
 			Username string `json:"username"`
 			HostID   string `json:"hostid"`
+			ChatID   string `json:"chatid"`
 			RoomName string `json:"roomname"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
@@ -403,7 +384,7 @@ func main() {
 		}
 
 		// Verifica se a sala de bate-papo existe
-		chatroom, exists := chatrooms[requestData.RoomName]
+		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Chatroom not found",
@@ -423,7 +404,10 @@ func main() {
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "removeUser",
 			"user":     requestData.Username,
+			"hostid":   requestData.HostID,
 			"chatRoom": requestData.RoomName,
+			"chatid": requestData.ChatID,
+			
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -448,7 +432,9 @@ func main() {
 		var requestData struct {
 			Type      string    `json:"type"`
 			Username  string    `json:"username"`
+			HostID  string    `json:"hostid"`
 			RoomName  string    `json:"roomname"`
+			ChatID  string    `json:"chatid"`
 			Message   string    `json:"message"`
 			Timestamp time.Time `json:"timestamp"`
 		}
@@ -459,7 +445,7 @@ func main() {
 		}
 
 		// Verifica se a sala de bate-papo existe
-		chatroom, exists := chatrooms[requestData.RoomName]
+		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			// Se não existir, retorna um erro
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -471,6 +457,8 @@ func main() {
 		message := Message{
 			Type:      requestData.Type,
 			Name:      requestData.Username,
+			HostID:      requestData.HostID,
+			ChatID:      requestData.ChatID,
 			Message:   requestData.Message,
 			Chatroom:  chatroom.Name,
 			Timestamp: time.Now(),
@@ -502,6 +490,7 @@ func main() {
 			Type      string    `json:"type"`
 			Label     string    `json:"label"`
 			Username  string    `json:"username"`
+			HostID  string    `json:"hostid"`
 			RoomName  string    `json:"roomname"`
 			Message   string    `json:"message"`
 			Upload    bool      `json:"upload"`
@@ -527,6 +516,7 @@ func main() {
 			Type:      requestData.Type,
 			Label:     requestData.Label,
 			Name:      requestData.Username,
+			HostID:      requestData.HostID,
 			Message:   requestData.Message,
 			Chatroom:  requestData.RoomName,
 			Upload:    requestData.Upload,
