@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/gofiber/fiber/v2 v2.52.0
 	github.com/gofiber/websocket/v2 v2.2.1
+	github.com/lib/pq v1.10.9
 	github.com/stretchr/testify v1.8.4
 )
 

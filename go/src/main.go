@@ -12,13 +12,23 @@ import (
 	"strings"
 	"time"
 
+	"database/sql"
+    _ "github.com/lib/pq"
+
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
 )
 
+type Users struct {
+	Name   string `json:"username"`
+	ChatID string `json:"chatid"`
+	HostID string `json:"hostid"`
+}
+
 type Chatroom struct {
-	Name  string
-	Users []string
+	Name   string
+	Users  []Users
 	HostID string
 	ChatID string
 }
@@ -55,6 +65,25 @@ type WebSocketMessage struct {
 var chatrooms map[string]*Chatroom
 var clients = make(map[*websocket.Conn]bool)
 
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "rocha"
+	password = "warlord"
+	dbname   = "test"
+)
+
+type UserInfo struct {
+	ID    int    `json:"id"`
+	HostID string `json:"hostid"`
+	FullName string `json:"fullname"`
+	Username string `json:"username"`
+	Email string `json:"email"`
+	Password string `json:"password"`
+	Birthdate string `json:"birthdate"`
+	
+}
+
 func detectFileType(reader io.Reader) (string, error) {
 	// Lê os primeiros 512 bytes para determinar o tipo MIME
 	buffer := make([]byte, 512)
@@ -70,6 +99,14 @@ func detectFileType(reader io.Reader) (string, error) {
 }
 
 func main() {
+	// Conectar-se ao banco de dados PostgreSQL
+	connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
 	app := fiber.New()
 
 	// Middleware para adicionar headers comuns a todas as rotas
@@ -81,6 +118,78 @@ func main() {
 			return c.SendStatus(fiber.StatusOK) // Responde com OK para solicitações OPTIONS
 		}
 		return c.Next()
+	})
+
+	app.Post("/register", func(c *fiber.Ctx) error {
+		// Estrutura para receber os dados do corpo da solicitação
+		type RegisterRequest struct {
+			HostID  string `json:"hostid"`
+			FullName  string `json:"fullname"`
+			Username  string `json:"username"`
+			Email     string `json:"email"`
+			Password  string `json:"password"`
+			Birthdate string `json:"birthdate"`
+			// Adicione outros campos conforme necessário
+		}
+	
+		// Parsear os dados do corpo da solicitação para a estrutura RegisterRequest
+		var registerReq RegisterRequest
+		if err := c.BodyParser(&registerReq); err != nil {
+			return err
+		}
+	
+		// Executar a consulta SQL para inserir os dados do usuário na tabela UserInfo
+		_, err := db.Exec("INSERT INTO UserInfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
+		registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
+		if err != nil {
+			return err
+		}
+	
+		return c.SendString("Usuário registrado com  sucesso!")
+	})
+	
+
+	app.Post("/login", func(c *fiber.Ctx) error {
+		// Estrutura para receber os dados do corpo da solicitação
+		type LoginRequest struct {
+			Email    string `json:"email"`
+			Password string `json:"password"`
+		}
+
+		// Parsear os dados do corpo da solicitação para a estrutura LoginRequest
+		var loginReq LoginRequest
+		if err := c.BodyParser(&loginReq); err != nil {
+			return err
+		}
+
+		// Executar a consulta SQL para verificar o login
+		var count int
+		err := db.QueryRow("SELECT COUNT(*) FROM UserInfo WHERE email = $1 AND password = $2", loginReq.Email, loginReq.Password).Scan(&count)
+		if err != nil {
+			return err
+		}
+
+		// Verificar se as credenciais estão corretas
+		if count == 1 {
+			// Credenciais válidas, retornar uma resposta de sucesso
+			var userInfo UserInfo
+			err := db.QueryRow("SELECT * FROM UserInfo WHERE email = $1", loginReq.Email).Scan(
+				&userInfo.ID,
+				&userInfo.HostID, 
+				&userInfo.FullName, 
+				&userInfo.Username,
+				&userInfo.Email,
+				&userInfo.Password,
+				&userInfo.Birthdate)
+				
+			if err != nil {
+				return err // Trate o erro adequadamente
+			}
+			return c.JSON(userInfo)
+		} else {
+			// Credenciais inválidas, retornar uma resposta de erro
+			return c.Status(fiber.StatusUnauthorized).SendString("Credenciais inválidas")
+		}
 	})
 
 	// Rota WebSocket
@@ -114,10 +223,10 @@ func main() {
 			}
 		}
 	}))
-	
+
 	app.Get("/chatrooms", func(c *fiber.Ctx) error {
 		var requestData struct {
-			HostID 	 string `json:"hostid"`
+			HostID string `json:"hostid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -129,20 +238,72 @@ func main() {
 			if requestData.HostID == chatRoom.HostID {
 				chatroomNames = append(chatroomNames, chatRoom)
 			}
-			
+
 		}
 		return c.JSON(chatroomNames)
 	})
-	
+
+	app.Post("/addUser", func(c *fiber.Ctx) error {
+		// Parse dos dados do corpo da requisição
+		var user Users
+		if err := c.BodyParser(&user); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
+
+		// Verifica se o chat existe
+		chatroom, exists := chatrooms[user.ChatID]
+		if !exists {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Chatroom not found",
+			})
+		} else {
+			// Verifica se o usuário já está na sala
+			for _, users := range chatroom.Users {
+				if user.HostID == users.HostID {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Usuário já está na sala",
+					})
+				}
+			}
+			// Se o usuário não estiver na sala, adiciona-o
+			chatroom.Users = append(chatroom.Users, user)
+		}
+
+		// Adiciona o usuário à sala de bate-papo existente
+
+		userJSON, err := json.Marshal(map[string]interface{}{
+			"type":     "newUser",
+			"user":     user.Name,
+			"chatRoom": chatroom.Name,
+		})
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to serialize user data",
+			})
+		}
+
+		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
+		for client := range clients {
+			err := client.WriteMessage(websocket.TextMessage, userJSON)
+			if err != nil {
+				log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+				continue
+			}
+		}
+
+		return nil // retorno nil para indicar sucesso na resposta
+	})
 
 	// Rota para adicionar usuário a uma sala de bate-papo
-	app.Post("/adduser", func(c *fiber.Ctx) error {
+	app.Post("/createchat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
-			Username string `json:"username"`
+			Name     string `json:"username"`
 			RoomName string `json:"roomname"`
-			HostID 	 string `json:"hostid"`
-			ChatID 	 string `json:"chatid"`
+			HostID   string `json:"hostid"`
+			ChatID   string `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -155,31 +316,39 @@ func main() {
 		if !exists {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
-				Name:   requestData.RoomName,
-				Users:  []string{requestData.Username},
+				Name: requestData.RoomName,
+				Users: []Users{
+					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+				},
 				HostID: requestData.HostID,
 				ChatID: requestData.ChatID,
 			}
 			chatrooms[requestData.ChatID] = chatroom
 		} else {
-			if chatroom.HostID != requestData.HostID {
+			if chatroom.ChatID == requestData.ChatID {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Chat Já criado",
+				})
+			} else if chatroom.HostID != requestData.HostID {
 				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
 				newChatroom := &Chatroom{
-					Name:   requestData.RoomName,
-					Users:  []string{requestData.Username},
+					Name: requestData.RoomName,
+					Users: []Users{
+						{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+					},
 					HostID: requestData.HostID,
 					ChatID: requestData.ChatID, // Mantendo o ChatID igual
 				}
 				chatrooms[requestData.ChatID] = newChatroom
 			} else {
 				// Se o ID do host for o mesmo, apenas adicione o usuário à sala de bate-papo existente
-				chatroom.Users = append(chatroom.Users, requestData.Username)
+				chatroom.Users = append(chatroom.Users, Users{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID})
 			}
 		}
-		
+
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"user":     requestData.Username,
+			"user":     requestData.Name,
 			"chatRoom": requestData.RoomName,
 		})
 		if err != nil {
@@ -196,7 +365,7 @@ func main() {
 				continue
 			}
 		}
-		
+
 		// userJSON, err := json.Marshal(map[string]interface{}{
 		// 	"type":     "newUser",
 		// 	"user":     requestData.Username,
@@ -220,11 +389,11 @@ func main() {
 		return nil // retorno nil para indicar sucesso na resposta
 	})
 
-
 	app.Post("/kickuser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
 			Username string `json:"username"`
+			HostID   string `json:"hostid"`
 			RoomName string `json:"roomname"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
@@ -232,7 +401,7 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-	
+
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.RoomName]
 		if !exists {
@@ -240,16 +409,16 @@ func main() {
 				"error": "Chatroom not found",
 			})
 		}
-	
+
 		// Remove o usuário da sala de bate-papo
-		var updatedUsers []string
+		var updatedUsers []Users
 		for _, user := range chatroom.Users {
-			if user != requestData.Username {
+			if user.HostID != requestData.HostID {
 				updatedUsers = append(updatedUsers, user)
 			}
 		}
 		chatroom.Users = updatedUsers
-	
+
 		// Envia uma mensagem informando aos clientes WebSocket sobre a remoção do usuário
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "removeUser",
@@ -268,7 +437,7 @@ func main() {
 				continue
 			}
 		}
-	
+
 		// Retorna uma resposta indicando sucesso
 		return c.SendStatus(fiber.StatusOK)
 	})
