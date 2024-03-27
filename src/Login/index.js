@@ -88,7 +88,6 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
 
 function LoginSign() {
   const [formData, setFormData] = useState({
-    user: '',
     password: '',
     fullName: '',
     username: '',
