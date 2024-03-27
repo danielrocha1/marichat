@@ -105,10 +105,25 @@ function LoginSign() {
     }));
   }, []);
 
-  const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    // Implementar lógica de registro aqui
+  const handleRegisterSubmit = async () => {
+    try {
+      const response = await fetch('https://marichat-go.onrender.com/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+
+      sendTypingStatus(false);
+      setText('');
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
   };
 
   const handleLoginSubmit = (e) => {
