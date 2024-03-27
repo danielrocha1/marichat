@@ -119,8 +119,6 @@ function LoginSign() {
         throw new Error('Erro ao enviar os dados');
       }
 
-      sendTypingStatus(false);
-      setText('');
     } catch (error) {
       console.error('Erro:', error.message);
     }
