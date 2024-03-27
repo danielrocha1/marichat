@@ -176,8 +176,8 @@ func main() {
 				&userInfo.Username,
 				&userInfo.Email,
 				&userInfo.Password,
-				&userInfo.Birthdate
-				&userInfo.HostID,)
+				&userInfo.Birthdate,
+				&userInfo.HostID)
 
 			if err != nil {
 				return err // Trate o erro adequadamente
