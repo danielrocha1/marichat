@@ -42,7 +42,8 @@
   }
   
   p {
-    margin-top: 0;
+ 
+    font-size: 15px;
     cursor: pointer;
   }
   
@@ -57,7 +58,7 @@
   }
   
   .top-options p {
-    padding: 15px 73px 12px 63px;
+    padding: 15px 48px 12px 67px;
     margin: 0px;
     background-color: transparent;
     color: #007bff;
