@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const Login = ({ handleLoginSubmit, formData, handleChange }) => {
   return (
@@ -85,8 +86,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
     </div>
   );
 }
-
-function LoginSign({Login,SignUp}) {
+function LoginSign() {
   const [formData, setFormData] = useState({
     hostid: '',
     password: '',
