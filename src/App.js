@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChatRoom from './ChatRoom';
+
+
 import EnterRoom from './EnterRoom';
 import LoginSign from './Login';
 import OfflineChat from './OfflineChat';
@@ -17,8 +19,9 @@ function App() {
               <div className="app">
                
                   <Routes>
-                    {/* <Route path="/" element={<EnterRoom />} /> */}
+                    
                     <Route path="/" element={<LoginSign />} />
+                    <Route path="/dashboard" element={<EnterRoom />} />
                     <Route path="/chatroom" element={<ChatRoom />} />
                     <Route path="/offline" element={<OfflineChat />} />
                     {/* Add more routes here if needed */}

@@ -88,6 +88,9 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
 }
 
 function LoginSign() {
+  const navigate = useNavigate();
+  const { setUserData } = useContext(ChatContext);
+
   const [formData, setFormData] = useState({
     hostid: '',
     password: '',
@@ -143,7 +146,10 @@ function LoginSign() {
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
-      const data = await response.text();
+      const data = await response.json();
+
+      setUserData({ data });
+      navigate(`/dashboard`);
       console.log(data);
 
     } catch (error) {
