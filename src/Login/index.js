@@ -8,11 +8,11 @@ const Login = ({ handleLoginSubmit, formData, handleChange }) => {
       <form onSubmit={handleLoginSubmit} className="form">
         <h2>Login</h2>
         <div className="form-group">
-          <label htmlFor="user">Usuário:</label>
+          <label htmlFor="user">Email:</label>
           <input
             type="text"
             id="user"
-            value={formData.user}
+            value={formData.email}
             onChange={handleChange}
           />
         </div>
@@ -124,12 +124,27 @@ function LoginSign() {
     }
   };
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    // Implementar lógica de login aqui
-  };
+  const handleLoginSubmit = async () => {
+    try {
+      const response = await fetch('https://marichat-go.onrender.com/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "email":formData.email,
+          "password":formData.password,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
+  };
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData(prevData => ({
