@@ -151,7 +151,7 @@ function LoginSign() {
       ...prevData,
       [id]: value
     }))
-    console.log()
+    console.log(formData,"|" , e.target)
     ;
   };
 
