@@ -1,112 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import './index.css';
-
-const Login = ({ handleLoginSubmit, formData, handleChange }) => {
-  return (
-    <div style={{ borderTop: "1px solid #e5c7c7" }}>
-      <form onSubmit={handleLoginSubmit} className="form">
-        <h2>Login</h2>
-        <div className="form-group">
-          <label htmlFor="user">Usuário:</label>
-          <input
-            type="text"
-            id="user"
-            value={formData.user}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Senha:</label>
-          <input
-            type="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Fazer Login</button>
-      </form>
-    </div>
-  );
-}
-
-const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
-  return (
-    <div style={{ borderTop: "1px solid #e5c7c7" }}>
-      <form onSubmit={handleRegisterSubmit} className="form">
-        <h2>Criar Conta</h2>
-        <div className="form-group">
-          <label htmlFor="fullName">Nome Completo:</label>
-          <input
-            type="text"
-            id="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="username">Nome de usuário:</label>
-          <input
-            type="text"
-            id="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Senha:</label>
-          <input
-            type="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="birthdate">Data de Nascimento:</label>
-          <input
-            type="date"
-            id="birthdate"
-            value={formData.birthdate}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
-  );
-}
 
 function LoginSign() {
   const [formData, setFormData] = useState({
+    hostid: '',
     password: '',
     fullName: '',
     username: '',
     email: '',
-    password: '',
     birthdate: ''
   });
   const [showLogin, setShowLogin] = useState(true);
 
+  useEffect(() => {
+    const generatedHostId = uuidv4();
+    setFormData(prevData => ({
+      ...prevData,
+      hostid: generatedHostId
+    }));
+  }, []);
+
   const handleRegisterSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // Implemente lógica de registro aqui
+    // Implementar lógica de registro aqui
   };
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // Implemente lógica de login aqui
+    // Implementar lógica de login aqui
   };
 
   const handleChange = (e) => {
