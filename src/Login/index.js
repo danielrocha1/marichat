@@ -141,6 +141,8 @@ function LoginSign() {
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
+      const data = await response.text();
+      console.log(data);
 
     } catch (error) {
       console.error('Erro:', error.message);
@@ -152,7 +154,6 @@ function LoginSign() {
       ...prevData,
       [id]: value
     }));
-    console.log(formData, "|", e.target);
   };
 
   const handleLoginClick = () => {
