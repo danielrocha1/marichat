@@ -45,6 +45,7 @@ const SignUp = ({ handleRegisterSubmit }) => {
       ...prevUser,
       [id]: value
     }));
+    console.log(user)
   };
 
   const handleSubmit = () => {
@@ -167,8 +168,7 @@ function LoginSign() {
       ) : (
         <SignUp 
         handleRegisterSubmit={handleRegisterSubmit}
-        user={user}
-        setUser={setUser}
+     
         />
       )}
     </div>
