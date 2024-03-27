@@ -47,8 +47,8 @@ const SignUp = ({ handleRegisterSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+
     handleRegisterSubmit(user);
     // Limpar os campos após o envio do formulário, se necessário
     setUser({
