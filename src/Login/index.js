@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './index.css';
 
 const Login = ({ handleSubmit, setUser, setChatroomName, user, chatroomName }) => {
   return (
