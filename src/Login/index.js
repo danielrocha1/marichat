@@ -51,13 +51,7 @@ const SignUp = ({ handleRegisterSubmit }) => {
 
     handleRegisterSubmit(user);
     // Limpar os campos após o envio do formulário, se necessário
-    setUser({
-      fullName: '',
-      username: '',
-      email: '',
-      password: '',
-      birthdate: ''
-    });
+
   };
 
   return (
@@ -134,7 +128,6 @@ function LoginSign() {
   const [showLogin, setShowLogin] = useState(true); // Estado para controlar a exibição do formulário de login
 
   const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
     console.log(e)
   };
 
