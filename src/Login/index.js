@@ -59,7 +59,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
           <input
             type="email"
             id="email"
-            value={formData}
+            value={formData.email} // Corrigido aqui
             onChange={handleChange}
           />
         </div>
@@ -68,7 +68,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
           <input
             type="password"
             id="password"
-            value={formData}
+            value={formData.password}
             onChange={handleChange}
           />
         </div>
@@ -86,6 +86,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
     </div>
   );
 }
+
 function LoginSign() {
   const [formData, setFormData] = useState({
     hostid: '',
@@ -132,8 +133,8 @@ function LoginSign() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "email":formData.email,
-          "password":formData.password,
+          "email": formData.email,
+          "password": formData.password,
         }),
       });
 
@@ -150,9 +151,8 @@ function LoginSign() {
     setFormData(prevData => ({
       ...prevData,
       [id]: value
-    }))
-    console.log(formData,"|" , e.target)
-    ;
+    }));
+    console.log(formData, "|", e.target);
   };
 
   const handleLoginClick = () => {
