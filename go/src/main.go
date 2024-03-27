@@ -172,12 +172,12 @@ func main() {
 			var userInfo UserInfo
 			err := db.QueryRow("SELECT * FROM Userinfo WHERE email = $1", loginReq.Email).Scan(
 				&userInfo.ID,
-				&userInfo.HostID,
-				&userInfo.FullName,
+				&userInfo.FullName,				
 				&userInfo.Username,
 				&userInfo.Email,
 				&userInfo.Password,
-				&userInfo.Birthdate)
+				&userInfo.Birthdate
+				&userInfo.HostID,)
 
 			if err != nil {
 				return err // Trate o erro adequadamente
