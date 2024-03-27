@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ChatContext from '../ChatContext'; // Importe o contexto aqui
+
 import './index.css';
 import { v4 as uuidv4 } from 'uuid';
 
