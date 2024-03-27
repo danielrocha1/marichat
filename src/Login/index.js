@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './index.css';
 
-const Login = ({ handleSubmit, setUser, setChatroomName, user, chatroomName }) => {
+const Login = ({ handleLoginSubmit, setUser, setChatroomName, user, chatroomName }) => {
   return (
     <div style={{borderTop:"1px solid #e5c7c7"}}>
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleLoginSubmit} className="form">
         <h2>Login</h2>
         <div className="for-group">
           <label htmlFor="user">Usuário:</label>
@@ -30,10 +30,10 @@ const Login = ({ handleSubmit, setUser, setChatroomName, user, chatroomName }) =
   );
 }
 
-const SignUp = ({setUser, user,}) => {
+const SignUp = ({handleRegisterSubmit, setUser, user,}) => {
   return (
     <div style={{borderTop:"1px solid #e5c7c7"}}>
-      <form className="form">
+      <form onSubmit={handleRegisterSubmit} className="form">
         <h2>Criar Conta</h2>
         <div className="for-group">
           <label htmlFor="user">Nome Completo:</label>
@@ -103,11 +103,15 @@ function LoginSign() {
   const [chatroomName, setChatroomName] = useState('');
   const [showLogin, setShowLogin] = useState(true); // Estado para controlar a exibição do formulário de login
 
-  const handleSubmit = async (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     console.log(e)
   };
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    console.log(e)
+  };
   const handleLoginClick = () => {
     setShowLogin(true);
   };
@@ -131,14 +135,18 @@ function LoginSign() {
 
         {showLogin ? (
         <Login
-          handleSubmit={handleSubmit}
+          handleLoginSubmit={handleLoginSubmit}
           setUser={setUser}
           setChatroomName={setChatroomName}
           user={user}
           chatroomName={chatroomName}
         />
       ) : (
-        <SignUp />
+        <SignUp 
+        handleRegisterSubmit={handleRegisterSubmit}
+        user={user}
+        setUser={setUser}
+        />
       )}
     </div>
   );
