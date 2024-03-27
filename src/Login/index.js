@@ -1,88 +1,17 @@
 import React, { useState } from 'react';
 import './index.css';
 
-const Login = ({ handleLoginSubmit, setUser, setChatroomName, user, chatroomName }) => {
+const Login = ({ handleLoginSubmit, formData, handleChange }) => {
   return (
-    <div style={{borderTop:"1px solid #e5c7c7"}}>
+    <div style={{ borderTop: "1px solid #e5c7c7" }}>
       <form onSubmit={handleLoginSubmit} className="form">
         <h2>Login</h2>
-        <div className="for-group">
+        <div className="form-group">
           <label htmlFor="user">Usuário:</label>
           <input
             type="text"
             id="user"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-          />
-        </div>
-        <div className="for-group">
-          <label htmlFor="chatroomName">Senha:</label>
-          <input
-            type="text"
-            id="chatroomName"
-            value={chatroomName}
-            onChange={(e) => setChatroomName(e.target.value)}
-          />
-        </div>
-        <button type="submit">Fazer Login</button>
-      </form>
-    </div>
-  );
-}
-
-const SignUp = ({ handleRegisterSubmit }) => {
-  const [user, setUser] = useState({
-    fullName: '',
-    username: '',
-    email: '',
-    password: '',
-    birthdate: ''
-  });
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [id]: value
-    }));
-    console.log(user)
-  };
-
-  const handleSubmit = () => {
-
-    handleRegisterSubmit(user);
-    // Limpar os campos após o envio do formulário, se necessário
-
-  };
-
-  return (
-    <div style={{ borderTop: "1px solid #e5c7c7" }}>
-      <form onSubmit={handleSubmit} className="form">
-        <h2>Criar Conta</h2>
-        <div className="form-group">
-          <label htmlFor="fullName">Nome Completo:</label>
-          <input
-            type="text"
-            id="fullName"
-            value={user.fullName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="username">Nome de usuário:</label>
-          <input
-            type="text"
-            id="username"
-            value={user.username}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={user.email}
+            value={formData.user}
             onChange={handleChange}
           />
         </div>
@@ -91,7 +20,54 @@ const SignUp = ({ handleRegisterSubmit }) => {
           <input
             type="password"
             id="password"
-            value={user.password}
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">Fazer Login</button>
+      </form>
+    </div>
+  );
+}
+
+const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
+  return (
+    <div style={{ borderTop: "1px solid #e5c7c7" }}>
+      <form onSubmit={handleRegisterSubmit} className="form">
+        <h2>Criar Conta</h2>
+        <div className="form-group">
+          <label htmlFor="fullName">Nome Completo:</label>
+          <input
+            type="text"
+            id="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">Nome de usuário:</label>
+          <input
+            type="text"
+            id="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Senha:</label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
             onChange={handleChange}
           />
         </div>
@@ -100,7 +76,7 @@ const SignUp = ({ handleRegisterSubmit }) => {
           <input
             type="date"
             id="birthdate"
-            value={user.birthdate}
+            value={formData.birthdate}
             onChange={handleChange}
           />
         </div>
@@ -110,32 +86,38 @@ const SignUp = ({ handleRegisterSubmit }) => {
   );
 }
 
-
-const LoginButton = ({ onClick }) => {
-  return (
-    <p>LOG IN</p>
-  );
-}
-
-const SignUpButton = ({ onClick }) => {
-  return (
-    <p>SIGN UP</p>
-  );
-}
-
 function LoginSign() {
-  const [user, setUser] = useState('');
-  const [chatroomName, setChatroomName] = useState('');
-  const [showLogin, setShowLogin] = useState(true); // Estado para controlar a exibição do formulário de login
+  const [formData, setFormData] = useState({
+    user: '',
+    password: '',
+    fullName: '',
+    username: '',
+    email: '',
+    password: '',
+    birthdate: ''
+  });
+  const [showLogin, setShowLogin] = useState(true);
 
-  const handleRegisterSubmit = async (e) => {
-    console.log(e)
-  };
-
-  const handleLoginSubmit = async (e) => {
+  const handleRegisterSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
+    console.log(formData);
+    // Implemente lógica de registro aqui
   };
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    // Implemente lógica de login aqui
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value
+    }));
+  };
+
   const handleLoginClick = () => {
     setShowLogin(true);
   };
@@ -145,30 +127,27 @@ function LoginSign() {
   };
 
   return (
-    
     <div className="center-form">
       <div className="top-options">
-      <div onClick={handleLoginClick} className="options">
-        <LoginButton />
-         </div>
-        <div style={{backgroundColor:"#007bff",height:"35px", width:"1px"}}/>
-      <div onClick={handleSignUpClick} className="options">
-        <SignUpButton  />
+        <div onClick={handleLoginClick} className="options">
+          <p>LOG IN</p>
         </div>
+        <div style={{ backgroundColor: "#007bff", height: "35px", width: "1px" }} />
+        <div onClick={handleSignUpClick} className="options">
+          <p>SIGN UP</p>
         </div>
-
-        {showLogin ? (
+      </div>
+      {showLogin ? (
         <Login
           handleLoginSubmit={handleLoginSubmit}
-          setUser={setUser}
-          setChatroomName={setChatroomName}
-          user={user}
-          chatroomName={chatroomName}
+          formData={formData}
+          handleChange={handleChange}
         />
       ) : (
-        <SignUp 
-        handleRegisterSubmit={handleRegisterSubmit}
-     
+        <SignUp
+          handleRegisterSubmit={handleRegisterSubmit}
+          formData={formData}
+          handleChange={handleChange}
         />
       )}
     </div>
@@ -176,4 +155,3 @@ function LoginSign() {
 }
 
 export default LoginSign;
-
