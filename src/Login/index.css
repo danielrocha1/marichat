@@ -1,5 +1,5 @@
 .center-form {
-    max-width: 300px;
+    max-width: 340px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -18,7 +18,7 @@
   }
   
   input[type="text"] {
-    width: 100%;
+    width: 90%;
     padding-top: 5px;
     border: 1px solid #ccc;
     border-radius: 3px;
