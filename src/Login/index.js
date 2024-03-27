@@ -8,11 +8,11 @@ const Login = ({ handleLoginSubmit, formData, handleChange }) => {
       <form onSubmit={handleLoginSubmit} className="form">
         <h2>Login</h2>
         <div className="form-group">
-          <label htmlFor="user">Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
-            type="text"
-            id="user"
-            value={formData.email}
+            type="email"
+            id="email"
+            value={formData.email} // Corrigido aqui
             onChange={handleChange}
           />
         </div>
