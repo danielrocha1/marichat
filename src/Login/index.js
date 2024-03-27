@@ -6,7 +6,7 @@ const Login = ({ handleSubmit, setUser, setChatroomName, user, chatroomName }) =
     <div style={{borderTop:"1px solid #e5c7c7"}}>
       <form onSubmit={handleSubmit} className="form">
         <h2>Login</h2>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="user">Usuário:</label>
           <input
             type="text"
@@ -15,7 +15,7 @@ const Login = ({ handleSubmit, setUser, setChatroomName, user, chatroomName }) =
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="chatroomName">Senha:</label>
           <input
             type="text"
@@ -35,7 +35,7 @@ const SignUp = ({setUser, user,}) => {
     <div style={{borderTop:"1px solid #e5c7c7"}}>
       <form className="form">
         <h2>Criar Conta</h2>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="user">Nome Completo:</label>
           <input
             type="text"
@@ -44,7 +44,7 @@ const SignUp = ({setUser, user,}) => {
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="user">Nome de usuário:</label>
           <input
             type="text"
@@ -53,7 +53,7 @@ const SignUp = ({setUser, user,}) => {
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="user">Email:</label>
           <input
             type="email"
@@ -62,7 +62,7 @@ const SignUp = ({setUser, user,}) => {
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="password">Senha:</label>
           <input
             type="password"
@@ -71,7 +71,7 @@ const SignUp = ({setUser, user,}) => {
             onChange={(e) => setUser(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="for-group">
           <label htmlFor="user">Data de Nascimento:</label>
           <input
             type="date"
@@ -118,7 +118,7 @@ function LoginSign() {
 
   return (
     
-    <div className="centered-form">
+    <div className="center-form">
       <div className="top-options">
       <div onClick={handleLoginClick} className="options">
         <LoginButton />
