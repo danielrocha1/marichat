@@ -59,7 +59,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
           <input
             type="email"
             id="email"
-            value={formData.email}
+            value={formData}
             onChange={handleChange}
           />
         </div>
@@ -68,7 +68,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
           <input
             type="password"
             id="password"
-            value={formData.password}
+            value={formData}
             onChange={handleChange}
           />
         </div>
@@ -150,7 +150,9 @@ function LoginSign() {
     setFormData(prevData => ({
       ...prevData,
       [id]: value
-    }));
+    }))
+    console.log()
+    ;
   };
 
   const handleLoginClick = () => {
