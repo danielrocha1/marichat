@@ -17,8 +17,8 @@ function App() {
               <div className="app">
                
                   <Routes>
-                    <Route path="/" element={<EnterRoom />} />
-                    <Route path="/login" element={<LoginSign />} />
+                    {/* <Route path="/" element={<EnterRoom />} /> */}
+                    <Route path="/" element={<LoginSign />} />
                     <Route path="/chatroom" element={<ChatRoom />} />
                     <Route path="/offline" element={<OfflineChat />} />
                     {/* Add more routes here if needed */}
