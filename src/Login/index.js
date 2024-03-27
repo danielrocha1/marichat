@@ -30,54 +30,83 @@ const Login = ({ handleLoginSubmit, setUser, setChatroomName, user, chatroomName
   );
 }
 
-const SignUp = ({handleRegisterSubmit, setUser, user,}) => {
+const SignUp = ({ handleRegisterSubmit }) => {
+  const [user, setUser] = useState({
+    fullName: '',
+    username: '',
+    email: '',
+    password: '',
+    birthdate: ''
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleRegisterSubmit(user);
+    // Limpar os campos após o envio do formulário, se necessário
+    setUser({
+      fullName: '',
+      username: '',
+      email: '',
+      password: '',
+      birthdate: ''
+    });
+  };
+
   return (
-    <div style={{borderTop:"1px solid #e5c7c7"}}>
-      <form onSubmit={handleRegisterSubmit} className="form">
+    <div style={{ borderTop: "1px solid #e5c7c7" }}>
+      <form onSubmit={handleSubmit} className="form">
         <h2>Criar Conta</h2>
-        <div className="for-group">
-          <label htmlFor="user">Nome Completo:</label>
+        <div className="form-group">
+          <label htmlFor="fullName">Nome Completo:</label>
           <input
             type="text"
-            id="FullName"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            id="fullName"
+            value={user.fullName}
+            onChange={handleChange}
           />
         </div>
-        <div className="for-group">
-          <label htmlFor="user">Nome de usuário:</label>
+        <div className="form-group">
+          <label htmlFor="username">Nome de usuário:</label>
           <input
             type="text"
-            id="user"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            id="username"
+            value={user.username}
+            onChange={handleChange}
           />
         </div>
-        <div className="for-group">
-          <label htmlFor="user">Email:</label>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            value={user.email}
+            onChange={handleChange}
           />
         </div>
-        <div className="for-group">
+        <div className="form-group">
           <label htmlFor="password">Senha:</label>
           <input
             type="password"
             id="password"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            value={user.password}
+            onChange={handleChange}
           />
         </div>
-        <div className="for-group">
-          <label htmlFor="user">Data de Nascimento:</label>
+        <div className="form-group">
+          <label htmlFor="birthdate">Data de Nascimento:</label>
           <input
             type="date"
-            id="Birthdate"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            id="birthdate"
+            value={user.birthdate}
+            onChange={handleChange}
           />
         </div>
         <button type="submit">Registrar</button>
@@ -85,6 +114,7 @@ const SignUp = ({handleRegisterSubmit, setUser, user,}) => {
     </div>
   );
 }
+
 
 const LoginButton = ({ onClick }) => {
   return (
