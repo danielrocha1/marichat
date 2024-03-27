@@ -106,7 +106,8 @@ function LoginSign() {
     }));
   }, []);
 
-  const handleRegisterSubmit = async () => {
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault()
     try {
       const response = await fetch('https://marichat-go.onrender.com/register', {
         method: 'POST',
@@ -125,7 +126,8 @@ function LoginSign() {
     }
   };
 
-  const handleLoginSubmit = async () => {
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault()
     try {
       const response = await fetch('https://marichat-go.onrender.com/login', {
         method: 'POST',
