@@ -1,6 +1,90 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from 'react';
 import './index.css';
+
+const Login = ({ handleLoginSubmit, formData, handleChange }) => {
+  return (
+    <div style={{ borderTop: "1px solid #e5c7c7" }}>
+      <form onSubmit={handleLoginSubmit} className="form">
+        <h2>Login</h2>
+        <div className="form-group">
+          <label htmlFor="user">Usuário:</label>
+          <input
+            type="text"
+            id="user"
+            value={formData.user}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Senha:</label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">Fazer Login</button>
+      </form>
+    </div>
+  );
+}
+
+const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
+  return (
+    <div style={{ borderTop: "1px solid #e5c7c7" }}>
+      <form onSubmit={handleRegisterSubmit} className="form">
+        <h2>Criar Conta</h2>
+        <div className="form-group">
+          <label htmlFor="fullName">Nome Completo:</label>
+          <input
+            type="text"
+            id="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">Nome de usuário:</label>
+          <input
+            type="text"
+            id="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Senha:</label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="birthdate">Data de Nascimento:</label>
+          <input
+            type="date"
+            id="birthdate"
+            value={formData.birthdate}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
+  );
+}
 
 function LoginSign() {
   const [formData, setFormData] = useState({
