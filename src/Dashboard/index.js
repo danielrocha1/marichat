@@ -39,17 +39,17 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const ChatTable = ({ chats }) => {
-
+const ChatTable = ({ userData, setChats }) => {
+  const [chats, setChats] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ "chatid": userData.fakeChatId }),
+          body: JSON.stringify({ "hostid": userData.data.hostid }),
         });
 
         if (!response.ok) {
@@ -57,7 +57,7 @@ const ChatTable = ({ chats }) => {
         }
 
         const data = await response.json();
-        setUsers(data.users);
+        setChats(data);
       } catch (error) {
         console.error('Erro:', error.message);
       }
@@ -67,13 +67,13 @@ const ChatTable = ({ chats }) => {
   });
 
   const HandleChat = () => {
-    console.log(user)
-    setIsSidebarOpen(!isSidebarOpen);
+    console.log(chat)
+    
   };
   
   const RemoveChat = () => {
     console.log(user)
-    setIsSidebarOpen(!isSidebarOpen);
+    
   };
 
   
@@ -110,12 +110,7 @@ const ChatTable = ({ chats }) => {
 const Dashboard = () => {
 const { userData, setUserData } = useContext(ChatContext);
 
-  const chats = [
-    {
-      name: 'chat1',
-      id: 'user@example.comuser@example.comuser@example',
-    }
-  ];
+
 
   const handleLogout = () => {
     
@@ -132,7 +127,7 @@ const { userData, setUserData } = useContext(ChatContext);
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable chats={chats}/>
+            <ChatTable userData={userData} setChats={setChats} />
           </div>
         </div>
       </div>
