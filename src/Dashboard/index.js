@@ -40,7 +40,7 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const ChatTable = ({ userData, setChats }) => {
+const ChatTable = ({ userData, setChats, chats }) => {
   
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const ChatTable = ({ userData, setChats }) => {
     fetchChats();
   }, []);
 
-  const handleChat = () => {
+  const handleChat = ({chats}) => {
     console.log(chats)
     console.log("Entrar no chat");
   };
@@ -109,7 +109,7 @@ const ChatTable = ({ userData, setChats }) => {
 
 // App
 const Dashboard = () => {
-  const { userData, setChats } = useContext(ChatContext);
+  const { userData, setChats, chats } = useContext(ChatContext);
 
   const handleLogout = () => {
     console.log("Logout");
@@ -125,7 +125,7 @@ const Dashboard = () => {
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable userData={userData} setChats={setChats} />
+            <ChatTable userData={userData} setChats={setChats} chats={chats} />
           </div>
         </div>
       </div>
