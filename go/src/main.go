@@ -249,7 +249,7 @@ func main() {
 
 		if err != nil{
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Failed to parse request body",
+				"error": "Não foi possivel localizar o chat no banco ",
 			})
 		}
 
