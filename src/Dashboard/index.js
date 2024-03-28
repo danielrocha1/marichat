@@ -63,8 +63,8 @@ function ChatTable({ chats }) {
                 <td>{chat.name}</td>
                 <td>{chat.id}</td>
                 <td>
-                  <button onClick={() => handleAction(index)} className="blue-button">Entrar</button>
-                  <button onClick={() => handleAction(index)} className="red-button">Remover</button>
+                  <button onClick={() => console.log("Entrar chat")} className="blue-button">Entrar</button>
+                  <button onClick={() => console.log("Remover chat")} className="red-button">Remover</button>
 
                   {/* Adicione mais botões ou links conforme necessário */}
                 </td>
@@ -125,7 +125,7 @@ const Dashboard = () => {
 
       <div className="container">
       <div className="createChat">
-        <button onClick={() => handleAction(index)} className="violet-button">Criar Chat</button>
+        <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
       </div>
 
         
