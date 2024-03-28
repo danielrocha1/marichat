@@ -3,16 +3,13 @@ import ChatContext from '../ChatContext';
 import './index.css';
 
 // Componentes
-const Sidebar = ({ user}) => {
+const Sidebar = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = ({chats}) => {
-    console.log(user.data.hostid)
- 
+  const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  
   return (
     <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
       <div>
@@ -41,8 +38,6 @@ const TopHeader = ({ handleLogout }) => {
 };
 
 const ChatTable = ({ userData, setChats, chats }) => {
-  
-
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -51,7 +46,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ "hostid": userData.data.hostid }),
+          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
         });
 
         if (!response.ok) {
@@ -66,17 +61,16 @@ const ChatTable = ({ userData, setChats, chats }) => {
     };
 
     fetchChats();
-  }, []);
+  }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = () => {
     console.log("Entrar no chat");
   };
-  
+
   const removeChat = () => {
     console.log("Remover chat");
   };
 
-  
   return (
     <div className="">
       <div className="table-container">
@@ -124,7 +118,7 @@ const Dashboard = () => {
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable userData={userData} setChats={setChats} />
+            <ChatTable userData={userData} setChats={setChats} chats={[]} /> {/* passa um array vazio para chats */}
           </div>
         </div>
       </div>
