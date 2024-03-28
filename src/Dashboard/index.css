@@ -2,35 +2,30 @@
 .app {
     display: flex;
     height: 100vh;
-    align-items: flex-start; /* Alinhando itens ao início verticalmente */
+    align-items: flex-start;
   }
-  .content{
+  
+  .content {
     margin-top: 50px;
     margin-left: 50px;
-  
-    
   }
   
-  
-  
   .sidebar {
-    position:fixed;
-    margin-top:-10px;
+    position: fixed;
+    margin-top: -10px;
     z-index: 5;
     width: 280px;
     height: 100vh;
     background-color: #1c71d8;
     color: #fff;
     transition: transform 0.3s ease;
-    transform: translateX(-240px); 
-  
+    transform: translateX(-240px);
     border: 2px solid #1a5fb4;
-  
   }
   
-  .sidebar.open{
+  .sidebar.open {
     background-color: #1a5fb4;
-    transform: translateX(0); /* Mostra o menu lateral quando a classe sidebar-open é aplicada */
+    transform: translateX(0);
   }
   
   .user-info {
@@ -44,12 +39,11 @@
   }
   
   .user-info p {
-  margin: 5px 0;
+    margin: 5px 0;
   }
   
   /* Estilo para os links do menu lateral */
   .sidebar a {
-  
     padding: 10px;
     color: #fff;
     text-decoration: none;
@@ -62,9 +56,9 @@
   /* Estilo para o top header */
   .top-header {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     width: 98%;
-    position: fixed; 
+    position: fixed;
     top: 0;
     background-color: #1c71d8;
     color: #fff;
@@ -72,26 +66,24 @@
     border: 4px dotted #1a5fb4;
   }
   
-  
   .bar1, .bar2, .bar3 {
-      width: 25px;
-      height: 3px;
-      background-color: #ebebeb;
-      margin: 8px ;
-      transition: 0.4s;
-    
+    width: 25px;
+    height: 3px;
+    background-color: #ebebeb;
+    margin: 8px;
+    transition: 0.4s;
   }
   
   .sidebar.open .bar1 {
-      transform: rotate(-45deg) translate(-9px, 7px);
+    transform: rotate(-45deg) translate(-9px, 7px);
   }
   
   .sidebar.open .bar2 {
-      opacity: 0;
+    opacity: 0;
   }
   
   .sidebar.open .bar3 {
-      transform: rotate(45deg) translate(-8px, -7px);
+    transform: rotate(45deg) translate(-8px, -7px);
   }
   
   .top-header div {
@@ -107,10 +99,8 @@
     border-radius: 5px;
   }
   
-  
-  
   .toggle-btn {
-    cursor:pointer;
+    cursor: pointer;
     position: absolute;
     top: 42px;
     right: 10px;
@@ -119,21 +109,20 @@
   
   .createChat {
     margin-top: 20px;
-    margin-left: auto; /* Move a div para a direita */
+    margin-left: auto;
   }
   
   .container {
-    flex: 1; /* Ocupa todo o espaço disponível */
+    flex: 1;
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Alinhando horizontalmente ao centro */
-    align-items: center; /* Alinhando verticalmente ao centro */
+    justify-content: center;
+    align-items: center;
   }
   
-  
-  .blue-button {
-    background-color: #007bff; 
+  .blue-button, .violet-button, .red-button {
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -145,61 +134,39 @@
   }
   
   .blue-button:hover {
-    background-color: #0056b3; /* Azul mais escuro no hover */
+    background-color: #0056b3;
   }
   
   .violet-button {
-    background-color: #813d9c; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #813d9c;
   }
   
   .violet-button:hover {
-    background-color: #613583; /* Azul mais escuro no hover */
+    background-color: #613583;
   }
   
   .red-button {
-    background-color: #e01b24; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #e01b24;
   }
   
   .red-button:hover {
-    background-color: #a51d2d; /* Azul mais escuro no hover */
+    background-color: #a51d2d;
   }
   
-  
-  
   /* styles.css */
-  
-  
   .table-container {
     margin-top: 25px;
     font-family: Arial, sans-serif;
     width: 100%;
     display: flex;
-    justify-content: center; /* Centralizando horizontalmente */
-    align-items: flex-start; /* Alinhando à direita */
+    justify-content: center;
+    align-items: flex-start;
     overflow-x: auto;
   }
-  
   
   .table-container table {
     border-collapse: collapse;
     width: 100%;
-  
   }
   
   .table-container th,
@@ -214,7 +181,6 @@
     text-align: center;
   }
   
-  /* Alinhe o texto "Total" à direita */
   .table-container th.total {
     text-align: right;
   }
@@ -226,3 +192,4 @@
   .table-container tr:hover {
     background-color: #dddddd;
   }
+  

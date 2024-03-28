@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
-import "./index.css"
+import './index.css';
 
 // Componentes
 const Sidebar = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-  
+
   return (
- 
     <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <div>
-          <div onClick={toggleSidebar} className="toggle-btn">
-              <div className="bar1"></div>
-              <div className="bar2"></div>
-              <div className="bar3"></div>
-          </div>
+      <div>
+        <div onClick={toggleSidebar} className="toggle-btn">
+          <div className="bar1"></div>
+          <div className="bar2"></div>
+          <div className="bar3"></div>
         </div>
+      </div>
       <div className="user-info">
         <img src={user.photo} alt="User" />
         <p>{user.username}</p>
         <p>{user.email}</p>
       </div>
     </div>
-      
   );
 };
 
@@ -37,15 +35,7 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const MeuChat = () => {
-  return <div>Conteúdo do Meu Chat</div>;
-};
-
-const ChatPublico = () => {
-  return <div>Conteúdo do Chat Público</div>;
-};
-
-function ChatTable({ chats }) {
+const ChatTable = ({ chats }) => {
   return (
     <div className="">
       <div className="table-container">
@@ -58,15 +48,13 @@ function ChatTable({ chats }) {
             </tr>
           </thead>
           <tbody>
-            {chats.map((chat, index) => ( // Adicionei o parâmetro de índice para a função handleAction
+            {chats.map((chat, index) => (
               <tr key={chat.id}>
                 <td>{chat.name}</td>
                 <td>{chat.id}</td>
                 <td>
                   <button onClick={() => console.log("Entrar chat")} className="blue-button">Entrar</button>
                   <button onClick={() => console.log("Remover chat")} className="red-button">Remover</button>
-
-                  {/* Adicione mais botões ou links conforme necessário */}
                 </td>
               </tr>
             ))}
@@ -75,15 +63,10 @@ function ChatTable({ chats }) {
       </div>
     </div>
   );
-}
+};
 
 // App
 const Dashboard = () => {
-  
-
-  
-
-  // Placeholder user object
   const user = {
     photo: 'user-photo-url',
     username: 'username',
@@ -97,45 +80,24 @@ const Dashboard = () => {
     }
   ];
 
-
   const handleLogout = () => {
-    // Aqui você implementará a lógica real para logout
     console.log("Logout");
-  };
-
-  const handleEnterRoom = () => {
-    // Aqui você implementará a lógica para entrar na sala
-    console.log("Entrar na Sala");
-  };
-
-  const handleCreateChat = () => {
-    // Aqui você implementará a lógica para criar um chat
-    console.log("Criar Chat");
   };
 
   return (
     <div>
-      <TopHeader
-        handleLogout={handleLogout}
-        handleEnterRoom={handleEnterRoom}
-        handleCreateChat={handleCreateChat}
-      />   
-    <div className="app">
-      <Sidebar user={user} />
-
-      <div className="container">
-      <div className="createChat">
-        <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
-      </div>
-
-        
-      <div className="">
-        <ChatTable chats={chats}/>
-      </div>
-
+      <TopHeader handleLogout={handleLogout} />
+      <div className="app">
+        <Sidebar user={user} />
+        <div className="container">
+          <div className="createChat">
+            <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
+          </div>
+          <div className="">
+            <ChatTable chats={chats}/>
+          </div>
         </div>
-       </div>
-     
+      </div>
     </div>
   );
 };
