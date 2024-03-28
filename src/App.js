@@ -11,6 +11,7 @@ import ChatContext from './ChatContext';
 
 function App() {
   const [userData, setUserData] = useState({});
+  const [chats, setChats] = useState({});
 
 
   return (

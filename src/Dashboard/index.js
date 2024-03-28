@@ -40,8 +40,8 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const ChatTable = ({ userData }) => {
-  const [chats, setChats] = useState([]);
+const ChatTable = ({ userData, setChats }) => {
+  
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -109,7 +109,7 @@ const ChatTable = ({ userData }) => {
 
 // App
 const Dashboard = () => {
-  const { userData } = useContext(ChatContext);
+  const { userData, setChats } = useContext(ChatContext);
 
   const handleLogout = () => {
     console.log("Logout");
@@ -125,7 +125,7 @@ const Dashboard = () => {
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable userData={userData} />
+            <ChatTable userData={userData} setChats={setChats} />
           </div>
         </div>
       </div>
