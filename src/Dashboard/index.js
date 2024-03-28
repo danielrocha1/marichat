@@ -40,7 +40,7 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const ChatTable = ({ userData, setChats, chats }) => {
+const ChatTable = ({ userData, setChats }) => {
   
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
     fetchChats();
   }, []);
 
-  const handleChat = ({chats}) => {
+  const handleChat = () => {
     console.log(chats)
     console.log("Entrar no chat");
   };
@@ -109,7 +109,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
 
 // App
 const Dashboard = () => {
-  const { userData, setChats, chats } = useContext(ChatContext);
+  const { userData, setChats } = useContext(ChatContext);
 
   const handleLogout = () => {
     console.log("Logout");
