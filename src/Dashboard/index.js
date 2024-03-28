@@ -8,6 +8,7 @@ const Sidebar = ({ user }) => {
 
   const toggleSidebar = () => {
     console.log(user.data.hostid)
+    console.log(chats)
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -90,8 +91,8 @@ const ChatTable = ({ userData }) => {
           <tbody>
             {chats.map((chat, index) => (
               <tr key={chat.id}>
-                <td>{chat.name}</td>
-                <td>{chat.id}</td>
+                <td>{chat.chatname}</td>
+                <td>{chat.chatid}</td>
                 <td>
                   <button onClick={handleChat} className="blue-button">Entrar</button>
                   <button onClick={removeChat} className="red-button">Remover</button>
