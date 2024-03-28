@@ -65,7 +65,7 @@ const ChatTable = ({ userData }) => {
     };
 
     fetchChats();
-  }, [userData.data.hostid]);
+  }, []);
 
   const handleChat = () => {
     console.log("Entrar no chat");
