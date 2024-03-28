@@ -3,11 +3,12 @@ import ChatContext from '../ChatContext';
 import './index.css';
 
 // Componentes
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    console.log(user.data.hostid);
+  const toggleSidebar = ({chats}) => {
+    console.log(user.data.hostid)
+ 
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -45,7 +46,13 @@ const ChatTable = ({ userData, setChats, chats }) => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await fetch(`https://marichat-go.onrender.com/chatrooms?hostid=${userData.data.hostid}`);
+        const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ "hostid": userData.data.hostid }),
+        });
 
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
@@ -61,8 +68,8 @@ const ChatTable = ({ userData, setChats, chats }) => {
     fetchChats();
   }, []);
 
-  const handleChat = () => {
-    console.log(chats);
+  const handleChat = ({chats}) => {
+    console.log(chats)
     console.log("Entrar no chat");
   };
   
@@ -118,7 +125,7 @@ const Dashboard = () => {
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable userData={userData} setChats={setChats} chats={chats} />
+            <ChatTable userData={userData} setChats={setChats} />
           </div>
         </div>
       </div>
