@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ChatContext from '../ChatContext';
 import './index.css';
 
