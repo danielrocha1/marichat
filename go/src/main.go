@@ -240,7 +240,7 @@ func main() {
 		}
 		var chatrooms Chatrooms
 
-		err = db.QueryRow("SELECT * FROM Chatroom WHERE hostid = $1 AND active = $2 ", requestData.HostID, true).Scan(
+		err = db.QueryRow("SELECT * FROM Chatrooms WHERE hostid = $1 AND active = $2 ", requestData.HostID, true).Scan(
 			&chatrooms.ID,			
 			&chatrooms.RoomName,
 			&chatrooms.ChatID,
