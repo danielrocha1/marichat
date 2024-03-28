@@ -222,7 +222,7 @@ func main() {
 	}))
 	
 
-	app.Get("/chatrooms", func(c *fiber.Ctx) error {
+	app.POST("/chatrooms", func(c *fiber.Ctx) error {
 		var requestData struct {
 			HostID string `json:"hostid"`
 		}

@@ -46,7 +46,7 @@ const ChatTable = ({ userData }) => {
     const fetchChats = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
