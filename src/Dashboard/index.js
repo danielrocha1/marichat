@@ -6,7 +6,7 @@ import './index.css';
 const Sidebar = ({ user, chats }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
+  const toggleSidebar = (chats) => {
     console.log(chats)
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -113,7 +113,7 @@ const Dashboard = () => {
     <div>
       <TopHeader handleLogout={handleLogout} />
       <div className="app">
-        <Sidebar user={userData} />
+        <Sidebar user={userData} chats={chats} />
         <div className="container">
           <div className="createChat">
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
