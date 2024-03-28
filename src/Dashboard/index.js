@@ -116,10 +116,10 @@ const Dashboard = () => {
         <Sidebar user={userData} />
         <div className="container">
           <div className="createChat">
-            <button onClick={() => console.log(chats)} className="violet-button">Criar Chat</button>
+            <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable userData={userData} setChats={setChats} chats={chats} />
+            <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
         </div>
       </div>
