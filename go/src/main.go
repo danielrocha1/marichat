@@ -231,37 +231,51 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-		type Chatrooms struct {
-			ID string `json:"id"`
+
+		type Chatroom struct {
+			ID       string `json:"id"`
 			RoomName string `json:"chatname"`
-			ChatID    string `json:"chatid"`
-			HostID string `json:"hostid"`
-			Active bool 	`json:"active"`
+			ChatID   string `json:"chatid"`
+			HostID   string `json:"hostid"`
+			Active   bool   `json:"active"`
 		}
-		var chatrooms Chatrooms
 
-		err = db.QueryRow("SELECT * FROM Chatrooms WHERE hostid = $1 AND active = $2 ", requestData.HostID, true).Scan(
-			&chatrooms.ID,			
-			&chatrooms.RoomName,
-			&chatrooms.ChatID,
-			&chatrooms.HostID,
-			&chatrooms.Active)
+		var chatrooms []Chatroom
 
-		if err != nil{
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Não foi possivel localizar o chat no banco ",
+		rows, err := db.Query("SELECT id, chatname, chatid, hostid, active FROM Chatrooms WHERE hostid = $1 AND active = $2", requestData.HostID, true)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to query database",
+			})
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			var chatroom Chatroom
+			err := rows.Scan(&chatroom.ID, &chatroom.RoomName, &chatroom.ChatID, &chatroom.HostID, &chatroom.Active)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to scan row from database",
+				})
+			}
+			chatrooms = append(chatrooms, chatroom)
+		}
+
+		if err := rows.Err(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Error iterating over rows",
 			})
 		}
 
+		// Filter chatrooms by hostid
+		chatroomsFiltered := make([]Chatroom, 0)
+		for _, chatroom := range chatrooms {
+			if chatroom.HostID == requestData.HostID {
+				chatroomsFiltered = append(chatroomsFiltered, chatroom)
+			}
+		}
 
-		// chatroomNames := make([]*Chatroom, 0, len(chatrooms))
-		// for _, chatRoom := range chatrooms {
-		// 	if requestData.HostID == chatRoom.HostID {
-		// 		chatroomNames = append(chatroomNames, chatRoom)
-		// 	}
-
-		// }
-		return c.JSON(chatrooms)
+		return c.JSON(chatroomsFiltered)
 	})
 
 	app.Post("/addUser", func(c *fiber.Ctx) error {
