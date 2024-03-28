@@ -3,12 +3,12 @@ import ChatContext from '../ChatContext';
 import './index.css';
 
 // Componentes
-const Sidebar = ({ user, chats }) => {
+const Sidebar = ({ user}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = ({chats}) => {
     console.log(user.data.hostid)
-    console.log(chats)
+ 
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -69,6 +69,7 @@ const ChatTable = ({ userData }) => {
   }, []);
 
   const handleChat = () => {
+    console.log(chats)
     console.log("Entrar no chat");
   };
   
@@ -118,7 +119,7 @@ const Dashboard = () => {
     <div>
       <TopHeader handleLogout={handleLogout} />
       <div className="app">
-        <Sidebar user={userData} chats={chats}  />
+        <Sidebar user={userData} />
         <div className="container">
           <div className="createChat">
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
