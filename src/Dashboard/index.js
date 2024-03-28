@@ -3,10 +3,11 @@ import ChatContext from '../ChatContext';
 import './index.css';
 
 // Componentes
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, chats }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
+    console.log(chats)
     setIsSidebarOpen(!isSidebarOpen);
   };
 
