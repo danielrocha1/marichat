@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ChatContext from '../ChatContext';
 import './index.css';
 
@@ -39,10 +39,11 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const ChatTable = ({ userData, setChats }) => {
+const ChatTable = ({ userData }) => {
   const [chats, setChats] = useState([]);
+
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchChats = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
           method: 'GET',
@@ -63,17 +64,15 @@ const ChatTable = ({ userData, setChats }) => {
       }
     };
 
-    fetchUsers();
-  });
+    fetchChats();
+  }, [userData.data.hostid]);
 
-  const HandleChat = () => {
-    console.log(chat)
-    
+  const handleChat = () => {
+    console.log("Entrar no chat");
   };
   
-  const RemoveChat = () => {
-    console.log(user)
-    
+  const removeChat = () => {
+    console.log("Remover chat");
   };
 
   
@@ -94,8 +93,8 @@ const ChatTable = ({ userData, setChats }) => {
                 <td>{chat.name}</td>
                 <td>{chat.id}</td>
                 <td>
-                  <button onClick={HandleChat} className="blue-button">Entrar</button>
-                  <button onClick={RemoveChat} className="red-button">Remover</button>
+                  <button onClick={handleChat} className="blue-button">Entrar</button>
+                  <button onClick={removeChat} className="red-button">Remover</button>
                 </td>
               </tr>
             ))}
@@ -108,12 +107,9 @@ const ChatTable = ({ userData, setChats }) => {
 
 // App
 const Dashboard = () => {
-const { userData, setUserData } = useContext(ChatContext);
-
-
+  const { userData } = useContext(ChatContext);
 
   const handleLogout = () => {
-    
     console.log("Logout");
   };
 
@@ -127,7 +123,7 @@ const { userData, setUserData } = useContext(ChatContext);
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
           <div className="">
-            <ChatTable userData={userData} setChats={setChats} />
+            <ChatTable userData={userData} />
           </div>
         </div>
       </div>
