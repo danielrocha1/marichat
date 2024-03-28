@@ -1,0 +1,228 @@
+/* Estilo para o layout geral */
+.app {
+    display: flex;
+    height: 100vh;
+    align-items: flex-start; /* Alinhando itens ao início verticalmente */
+  }
+  .content{
+    margin-top: 50px;
+    margin-left: 50px;
+  
+    
+  }
+  
+  
+  
+  .sidebar {
+    position:fixed;
+    margin-top:-10px;
+    z-index: 5;
+    width: 280px;
+    height: 100vh;
+    background-color: #1c71d8;
+    color: #fff;
+    transition: transform 0.3s ease;
+    transform: translateX(-240px); 
+  
+    border: 2px solid #1a5fb4;
+  
+  }
+  
+  .sidebar.open{
+    background-color: #1a5fb4;
+    transform: translateX(0); /* Mostra o menu lateral quando a classe sidebar-open é aplicada */
+  }
+  
+  .user-info {
+    margin: 50px 0;
+    padding: 20px;
+  }
+  
+  .user-info img {
+    width: 100px;
+    border-radius: 50%;
+  }
+  
+  .user-info p {
+  margin: 5px 0;
+  }
+  
+  /* Estilo para os links do menu lateral */
+  .sidebar a {
+  
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .sidebar a:hover {
+    background-color: #9e9494;
+  }
+  
+  /* Estilo para o top header */
+  .top-header {
+    display: flex;
+    justify-content: space-between; 
+    width: 98%;
+    position: fixed; 
+    top: 0;
+    background-color: #1c71d8;
+    color: #fff;
+    padding: 10px;
+    border: 4px dotted #1a5fb4;
+  }
+  
+  
+  .bar1, .bar2, .bar3 {
+      width: 25px;
+      height: 3px;
+      background-color: #ebebeb;
+      margin: 8px ;
+      transition: 0.4s;
+    
+  }
+  
+  .sidebar.open .bar1 {
+      transform: rotate(-45deg) translate(-9px, 7px);
+  }
+  
+  .sidebar.open .bar2 {
+      opacity: 0;
+  }
+  
+  .sidebar.open .bar3 {
+      transform: rotate(45deg) translate(-8px, -7px);
+  }
+  
+  .top-header div {
+    padding: 10px;
+    margin-left: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .top-header div:hover {
+    background-color: #0d348b;
+    border-radius: 5px;
+  }
+  
+  
+  
+  .toggle-btn {
+    cursor:pointer;
+    position: absolute;
+    top: 42px;
+    right: 10px;
+    z-index: 1;
+  }
+  
+  .createChat {
+    margin-top: 20px;
+    margin-left: auto; /* Move a div para a direita */
+  }
+  
+  .container {
+    flex: 1; /* Ocupa todo o espaço disponível */
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Alinhando horizontalmente ao centro */
+    align-items: center; /* Alinhando verticalmente ao centro */
+  }
+  
+  
+  .blue-button {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .blue-button:hover {
+    background-color: #0056b3; /* Azul mais escuro no hover */
+  }
+  
+  .violet-button {
+    background-color: #813d9c; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .violet-button:hover {
+    background-color: #613583; /* Azul mais escuro no hover */
+  }
+  
+  .red-button {
+    background-color: #e01b24; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .red-button:hover {
+    background-color: #a51d2d; /* Azul mais escuro no hover */
+  }
+  
+  
+  
+  /* styles.css */
+  
+  
+  .table-container {
+    margin-top: 25px;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centralizando horizontalmente */
+    align-items: flex-start; /* Alinhando à direita */
+    overflow-x: auto;
+  }
+  
+  
+  .table-container table {
+    border-collapse: collapse;
+    width: 100%;
+  
+  }
+  
+  .table-container th,
+  .table-container td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .table-container th {
+    background-color: #f2f2f2;
+    text-align: center;
+  }
+  
+  /* Alinhe o texto "Total" à direita */
+  .table-container th.total {
+    text-align: right;
+  }
+  
+  .table-container tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .table-container tr:hover {
+    background-color: #dddddd;
+  }
