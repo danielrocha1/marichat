@@ -16,7 +16,7 @@ function App() {
 
   return (
     <Router>
-            <ChatContext.Provider value={{ userData, setUserData }}>
+            <ChatContext.Provider value={{ userData, setUserData, chats, setChats }}>
               <div className="app">
                
                   <Routes>
