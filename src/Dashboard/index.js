@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ChatContext from '../ChatContext';
 import './index.css';
 
 // Componentes
@@ -6,6 +7,7 @@ const Sidebar = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
+    console.log(user)
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -67,11 +69,7 @@ const ChatTable = ({ chats }) => {
 
 // App
 const Dashboard = () => {
-  const user = {
-    photo: 'user-photo-url',
-    username: 'username',
-    email: 'user@example.com'
-  };
+const { userData, setUserData } = useContext(ChatContext);
 
   const chats = [
     {
@@ -81,6 +79,7 @@ const Dashboard = () => {
   ];
 
   const handleLogout = () => {
+    
     console.log("Logout");
   };
 
@@ -88,7 +87,7 @@ const Dashboard = () => {
     <div>
       <TopHeader handleLogout={handleLogout} />
       <div className="app">
-        <Sidebar user={user} />
+        <Sidebar user={userData} />
         <div className="container">
           <div className="createChat">
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
