@@ -22,8 +22,9 @@ const Sidebar = ({ user }) => {
       </div>
       <div className="user-info">
         <img src={user.photo} alt="User" />
-        <p>{user.username}</p>
-        <p>{user.email}</p>
+        <p>{user.data.fullname}</p>
+        <p>{user.data.email}</p>
+        <p>{user.data.birthdate}</p>
       </div>
     </div>
   );
