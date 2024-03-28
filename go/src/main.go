@@ -1,4 +1,4 @@
-package main
+	package main
 
 import (
 	"bytes"
@@ -220,6 +220,7 @@ func main() {
 			}
 		}
 	}))
+	
 
 	app.Get("/chatrooms", func(c *fiber.Ctx) error {
 		var requestData struct {
@@ -230,14 +231,37 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-		chatroomNames := make([]*Chatroom, 0, len(chatrooms))
-		for _, chatRoom := range chatrooms {
-			if requestData.HostID == chatRoom.HostID {
-				chatroomNames = append(chatroomNames, chatRoom)
-			}
-
+		type Chatrooms struct {
+			ID string `json:"id"`
+			RoomName string `json:"chatname"`
+			ChatID    string `json:"chatid"`
+			HostID string `json:"hostid"`
+			Active bool 	`json:"active"`
 		}
-		return c.JSON(chatroomNames)
+		var chatrooms Chatrooms
+
+		err = db.QueryRow("SELECT * FROM Chatroom WHERE hostid = $1 && active = $2 ", requestData.HostID, true).Scan(
+			&chatrooms.ID,			
+			&chatrooms.RoomName,
+			&chatrooms.ChatID,
+			&chatrooms.HostID,
+			&chatrooms.Active)
+
+		if err != nil{
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
+
+
+		// chatroomNames := make([]*Chatroom, 0, len(chatrooms))
+		// for _, chatRoom := range chatrooms {
+		// 	if requestData.HostID == chatRoom.HostID {
+		// 		chatroomNames = append(chatroomNames, chatRoom)
+		// 	}
+
+		// }
+		return c.JSON(chatrooms)
 	})
 
 	app.Post("/addUser", func(c *fiber.Ctx) error {
@@ -298,7 +322,7 @@ func main() {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
 			Name     string `json:"username"`
-			RoomName string `json:"roomname"`
+			ChatName string `json:"chatname"`
 			HostID   string `json:"hostid"`
 			ChatID   string `json:"chatid"`
 		}
@@ -313,7 +337,7 @@ func main() {
 		if !exists {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
-				Name: requestData.RoomName,
+				Name: requestData.ChatName,
 				Users: []Users{
 					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
 				},
@@ -321,6 +345,13 @@ func main() {
 				ChatID: requestData.ChatID,
 			}
 			chatrooms[requestData.ChatID] = chatroom
+
+			_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active) VALUES ($1, $2, $3, $4)",
+			requestData.ChatName, requestData.ChatID, requestData.HostID, true)
+			if err != nil {
+				return err
+			}
+
 		} else {
 			if chatroom.ChatID == requestData.ChatID {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -329,7 +360,7 @@ func main() {
 			} else if chatroom.HostID != requestData.HostID {
 				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
 				newChatroom := &Chatroom{
-					Name: requestData.RoomName,
+					Name: requestData.ChatName,
 					Users: []Users{
 						{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
 					},
@@ -337,9 +368,16 @@ func main() {
 					ChatID: requestData.ChatID, // Mantendo o ChatID igual
 				}
 				chatrooms[requestData.ChatID] = newChatroom
+				_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active) VALUES ($1, $2, $3, $4)",
+			requestData.ChatName, requestData.ChatID, requestData.HostID, true)
+			if err != nil {
+				return err
+			}
 			} else {
 				// Se o ID do host for o mesmo, apenas adicione o usuário à sala de bate-papo existente
-				chatroom.Users = append(chatroom.Users, Users{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID})
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Chat já criado",
+				})
 			}
 		}
 
@@ -347,7 +385,7 @@ func main() {
 			"type":     "newUser",
 			"user":     requestData.Name,
 			"hostid":   requestData.HostID,
-			"chatRoom": requestData.RoomName,
+			"chatRoom": requestData.ChatName,
 			"chatid": requestData.ChatID,
 		})
 		if err != nil {

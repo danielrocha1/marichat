@@ -11,6 +11,7 @@ const Sidebar = ({ user }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  
   return (
     <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
       <div>
@@ -39,6 +40,43 @@ const TopHeader = ({ handleLogout }) => {
 };
 
 const ChatTable = ({ chats }) => {
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ "chatid": userData.fakeChatId }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        const data = await response.json();
+        setUsers(data.users);
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+    };
+
+    fetchUsers();
+  });
+
+  const HandleChat = () => {
+    console.log(user)
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+  
+  const RemoveChat = () => {
+    console.log(user)
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  
   return (
     <div className="">
       <div className="table-container">
@@ -56,8 +94,8 @@ const ChatTable = ({ chats }) => {
                 <td>{chat.name}</td>
                 <td>{chat.id}</td>
                 <td>
-                  <button onClick={() => console.log("Entrar chat")} className="blue-button">Entrar</button>
-                  <button onClick={() => console.log("Remover chat")} className="red-button">Remover</button>
+                  <button onClick={HandleChat} className="blue-button">Entrar</button>
+                  <button onClick={RemoveChat} className="red-button">Remover</button>
                 </td>
               </tr>
             ))}
