@@ -7,7 +7,7 @@ const Sidebar = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
-    console.log(user)
+    console.log(user.data.hostid)
     setIsSidebarOpen(!isSidebarOpen);
   };
 
