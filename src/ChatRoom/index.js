@@ -68,14 +68,14 @@ function ChatRoom({ children }) {
           },
           body: JSON.stringify({ "chatid": chat.chatid }),
         });
-        console.log("chats", chat)
+        
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
 
         const data = await response.json();
         setUsers(data.users);
-        console.log("DATA",data)
+        console.log("DATA",users)
       } catch (error) {
         console.error('Erro:', error.message);
       }
