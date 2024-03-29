@@ -75,14 +75,15 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
-        console.log("DATA",users)
+        
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
 
     fetchUsers();
-    console.log(chat)
+    console.log("DATA",users)
+    console.log("DATA",chat)
     // const socket = new WebSocket('wss://marichat-go.onrender.com');
     // socket.onmessage = (event) => {
     //   const message = JSON.parse(event.data);
