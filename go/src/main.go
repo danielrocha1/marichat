@@ -557,7 +557,7 @@ func main() {
 			RoomName  string    `json:"roomname"`
 			ChatID  string    `json:"chatid"`
 			Message   string    `json:"message"`
-			Timestamp time.Time `json:"timestamp"`
+	
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

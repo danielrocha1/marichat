@@ -2,17 +2,18 @@ import React, { useState, useContext } from 'react';
 import './index.css';
 import ChatContext from '../../ChatContext';
 
-function TextInput({ showEmoji, text, setText }) {
+function TextInput({ showEmoji, chat, text, setText }) {
   const [isTyping, setIsTyping] = useState(false);
   const { userData } = useContext(ChatContext);
 
   const sendTypingStatus = (isTyping) => {
-    const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
+    const socket = new WebSocket('wss://marichat-go.onrender.com/');
 
     socket.onopen = () => {
       const userTyping = {
         type: "typing",
-        user: userData.user,
+        user: userData.data.username,
+        hostid: user.data.hostid,
         isTyping: isTyping
       };
 
@@ -46,8 +47,11 @@ function TextInput({ showEmoji, text, setText }) {
         },
         body: JSON.stringify({
           "type": "receiver",
-          "username": userData.user,
-          "roomname": userData.chatroomName,
+          "username": userData.data.username,
+          "hostid": userData.data.hostid,
+          "username": userData.data.username,
+          "roomname": chat.roomname,
+          "chatid": chat.chatid,
           "message": text
         }),
       });
