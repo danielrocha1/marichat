@@ -83,7 +83,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
           throw new Error('Erro ao enviar os dados');
         }
 
-        console.log("Usuário adicionado ao chat:", chatID);
+        navigate(`/chatroom`);
       } catch (error) {
         console.error('Erro:', error.message);
       }
