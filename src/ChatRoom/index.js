@@ -158,8 +158,8 @@ function ChatRoom({ children }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username": userData.user,
-          "roomname": userData.chatroomName,
+          "username": userData.data.username,
+          "roomname": chat.roomname,
         }),
       });
 
@@ -196,7 +196,7 @@ function ChatRoom({ children }) {
                   ))}
                 </ul>
               </div>
-              <HostInfo name={chat.username} theme={colors.border} />
+              <HostInfo name={userData.data.username} theme={colors.border} />
             </div>
             <ChatBox messages={messages} theme={colors} setColors={setColors} />
           </div>
