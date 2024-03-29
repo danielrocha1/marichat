@@ -49,7 +49,6 @@ function TextInput({ showEmoji, chat, text, setText }) {
           "type": "receiver",
           "username": userData.data.username,
           "hostid": userData.data.hostid,
-          "username": userData.data.username,
           "roomname": chat.roomname,
           "chatid": chat.chatid,
           "message": text
