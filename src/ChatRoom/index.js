@@ -199,7 +199,7 @@ function ChatRoom({ children }) {
               </div>
               <HostInfo name={userData.data.username} theme={colors.border} />
             </div>
-            <ChatBox messages={messages} theme={colors} setColors={setColors} />
+            <ChatBox messages={messages} chat={chat} theme={colors} setColors={setColors} />
           </div>
         </div>
       </header>

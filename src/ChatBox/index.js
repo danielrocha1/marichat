@@ -3,7 +3,7 @@ import TextInput from './TextBox';
 import Toolbar from './ToolBar';
 import './index.css';
 
-function ChatBox({ messages, theme, color, setColors }) {
+function ChatBox({ messages, theme, color, setColors, chat}) {
   const [showEmoji, setShowEmoji] = useState(false);
   const [text, setText] = useState('');
   const chatContainerRef = useRef(null);
@@ -26,7 +26,7 @@ function ChatBox({ messages, theme, color, setColors }) {
         {messages}
       </div>
       <Toolbar setShowEmoji={setShowEmoji} setText={setText} theme={theme} setColors={setColors} />
-      <TextInput showEmoji={showEmoji} text={text} setText={setText} />
+      <TextInput chat={chat} showEmoji={showEmoji} text={text} setText={setText} />
     </div>
   );
 }
