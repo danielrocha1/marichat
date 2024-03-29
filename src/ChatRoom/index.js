@@ -105,12 +105,12 @@ function ChatRoom({ children }) {
         }
       }
 
-      if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.Chatroom === userData.chatroomName) {
+      if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.chatRoom === userData.Chatroom) {
         const Message = (<ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />)
         setMessages(prevMessages => [...prevMessages, Message]);
       }
 
-      if (message.Type === 'receiver' && message.Name === userData.user && !message.upload) {
+      if (message.Type === 'receiver' && message.HostID === userData.data.hostid && !message.upload) {
         const Message = (<SenderMessage Message={message.Message} />);
         setMessages(prevMessages => [...prevMessages, Message]);
       }
