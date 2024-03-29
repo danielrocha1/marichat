@@ -78,7 +78,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ 
-            chatname: userData.data.chatname,
+            chatname: chat.chatname,
             username: userData.data.username,
             hostid: userData.data.hostid,
             chatid: chat.chatid 

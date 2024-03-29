@@ -705,7 +705,7 @@ func main() {
 		}
 
 		return c.JSON(fiber.Map{
-			"roomname": room,
+			"roomname": room.Name,
 			"users":    room.Users,
 		})
 	})
