@@ -195,7 +195,7 @@ function ChatRoom({ children }) {
                   ))}
                 </ul>
               </div>
-              <HostInfo name={chat.user} theme={colors.border} />
+              <HostInfo name={chat.username} theme={colors.border} />
             </div>
             <ChatBox messages={messages} theme={colors} setColors={setColors} />
           </div>
