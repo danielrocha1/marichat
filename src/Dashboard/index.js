@@ -67,7 +67,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
 
   const handleChat = (chat) => {
     
-    console.log(chatID)
+    console.log(chat)
     const addUserToChat = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/enterroom', {
