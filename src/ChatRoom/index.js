@@ -74,8 +74,8 @@ function ChatRoom({ children }) {
         }
 
         const data = await response.json();
-        // setUsers(data.users);
-        console.log(data)
+        setUsers(data.users);
+        console.log("DATA",data)
       } catch (error) {
         console.error('Erro:', error.message);
       }
@@ -83,68 +83,69 @@ function ChatRoom({ children }) {
 
     fetchUsers();
     console.log(chat)
-    const socket = new WebSocket('wss://marichat-go.onrender.com');
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
+    // const socket = new WebSocket('wss://marichat-go.onrender.com');
+    // socket.onmessage = (event) => {
+    //   const message = JSON.parse(event.data);
 
-      if (message.type === 'newUser') {
-        if (message.chatRoom === userData.chatroomName) {
-          setUsers((prevUsers) => [...prevUsers, message.user]);
-        }
-      }
+    //   if (message.type === 'newUser') {
+    //     if (message.chatRoom === chat.roomname) {
+    //       setUsers((prevUsers) => [...prevUsers, message.user]);
+    //     }
+    //   }
 
-      if (message.type === 'deleteUser') {
-        if (message.chatRoom === userData.chatroomName) {
-          setUsers(prevUsers => {
-            const updatedUsers = prevUsers.filter(user => user !== message.user);
-            return updatedUsers;
-          });
-          if (userData.user === message.user) {
-            navigate(`/`);
-            setUserData(null)
-          }
-        }
-      }
+    //   if (message.type === 'deleteUser') {
+    //     if (message.chatRoom === chat.roomname) {
+    //       setUsers(prevUsers => {
+    //         const updatedUsers = prevUsers.filter(user => user !== message.user);
+    //         return updatedUsers;
+    //       });
+    //       if (chat.hostid === message.hostid) {
+    //         navigate(`/`);
+    //         setUserData(null)
+    //       }
+    //     }
+    //   }
 
-      if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.Chatroom === userData.chatroomName) {
-        const Message = (<ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />)
-        setMessages(prevMessages => [...prevMessages, Message]);
-      }
+    //   if (message.Type === 'receiver' && message.Name !== userData.user && !message.upload && message.Chatroom === userData.chatroomName) {
+    //     const Message = (<ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />)
+    //     setMessages(prevMessages => [...prevMessages, Message]);
+    //   }
 
-      if (message.Type === 'receiver' && message.Name === userData.user && !message.upload) {
-        const Message = (<SenderMessage Message={message.Message} />);
-        setMessages(prevMessages => [...prevMessages, Message]);
-      }
+    //   if (message.Type === 'receiver' && message.Name === userData.user && !message.upload) {
+    //     const Message = (<SenderMessage Message={message.Message} />);
+    //     setMessages(prevMessages => [...prevMessages, Message]);
+    //   }
 
-      if (message.Type === 'receiver' && message.Name === userData.user && message.upload === true) {
-        if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
-          const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        } else if (message.Label === 'application/pdf') {
-          const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        }
-      }
+    //   if (message.Type === 'receiver' && message.Name === userData.user && message.upload === true) {
+    //     if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
+    //       const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
+    //       setMessages(prevMessages => [...prevMessages, Message]);
+    //     } else if (message.Label === 'application/pdf') {
+    //       const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
+    //       setMessages(prevMessages => [...prevMessages, Message]);
+    //     }
+    //   }
 
-      if (message.Type === 'receiver' && message.Name !== userData.user && message.upload === true && message.Chatroom === userData.chatroomName) {
-        if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
-          const Message = (<ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} />);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        } else if (message.Label === 'application/pdf') {
-          const Message = (<div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        }
-      }
+    //   if (message.Type === 'receiver' && message.Name !== userData.user && message.upload === true && message.Chatroom === userData.chatroomName) {
+    //     if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
+    //       const Message = (<ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} />);
+    //       setMessages(prevMessages => [...prevMessages, Message]);
+    //     } else if (message.Label === 'application/pdf') {
+    //       const Message = (<div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
+    //       setMessages(prevMessages => [...prevMessages, Message]);
+    //     }
+    //   }
 
-      if (message.type === 'typing' && message.user !== userData.user) {
-        const updatedTypingStatus = { ...userTypingStatus };
-        updatedTypingStatus[message.user] = message.isTyping;
-        setUserTypingStatus(updatedTypingStatus);
-      }
-    };
+    //   if (message.type === 'typing' && message.user !== userData.user) {
+    //     const updatedTypingStatus = { ...userTypingStatus };
+    //     updatedTypingStatus[message.user] = message.isTyping;
+    //     setUserTypingStatus(updatedTypingStatus);
+    //   }
+    // };
 
     return () => {
-      socket.close();
+      // socket.close();
+      console.log("FOI")
     };
   }, []);
 
@@ -182,19 +183,19 @@ function ChatRoom({ children }) {
               <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
                   {users.map((user) => (
-                    user === userData.user ? null : (
+                    user.hostid === chat.hostid ? null : (
                       <GuestInfo
                         isTyping={userTypingStatus[user]}
-                        id={user}
-                        key={user}
-                        name={user}
-                        roomname={userData.chatroomName}
+                        id={user.hostid}
+                        key={user.hostid}
+                        name={user.username}
+                        roomname={chat.roomname}
                       />
                     )
                   ))}
                 </ul>
               </div>
-              <HostInfo name={userData.user} theme={colors.border} />
+              <HostInfo name={chat.user} theme={colors.border} />
             </div>
             <ChatBox messages={messages} theme={colors} setColors={setColors} />
           </div>
