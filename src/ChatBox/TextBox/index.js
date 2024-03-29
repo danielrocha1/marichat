@@ -7,7 +7,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
   const { userData } = useContext(ChatContext);
 
   const sendTypingStatus = (isTyping) => {
-    const socket = new WebSocket('wss://marichat-go.onrender.com/');
+    const socket = new WebSocket('wss://marichat-go.onrender.com');
 
     socket.onopen = () => {
       const userTyping = {
