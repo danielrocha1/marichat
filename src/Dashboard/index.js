@@ -67,7 +67,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
     console.log(chatID)
     const addUserToChat = async () => {
       try {
-        const response = await fetch('https://marichat-go.onrender.com/adduser', {
+        const response = await fetch('https://marichat-go.onrender.com/enterroom', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

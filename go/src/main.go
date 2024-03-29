@@ -331,6 +331,66 @@ func main() {
 		return nil // retorno nil para indicar sucesso na resposta
 	})
 
+	app.Post("/enterroom", func(c *fiber.Ctx) error {
+		// Parse dos dados do corpo da requisição
+		
+		var requestData struct {
+			ChatName string `json:"chatname"`
+			User Users
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
+
+		// Verifica se o chat existe
+		chatroom, exists := chatrooms[requestData.User.ChatID]
+		if !exists {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Chatroom not found",
+			})
+		} else {
+			// Verifica se o usuário já está na sala
+			for _, users := range chatroom.Users {
+				if requestData.User.HostID == users.HostID {
+					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+						"error": "Usuário já está na sala",
+					})
+				}
+			}
+			// Se o usuário não estiver na sala, adiciona-o
+			chatroom.Users = append(chatroom.Users, requestData.User)
+		}
+
+		// Adiciona o usuário à sala de bate-papo existente
+
+		userJSON, err := json.Marshal(map[string]interface{}{
+			"type":     "newUser",
+			"user":     requestData.User.Name,
+			"hostid":     requestData.User.HostID,
+			"chatRoom": chatroom.Name,
+		})
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to serialize user data",
+			})
+		}
+
+		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
+		for client := range clients {
+			err := client.WriteMessage(websocket.TextMessage, userJSON)
+			if err != nil {
+				log.Println("Erro ao enviar mensagem para o cliente WebSocket:", err)
+				continue
+			}
+		}
+
+		return nil // retorno nil para indicar sucesso na resposta
+	})
+
+
+
 	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/createchat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
