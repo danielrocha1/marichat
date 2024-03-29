@@ -82,7 +82,7 @@ function ChatRoom({ children }) {
 
     fetchUsers();
     console.log(chat)
-    const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
+    const socket = new WebSocket('wss://marichat-go.onrender.com');
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
