@@ -39,6 +39,7 @@ const TopHeader = ({ handleLogout }) => {
 };
 
 const ChatTable = ({ userData, setChats, chats }) => {
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -65,6 +66,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chatID) => {
+    const navigate = useNavigate();
     console.log(chatID)
     const addUserToChat = async () => {
       try {
@@ -130,7 +132,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
 const Dashboard = () => {
   const { userData, setChats, chats } = useContext(ChatContext);
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     console.log("Logout");
   };
