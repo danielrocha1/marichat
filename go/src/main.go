@@ -335,7 +335,9 @@ func main() {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
 			ChatName string `json:"chatname"`
-			User     Users  `json:"user"`
+			Name     string `json:"username"`
+			ChatID   string `json:"chatid"`
+			HostID   string `json:"hostid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -344,33 +346,36 @@ func main() {
 		}
 	
 		// Verifica se o chat existe
-		chatroom, exists := chatrooms[requestData.User.ChatID]
+		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
+			// Se o chat não existir, cria uma nova sala de chat e adiciona o usuário
 			chatroom = &Chatroom{
 				Name:   requestData.ChatName,
-				HostID: requestData.User.HostID,
-				ChatID: requestData.User.ChatID,
-				Users:  []Users{requestData.User},
+				HostID: requestData.HostID,
+				ChatID: requestData.ChatID,
+				Users: []Users{
+					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+				},
 			}
-			chatrooms[requestData.User.ChatID] = chatroom
+			chatrooms[requestData.ChatID] = chatroom
 		} else {
 			// Verifica se o usuário já está na sala
 			for _, user := range chatroom.Users {
-				if requestData.User.HostID == user.HostID {
+				if requestData.HostID == user.HostID {
 					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 						"error": "Usuário já está na sala",
 					})
 				}
 			}
 			// Se o usuário não estiver na sala, adiciona-o
-			chatroom.Users = append(chatroom.Users, requestData.User)
+			chatroom.Users = append(chatroom.Users, Users{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID})
 		}
 	
 		// Serializa os dados do usuário para JSON
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"user":     requestData.User.Name,
-			"hostid":   requestData.User.HostID,
+			"user":     requestData.Name,
+			"hostid":   requestData.HostID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
@@ -392,7 +397,6 @@ func main() {
 			"message": "Usuário adicionado com sucesso à sala de chat",
 		})
 	})
-	
 
 
 
