@@ -153,7 +153,6 @@ function LoginSign() {
 
       setUserData({ data });
       navigate(`/dashboard`);
-      console.log(data);
 
     } catch (error) {
       console.error('Erro:', error.message);

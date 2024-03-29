@@ -44,7 +44,6 @@ function ChatRoom({ children }) {
   
   const searchParams = new URLSearchParams(location.search);
     const chat = Object.fromEntries(searchParams.entries());
-    console.log(chat)
 
 
 
@@ -86,7 +85,7 @@ function ChatRoom({ children }) {
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-
+      console.log("MENSAGEM",message)
       if (message.type === 'newUser') {
         if (message.chatRoom === chat.roomname) {
           setUsers((prevUsers) => [...prevUsers, message.user]);
@@ -145,7 +144,6 @@ function ChatRoom({ children }) {
 
     return () => {
       socket.close();
-      console.log("FOI")
     };
   }, []);
 
