@@ -347,9 +347,16 @@ func main() {
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[requestData.User.ChatID]
 		if !exists {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Chatroom not found",
-			})
+			chatroom = &Chatroom{
+				Name: requestData.ChatName,
+				Users: []Users{
+					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+				},
+				HostID: requestData.HostID,
+				ChatID: requestData.ChatID,
+			}
+			chatrooms[requestData.ChatID] = chatroom
+		}
 		} else {
 			// Verifica se o usuário já está na sala
 			for _, users := range chatroom.Users {
