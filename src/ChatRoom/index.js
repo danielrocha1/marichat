@@ -55,8 +55,8 @@ function ChatRoom({ children }) {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const chat = searchParams.get('chat');
-    console.log(JSON.stringify(chat))
+    const chat = Object.fromEntries(searchParams.entries());
+    console.log(chat)
 
     const fetchUsers = async () => {
       try {

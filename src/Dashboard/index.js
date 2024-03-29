@@ -40,6 +40,8 @@ const TopHeader = ({ handleLogout }) => {
 
 const ChatTable = ({ userData, setChats, chats }) => {
   const navigate = useNavigate();
+  const queryString = new URLSearchParams(chat).toString();
+
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -86,7 +88,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
           throw new Error('Erro ao enviar os dados');
         }
 
-        navigate(`/chatroom?chat=${encodeURIComponent(chat)}`);
+        navigate(`/chatroom?${queryString}`);
       } catch (error) {
         console.error('Erro:', error.message);
       }
