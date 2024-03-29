@@ -40,8 +40,8 @@ function ChatRoom({ children }) {
   const { userData, setUserData } = useContext(ChatContext);
   const navigate = useNavigate();
   
-  const { state } = useLocation();
-  const { chat } = state || {};
+  const location = useLocation();
+  
 
 
   const [messages, setMessages] = useState([]);
@@ -54,6 +54,10 @@ function ChatRoom({ children }) {
   });
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const chatData = searchParams.get('chat');
+    console.log(chatData)
+    
     const fetchUsers = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/listusers', {

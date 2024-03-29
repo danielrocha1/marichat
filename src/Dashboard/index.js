@@ -86,7 +86,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
           throw new Error('Erro ao enviar os dados');
         }
 
-        window.open('/chatroom', { state: { chat } })
+        navigate(`/chatroom?chat=${encodeURIComponent(chat)}`);
       } catch (error) {
         console.error('Erro:', error.message);
       }
