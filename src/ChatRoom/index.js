@@ -73,7 +73,8 @@ function ChatRoom({ children }) {
         }
 
         const data = await response.json();
-        setUsers(data.users);
+        // setUsers(data.users);
+        console.log(data)
       } catch (error) {
         console.error('Erro:', error.message);
       }
