@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
 import './index.css';
 
@@ -128,7 +129,8 @@ const ChatTable = ({ userData, setChats, chats }) => {
 // App
 const Dashboard = () => {
   const { userData, setChats, chats } = useContext(ChatContext);
-
+  const navigate = useNavigate();
+  
   const handleLogout = () => {
     console.log("Logout");
   };
