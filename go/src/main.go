@@ -350,13 +350,13 @@ func main() {
 			chatroom = &Chatroom{
 				Name: requestData.ChatName,
 				Users: []Users{
-					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+					{Name: requestData.User.Name, ChatID: requestData.User.ChatID, HostID: requestData.User.HostID},
 				},
-				HostID: requestData.HostID,
-				ChatID: requestData.ChatID,
+				HostID: requestData.User.HostID,
+				ChatID: requestData.User.ChatID,
 			}
-			chatrooms[requestData.ChatID] = chatroom
-		}
+			chatrooms[requestData.User.ChatID] = chatroom
+		
 		} else {
 			// Verifica se o usuário já está na sala
 			for _, users := range chatroom.Users {
