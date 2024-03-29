@@ -333,34 +333,30 @@ func main() {
 
 	app.Post("/enterroom", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
-		
 		var requestData struct {
 			ChatName string `json:"chatname"`
-			User Users
+			User     Users  `json:"user"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Failed to parse request body",
 			})
 		}
-
+	
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[requestData.User.ChatID]
 		if !exists {
 			chatroom = &Chatroom{
-				Name: requestData.ChatName,
-				Users: []Users{
-					{Name: requestData.User.Name, ChatID: requestData.User.ChatID, HostID: requestData.User.HostID},
-				},
+				Name:   requestData.ChatName,
 				HostID: requestData.User.HostID,
 				ChatID: requestData.User.ChatID,
+				Users:  []Users{requestData.User},
 			}
 			chatrooms[requestData.User.ChatID] = chatroom
-		
 		} else {
 			// Verifica se o usuário já está na sala
-			for _, users := range chatroom.Users {
-				if requestData.User.HostID == users.HostID {
+			for _, user := range chatroom.Users {
+				if requestData.User.HostID == user.HostID {
 					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 						"error": "Usuário já está na sala",
 					})
@@ -369,13 +365,12 @@ func main() {
 			// Se o usuário não estiver na sala, adiciona-o
 			chatroom.Users = append(chatroom.Users, requestData.User)
 		}
-
-		// Adiciona o usuário à sala de bate-papo existente
-
+	
+		// Serializa os dados do usuário para JSON
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     requestData.User.Name,
-			"hostid":     requestData.User.HostID,
+			"hostid":   requestData.User.HostID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
@@ -383,7 +378,7 @@ func main() {
 				"error": "Failed to serialize user data",
 			})
 		}
-
+	
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
@@ -392,9 +387,12 @@ func main() {
 				continue
 			}
 		}
-
-		return nil // retorno nil para indicar sucesso na resposta
+	
+		return c.JSON(fiber.Map{
+			"message": "Usuário adicionado com sucesso à sala de chat",
+		})
 	})
+	
 
 
 
