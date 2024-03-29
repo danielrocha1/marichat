@@ -40,7 +40,7 @@ const TopHeader = ({ handleLogout }) => {
 
 const ChatTable = ({ userData, setChats, chats }) => {
   const navigate = useNavigate();
-  const queryString = new URLSearchParams(chat).toString();
+  
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -68,7 +68,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
-    
+    const queryString = new URLSearchParams(chat).toString();  
     console.log(chat)
     const addUserToChat = async () => {
       try {
