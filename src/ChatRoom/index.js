@@ -55,9 +55,9 @@ function ChatRoom({ children }) {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const chatData = searchParams.get('chat');
-    console.log(chatData)
-    
+    const chat = searchParams.get('chat');
+    console.log(chat)
+
     const fetchUsers = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/listusers', {
