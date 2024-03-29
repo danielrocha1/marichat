@@ -64,6 +64,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chatID) => {
+    console.log(chatID)
     const addUserToChat = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/adduser', {
@@ -108,11 +109,11 @@ const ChatTable = ({ userData, setChats, chats }) => {
           </thead>
           <tbody>
             {chats.map((chat, index) => (
-              <tr key={chat.id}>
+              <tr key={chat.chatid}>
                 <td>{chat.chatname}</td>
                 <td>{chat.chatid}</td>
                 <td>
-                  <button onClick={() => handleChat(chat.id)} className="blue-button">Entrar</button>
+                  <button onClick={() => handleChat(chat.chatid)} className="blue-button">Entrar</button>
                   <button onClick={removeChat} className="red-button">Remover</button>
                 </td>
               </tr>
