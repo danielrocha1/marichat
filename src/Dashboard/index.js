@@ -6,8 +6,7 @@ import './index.css';
 const Sidebar = ({ user, chats }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = (chats) => {
-    console.log(chats)
+  const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -64,8 +63,8 @@ const ChatTable = ({ userData, setChats, chats }) => {
     fetchChats();
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
-  const handleChat = ({chatID}) => {
-    const fetchChats = async () => {
+  const handleChat = (chatID) => {
+    const addUserToChat = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/adduser', {
           method: 'POST',
@@ -75,19 +74,21 @@ const ChatTable = ({ userData, setChats, chats }) => {
           body: JSON.stringify({ 
             username: userData.data.username,
             hostid: userData.data.hostid,
-            chatid: chatID }), // remove as aspas desnecessárias
+            chatid: chatID 
+          }),
         });
 
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
 
-        // const data = await response.json();
-        console.log(chatID)
+        console.log("Usuário adicionado ao chat:", chatID);
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
+
+    addUserToChat();
   };
 
   const removeChat = () => {
@@ -111,7 +112,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
                 <td>{chat.chatname}</td>
                 <td>{chat.chatid}</td>
                 <td>
-                  <button onClick={handleChat} chatID={chat.id} className="blue-button">Entrar</button>
+                  <button onClick={() => handleChat(chat.id)} className="blue-button">Entrar</button>
                   <button onClick={removeChat} className="red-button">Remover</button>
                 </td>
               </tr>
