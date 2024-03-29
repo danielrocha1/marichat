@@ -65,7 +65,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
     fetchChats();
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
-  const handleChat = (chatID) => {
+  const handleChat = (chat) => {
     
     console.log(chatID)
     const addUserToChat = async () => {
@@ -78,7 +78,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
           body: JSON.stringify({ 
             username: userData.data.username,
             hostid: userData.data.hostid,
-            chatid: chatID 
+            chatid: chat.chatid 
           }),
         });
 
@@ -86,7 +86,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
           throw new Error('Erro ao enviar os dados');
         }
 
-        navigate(`/chatroom`);
+        window.open('/chatroom', { state: { chat } })
       } catch (error) {
         console.error('Erro:', error.message);
       }
@@ -116,7 +116,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
                 <td>{chat.chatname}</td>
                 <td>{chat.chatid}</td>
                 <td>
-                  <button onClick={() => handleChat(chat.chatid)} className="blue-button">Entrar</button>
+                  <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
                   <button onClick={removeChat} className="red-button">Remover</button>
                 </td>
               </tr>

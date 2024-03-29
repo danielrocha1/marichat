@@ -6,6 +6,8 @@ import GuestInfo from '../GuestInfo';
 import ChatBox from '../ChatBox';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 import { format } from 'date-fns';
 import SenderImage from '../ChatBox/SenderImage';
 import ReceiverImage from '../ChatBox/ReceiverImage';
@@ -37,6 +39,11 @@ function SenderMessage(props) {
 function ChatRoom({ children }) {
   const { userData, setUserData } = useContext(ChatContext);
   const navigate = useNavigate();
+  
+  const { state } = useLocation();
+  const { chat } = state || {};
+
+
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState({});
   const [users, setUsers] = useState([]);
@@ -54,9 +61,9 @@ function ChatRoom({ children }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ "chatid": userData.fakeChatId }),
+          body: JSON.stringify({ "chatid": chat.chatid }),
         });
-
+        console.log("chats", chat)
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
@@ -69,7 +76,7 @@ function ChatRoom({ children }) {
     };
 
     fetchUsers();
-
+    console.log(chat)
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
