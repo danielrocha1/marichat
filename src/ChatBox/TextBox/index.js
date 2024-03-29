@@ -13,7 +13,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
       const userTyping = {
         type: "typing",
         user: userData.data.username,
-        hostid: user.data.hostid,
+        hostid: userData.data.hostid,
         isTyping: isTyping
       };
 
