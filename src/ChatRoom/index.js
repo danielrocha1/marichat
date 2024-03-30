@@ -74,7 +74,7 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
-        console.log("PASSOU")
+        console.log("PASSOU", chat)
         
       } catch (error) {
         console.error('Erro:', error.message);
@@ -96,7 +96,7 @@ function ChatRoom({ children }) {
           "hostid":message.hostid,
           "chatname":message.chatRoom,
           "chatid":message.chatid,
-          "user":message.user
+          "username":message.user
           }]);
         }
      
