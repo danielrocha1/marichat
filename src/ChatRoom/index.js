@@ -104,14 +104,11 @@ function ChatRoom({ children }) {
      
       }
       if (message.type === 'removeUser') {
-      console.log(users)
+          console.log(users)
       
         if (message.chatid === chat.chatid) {
           setUsers(prevUsers => {
-            const updatedUsers = prevUsers.filter(user => user !== message.user);
-            console.log("USUARIO",users)
-            fetchUsers();
-
+            const updatedUsers = prevUsers.filter(user => user.hostid !== message.hostid);
             return updatedUsers;
           });
           if (chat.hostid === message.hostid) {
