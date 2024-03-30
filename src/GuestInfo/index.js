@@ -19,10 +19,10 @@ const GuestInfo = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username": username,
-          "hostid": id,
-          "chatid": chatid,
-          "roomname": roomname,
+          "username": props.name,
+          "hostid": props.id,
+          "chatid": props.chatid,
+          "roomname": props.roomname,
         }),
       });
   

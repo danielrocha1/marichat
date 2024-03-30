@@ -199,6 +199,7 @@ function ChatRoom({ children }) {
                         key={index}
                         name={user.user}
                         roomname={user.chatRoom}
+                        chatid={user.chatid}
                       />
                     )
                   ))}
