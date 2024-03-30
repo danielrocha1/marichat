@@ -200,7 +200,7 @@ function ChatRoom({ children }) {
                         isTyping={userTypingStatus[user]}
                         id={user.hostid}
                         key={index}
-                        name={user.user}
+                        name={user.username}
                         roomname={user.chatRoom}
                         chatid={user.chatid}
                       />
