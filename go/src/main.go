@@ -311,6 +311,8 @@ func main() {
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     user.Name,
+			"guestid": user.HostID,
+			"chatid":     user.ChatID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
@@ -372,10 +374,12 @@ func main() {
 		}
 	
 		// Serializa os dados do usuário para JSON
+	
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     requestData.Name,
-			"hostid":   requestData.HostID,
+			"guestid": requestData.HostID,
+			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
@@ -464,12 +468,13 @@ func main() {
 			}
 		}
 
+	
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     requestData.Name,
-			"hostid":   requestData.HostID,
-			"chatRoom": requestData.ChatName,
-			"chatid": requestData.ChatID,
+			"guestid": requestData.HostID,
+			"chatid":     requestData.ChatID,
+			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
