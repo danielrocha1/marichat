@@ -97,7 +97,7 @@ function ChatRoom({ children }) {
           "hostid":message.hostid,
           "chatname":message.chatRoom,
           "chatid":message.chatid,
-          "username":message.user
+          "username":message.username
           }]);
         }
      
