@@ -104,7 +104,8 @@ function ChatRoom({ children }) {
 
         if (message.chatid === chat.chatid) {
           setUsers(prevUsers => {
-            const updatedUsers = prevUsers.filter(user => user !== message.user + console.log("USER",user));
+            const updatedUsers = prevUsers.filter(user => user !== message.user);
+            console.log("USUARIO",users)
             return updatedUsers;
           });
           if (chat.hostid === message.hostid) {
