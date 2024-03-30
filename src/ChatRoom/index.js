@@ -110,13 +110,14 @@ function ChatRoom({ children }) {
           setUsers(prevUsers => {
             const updatedUsers = prevUsers.filter(user => user !== message.user);
             console.log("USUARIO",users)
+            fetchUsers();
+
             return updatedUsers;
           });
           if (chat.hostid === message.hostid) {
             navigate(`/`);
             setUserData(null)
           }
-          fetchUsers();
         }
       }
 
