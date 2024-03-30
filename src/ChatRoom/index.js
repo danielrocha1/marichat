@@ -91,6 +91,7 @@ function ChatRoom({ children }) {
       const message = JSON.parse(event.data);
       console.log("MENSAGEM",message)
       if (message.type === 'newUser') {
+        console.log("USERS",users)
         if (message.chatid === chat.chatid) {
           setUsers((prevUsers) => [...prevUsers, {
           "hostid":message.hostid,
