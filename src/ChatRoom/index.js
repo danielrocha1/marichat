@@ -43,7 +43,7 @@ function ChatRoom({ children }) {
   const location = useLocation();
   
   const searchParams = new URLSearchParams(location.search);
-    const chat = Object.fromEntries(searchParams.entries());
+  const chat = Object.fromEntries(searchParams.entries());
 
 
 
@@ -81,19 +81,28 @@ function ChatRoom({ children }) {
     };
 
     fetchUsers();
-    
+    console.log(users)
+
+
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log("MENSAGEM",message)
       if (message.type === 'newUser') {
-        if (message.chatRoom === chat.roomname) {
-          setUsers((prevUsers) => [...prevUsers, message.user]);
+        if (message.chatid === chat.chatid) {
+          setUsers((prevUsers) => [...prevUsers, {
+          "hostid":message.hostid,
+          "chatname":message.chatRoom,
+          "chatid":message.chatid,
+          "user":message.user
+          }]);
         }
+     
       }
+      if (message.type === 'removeUser') {
+      console.log(users)
 
-      if (message.type === 'deleteUser') {
-        if (message.chatRoom === chat.roomname) {
+        if (message.chatid === chat.chatid) {
           setUsers(prevUsers => {
             const updatedUsers = prevUsers.filter(user => user !== message.user);
             return updatedUsers;
@@ -149,7 +158,7 @@ function ChatRoom({ children }) {
 
   const kickUser = async () => {
     try {
-      const response = await fetch('https://marichat-go.onrender.com/deleteuser', {
+      const response = await fetch('https://marichat-go.onrender.com/kickuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,13 +191,13 @@ function ChatRoom({ children }) {
             <div className="columnFlexBox">
               <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
-                  {users.map((user) => (
+                  {users.map((user, index) => (
                     user.hostid === chat.hostid ? null : (
                       <GuestInfo
                         isTyping={userTypingStatus[user]}
                         id={user.hostid}
-                        key={user.hostid}
-                        name={user.username}
+                        key={index}
+                        name={user.user}
                         roomname={chat.roomname}
                       />
                     )

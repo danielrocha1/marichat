@@ -13,13 +13,15 @@ const GuestInfo = (props) => {
 
   const kickUser = async (username, roomname) => {
     try {
-      const response = await fetch('https://marichat-go.onrender.com/deleteuser', {
+      const response = await fetch('https://marichat-go.onrender.com/kickuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           "username": username,
+          "hostid": id,
+          "chatid": chatid,
           "roomname": roomname,
         }),
       });
