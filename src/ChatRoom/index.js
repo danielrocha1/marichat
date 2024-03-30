@@ -74,6 +74,7 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
+        console.log("PASSOU")
         
       } catch (error) {
         console.error('Erro:', error.message);
@@ -81,7 +82,8 @@ function ChatRoom({ children }) {
     };
 
     fetchUsers();
-    console.log(users)
+
+    
 
 
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
