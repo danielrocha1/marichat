@@ -105,7 +105,7 @@ function ChatRoom({ children }) {
       }
       if (message.type === 'removeUser') {
       console.log(users)
-
+      
         if (message.chatid === chat.chatid) {
           setUsers(prevUsers => {
             const updatedUsers = prevUsers.filter(user => user !== message.user);
@@ -116,6 +116,7 @@ function ChatRoom({ children }) {
             navigate(`/`);
             setUserData(null)
           }
+          fetchUsers();
         }
       }
 
