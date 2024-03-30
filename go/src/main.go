@@ -33,7 +33,7 @@ type Chatroom struct {
 }
 
 type MessageTyping struct {
-	User     string `json:"user"`
+	User     string `json:"username"`
 	HostID 	string  `json:"hostid"`
 	IsTyping bool   `json:"isTyping"`
 }
@@ -310,7 +310,7 @@ func main() {
 
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"user":     user.Name,
+			"username":     user.Name,
 			"guestid": user.HostID,
 			"chatid":     user.ChatID,
 			"chatRoom": chatroom.Name,
@@ -377,7 +377,7 @@ func main() {
 	
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"user":     requestData.Name,
+			"username":     requestData.Name,
 			"hostid": requestData.HostID,
 			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
@@ -471,7 +471,7 @@ func main() {
 	
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"user":     requestData.Name,
+			"username":     requestData.Name,
 			"guestid": requestData.HostID,
 			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
@@ -529,7 +529,7 @@ func main() {
 		// Envia uma mensagem informando aos clientes WebSocket sobre a remoção do usuário
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "removeUser",
-			"user":     requestData.Username,
+			"username":     requestData.Username,
 			"hostid":   requestData.HostID,
 			"chatRoom": requestData.RoomName,
 			"chatid": requestData.ChatID,
