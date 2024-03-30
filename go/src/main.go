@@ -378,7 +378,7 @@ func main() {
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"user":     requestData.Name,
-			"guestid": requestData.HostID,
+			"hostid": requestData.HostID,
 			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
 		})
@@ -501,7 +501,7 @@ func main() {
 			Username string `json:"username"`
 			HostID   string `json:"hostid"`
 			ChatID   string `json:"chatid"`
-			RoomName string `json:"roomname"`
+			RoomName string `json:"chatname"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
