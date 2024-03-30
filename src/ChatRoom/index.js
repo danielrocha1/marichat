@@ -56,9 +56,9 @@ function ChatRoom({ children }) {
     border: 'white',
   });
 
-  useEffect(() => {
+  useEffect((users) => {
     
-    const fetchUsers = async () => {
+    const fetchUsers = async (users) => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/listusers', {
           method: 'POST',
