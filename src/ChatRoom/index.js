@@ -198,7 +198,7 @@ function ChatRoom({ children }) {
                         id={user.hostid}
                         key={index}
                         name={user.user}
-                        roomname={chat.roomname}
+                        roomname={user.chatRoom}
                       />
                     )
                   ))}
