@@ -65,7 +65,7 @@ function ChatRoom({ children }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ "chatid": chat }),
+          body: JSON.stringify({ "chatid": chat.chatid }),
         });
         
         if (!response.ok) {

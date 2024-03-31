@@ -9,8 +9,9 @@ function EnterRoom() {
   const [chatRoom, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
+  
   const chat = {
-    chatid: chatRoom  
+    "chatid": chatRoom  
   }
 
   const handleSubmit = async (e) => {
