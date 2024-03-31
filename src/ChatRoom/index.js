@@ -6,7 +6,7 @@ import GuestInfo from '../GuestInfo';
 import ChatBox from '../ChatBox';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { format } from 'date-fns';
 import SenderImage from '../ChatBox/SenderImage';
@@ -38,7 +38,7 @@ function SenderMessage(props) {
 
 function ChatRoom({ children }) {
   const { userData, setUserData } = useContext(ChatContext);
-  const history = useHistory();
+  const navigate = useNavigate();
   
   const location = useLocation();
   
@@ -113,7 +113,7 @@ function ChatRoom({ children }) {
             return updatedUsers;
           });
           if (message.hostid === userData.data.hostid) {
-            history.push(`/dashboard`, userData);
+            navigate(`/dashboard`, userData);
           }
         }
       }
