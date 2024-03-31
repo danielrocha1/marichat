@@ -111,7 +111,7 @@ function ChatRoom({ children }) {
             const updatedUsers = prevUsers.filter(user => user.hostid !== message.hostid);
             return updatedUsers;
           });
-          if (chat.hostid === message.hostid) {
+          if (message.hostid === userData.data.hostid) {
             navigate(`/`);
             setUserData(null)
           }
