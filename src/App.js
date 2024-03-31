@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChatRoom from './ChatRoom';
 
 import Dashboard from './Dashboard';
-import EnterRoom from './EnterRoom';
+
 import LoginSign from './Login';
 import OfflineChat from './OfflineChat';
 import ChatContext from './ChatContext';
