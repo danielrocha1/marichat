@@ -58,7 +58,7 @@ function EnterRoom() {
                 <input
                   type="text"
                   id="chatroomName"
-                  value={chat}
+                  value={chatRoom}
                   onChange={(e) =>
                     setChatroomName(e.target.value)
                     }
