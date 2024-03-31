@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import './index.css'; // Arquivo de estilo CSS para centralizar o formulário
 import { useNavigate } from 'react-router-dom';
-
+import ChatContext from '../../ChatContext';
 
 function EnterRoom() {
   const { userData, setUserData} = useContext(ChatContext);
