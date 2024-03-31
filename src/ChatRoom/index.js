@@ -113,7 +113,7 @@ function ChatRoom({ children }) {
             return updatedUsers;
           });
           if (message.hostid === userData.data.hostid) {
-            navigate(`/`);
+            navigate(`/dashboard`);
             setUserData(null)
           }
         }
