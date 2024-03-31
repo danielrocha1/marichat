@@ -172,7 +172,7 @@ function ChatRoom({ children }) {
         body: JSON.stringify({
           "username": userData.data.username,
           "hostid": userData.data.hostid,
-          "chatid": userData.data.chatid,
+          "chatid": chat.chatid,
           "roomname": roomname,
         }),
       });
