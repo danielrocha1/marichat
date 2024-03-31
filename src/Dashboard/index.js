@@ -85,9 +85,14 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
             hostid: userData.data.hostid,
             chatid: chat.chatid 
           }),
+          
         });
 
         if (!response.ok) {
+          console.log( "chatname", chat.chatname,
+            "username", userData.data.username,
+            "hostid", userData.data.hostid,
+            "chatid", chat.chatid )
           throw new Error('Erro ao enviar os dados');
         }
         
