@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
+
+import EnterRoom from '../EnterRoom';
 import './index.css';
 
 // Componentes
@@ -138,13 +140,18 @@ const Dashboard = () => {
   const handleLogout = () => {
     console.log("Logout");
   };
-
+  const handleEnterroom = () => {
+    console.log("Logout");
+  };
   return (
     <div>
       <TopHeader handleLogout={handleLogout} />
       <div className="app">
         <Sidebar user={userData} chats={chats} />
         <div className="container">
+        <div className="createChat">
+            <EnterRoom/>
+          </div>
           <div className="createChat">
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
           </div>
