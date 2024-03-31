@@ -65,7 +65,7 @@ function ChatRoom({ children }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ "chatid": chat.chatid }),
+          body: JSON.stringify({ "chatid":  chat.chatid }),
         });
         
         if (!response.ok) {
@@ -74,7 +74,7 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
-        console.log("PASSOU DATA", data)
+        console.log("PASSOU DATA", userData)
         console.log("PASSOU USERS", data.users)
         
       } catch (error) {

@@ -5,18 +5,15 @@ import ChatContext from '../../ChatContext';
 
 function EnterRoom() {
   const { userData, setUserData} = useContext(ChatContext);
-  const [chatroomName, setChatroomName] = useState('');
+  const [chat, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
    
-    setUserData(prevData => ({
-      ...prevData,
-      ["roomname"]: chatroomName
-    }))
-    console.log(userData)
-    const queryString = new URLSearchParams(userData).toString();  
+    
+    console.log(userData, chat)
+    const queryString = new URLSearchParams(chat).toString();  
     e.preventDefault();
       try {
         const response = await fetch('https://marichat-go.onrender.com/addUser', {
@@ -27,7 +24,7 @@ function EnterRoom() {
           body: JSON.stringify({ 
             username: userData.data.username,
             hostid: userData.data.hostid,
-            chatid: chatroomName 
+            chatid: chat 
           }),
         });
 

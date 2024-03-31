@@ -95,10 +95,6 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
             "chatid", chat.chatid )
           throw new Error('Erro ao enviar os dados');
         }
-        console.log( "chatname", chat.chatname,
-            "username", userData.data.username,
-            "hostid", userData.data.hostid,
-            "chatid", chat.chatid )
             
         navigate(`/chatroom?${queryString}`);
       } catch (error) {
