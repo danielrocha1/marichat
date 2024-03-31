@@ -17,7 +17,7 @@ function EnterRoom(user, setUser) {
     }));
     console.log(user, chatroomName)
 
-    const queryString = new URLSearchParams(user).toString();  
+    // const queryString = new URLSearchParams(user).toString();  
     e.preventDefault();
       try {
         const response = await fetch('https://marichat-go.onrender.com/enterroom', {
@@ -36,7 +36,7 @@ function EnterRoom(user, setUser) {
           throw new Error('Erro ao enviar os dados');
         }
 
-        navigate(`/chatroom?${queryString}`);
+        // navigate(`/chatroom?${queryString}`);
       } catch (error) {
         console.error('Erro:', error.message);
       }
