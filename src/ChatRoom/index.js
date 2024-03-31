@@ -46,6 +46,9 @@ function ChatRoom({ children }) {
   const chat = Object.fromEntries(searchParams.entries());
 
 
+  const [roomname, setRoomname] = useState('');
+
+
 
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState({});
@@ -74,6 +77,8 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
+        setRoomname(data.roomname);
+
         console.log("PASSOU DATA", userData)
         console.log("PASSOU USERS", data.users)
         
@@ -187,7 +192,7 @@ function ChatRoom({ children }) {
     <div className="App">
       <header className="App-header" style={{ background: colors.background }} >
         <div>
-          <chatroom style={{ marginLeft: "710px" }}> {userData.data.username } </chatroom>
+          <chatroom style={{ marginLeft: "710px" }}> {roomname ? roomname : 'SEM' } </chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={() => kickUser()} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
