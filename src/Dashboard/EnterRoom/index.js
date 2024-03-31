@@ -10,8 +10,12 @@ function EnterRoom() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+   
+    setUserData(prevData => ({
+      ...prevData,
+      ["roomname"]: chatroomName
+    }))
     console.log(userData)
-
     const queryString = new URLSearchParams(userData).toString();  
     e.preventDefault();
       try {
@@ -54,12 +58,9 @@ function EnterRoom() {
                   type="text"
                   id="chatroomName"
                   value={chatroomName}
-                  onChange={(e) =>{ 
+                  onChange={(e) =>
                     setChatroomName(e.target.value)
-                    setUserData(prevData => ({
-                      ...prevData,
-                      ["roomname"]: chatroomName
-                    }))}}
+                    }
                 />
               </div>
               <button type="submit">Entrar na Sala de Chat</button>
