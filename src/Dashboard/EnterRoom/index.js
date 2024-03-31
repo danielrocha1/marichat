@@ -5,12 +5,14 @@ import ChatContext from '../../ChatContext';
 
 function EnterRoom() {
   const { userData, setUserData} = useContext(ChatContext);
-  const [chat, setChatroomName] = useState('');
+  const [chatRoom, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-   
+    const chat = {
+      chatid: chatRoom
+  }
     
     console.log(userData, chat)
     const queryString = new URLSearchParams(chat).toString();  
@@ -24,7 +26,7 @@ function EnterRoom() {
           body: JSON.stringify({ 
             username: userData.data.username,
             hostid: userData.data.hostid,
-            chatid: chat 
+            chatid: chat.chatid 
           }),
         });
 
