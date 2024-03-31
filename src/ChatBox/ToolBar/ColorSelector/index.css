@@ -11,13 +11,14 @@
   }
   
   .modal-content {
-    border: 9px double rgb(188, 81, 0);
-    background-color: rgb(198, 163, 119);
-    padding: 20px;
+    background-color: #c6a377;
+    border: 9px double #bc5100;
     border-radius: 5px;
-    max-height: 130px;
-    box-shadow: 0 7px 24px rgba(0, 0, 0, 1.2);
+    box-shadow: 0 7px 24px #000;
+    max-height: 257px;
     overflow-y: auto;
+    position: fixed;
+    padding: 20px;
   }
 
   .hex-color-picker-container {

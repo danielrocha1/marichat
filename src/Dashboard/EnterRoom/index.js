@@ -1,13 +1,33 @@
 import React, { useState } from 'react';
 import './index.css'; // Arquivo de estilo CSS para centralizar o formulário
 
-function EnterRoom() {
+function EnterRoom(user) {
   const [chatroomName, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aqui vai o seu código de submissão do formulário
+      try {
+        const response = await fetch('https://marichat-go.onrender.com/enterroom', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            username: user.data.username,
+            hostid: user.data.hostid,
+            chatid: chatroomName 
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        navigate(`/chatroom?${queryString}`);
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
   };
 
   return (
@@ -19,9 +39,6 @@ function EnterRoom() {
       {modalIsOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setModalIsOpen(false)}>
-              &times;
-            </span>
             <form onSubmit={handleSubmit} className="form">
               <h2>Entrar na sala</h2>
               <div className="form-group">

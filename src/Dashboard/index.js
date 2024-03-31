@@ -150,7 +150,7 @@ const Dashboard = () => {
         <Sidebar user={userData} chats={chats} />
         <div className="container">
         <div className="createChat">
-            <EnterRoom/>
+            <EnterRoom user={user} />
           </div>
           <div className="createChat">
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
