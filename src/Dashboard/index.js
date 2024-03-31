@@ -40,7 +40,7 @@ const TopHeader = ({ handleLogout }) => {
   );
 };
 
-const ChatTable = ({ userData, setChats, chats }) => {
+const ChatTable = ({ userData, setUserData, setChats, chats }) => {
   const navigate = useNavigate();
   
 
