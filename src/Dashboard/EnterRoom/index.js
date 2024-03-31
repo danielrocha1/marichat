@@ -4,15 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import ChatContext from '../../ChatContext';
 
 function EnterRoom() {
+  
   const { userData, setUserData} = useContext(ChatContext);
   const [chatRoom, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
+  const chat = {
+    chatid: chatRoom  
+  }
 
   const handleSubmit = async (e) => {
-    const chat = {
-      chatid: chatRoom
-  }
+    
     
     console.log(userData, chat)
     const queryString = new URLSearchParams(chat).toString();  
