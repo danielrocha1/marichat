@@ -114,7 +114,6 @@ function ChatRoom({ children }) {
           });
           if (message.hostid === userData.data.hostid) {
             navigate(`/dashboard`);
-            setUserData(null)
           }
         }
       }
