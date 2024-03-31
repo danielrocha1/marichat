@@ -13,10 +13,10 @@ function EnterRoom(user, setUser) {
 
     setUser(prevData => ({
       ...prevData,
-      [roomname]: chatroomName
+      ["roomname"]: chatroomName
     }));
     console.log(user, chatroomName)
-    
+
     const queryString = new URLSearchParams(user).toString();  
     e.preventDefault();
       try {
