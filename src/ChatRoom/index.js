@@ -106,9 +106,7 @@ function ChatRoom({ children }) {
      
       }
       if (message.type === 'removeUser') {
-          console.log(users)
-      
-        if (message.chatid === chat.chatid) {
+        if (message.chatid === userData.data.chatid) {
           setUsers(prevUsers => {
             const updatedUsers = prevUsers.filter(user => user.hostid !== message.hostid);
             return updatedUsers;
@@ -180,6 +178,7 @@ function ChatRoom({ children }) {
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
+      console.log()
     } catch (error) {
       console.error('Erro:', error.message);
     }
