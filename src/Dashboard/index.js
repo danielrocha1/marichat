@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
 
-import EnterRoom from '../EnterRoom';
+import EnterRoom from '../Dashboard/EnterRoom';
 import './index.css';
 
 // Componentes
