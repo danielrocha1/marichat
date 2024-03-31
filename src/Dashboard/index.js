@@ -90,10 +90,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
-        setUserData(prevData => ({
-          ...prevData,
-          ["roomname"]: chat.chatname
-        }))
+        
         navigate(`/chatroom?${queryString}`);
       } catch (error) {
         console.error('Erro:', error.message);
