@@ -10,15 +10,9 @@ function EnterRoom() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    console.log(userData, chatroomName)
+    console.log(userData)
 
-    setUserData(prevData => ({
-      ...prevData,
-      ["roomname"]: chatroomName
-    }));
-    console.log(userData, chatroomName)
-
-    // const queryString = new URLSearchParams(user).toString();  
+    const queryString = new URLSearchParams(userData).toString();  
     e.preventDefault();
       try {
         const response = await fetch('https://marichat-go.onrender.com/enterroom', {
@@ -37,7 +31,7 @@ function EnterRoom() {
           throw new Error('Erro ao enviar os dados');
         }
 
-        // navigate(`/chatroom?${queryString}`);
+        navigate(`/chatroom?${queryString}`);
       } catch (error) {
         console.error('Erro:', error.message);
       }
@@ -60,7 +54,12 @@ function EnterRoom() {
                   type="text"
                   id="chatroomName"
                   value={chatroomName}
-                  onChange={(e) => setChatroomName(e.target.value)}
+                  onChange={(e) =>{ 
+                    setChatroomName(e.target.value)
+                    setUserData(prevData => ({
+                      ...prevData,
+                      ["roomname"]: chatroomName
+                    }))}}
                 />
               </div>
               <button type="submit">Entrar na Sala de Chat</button>
