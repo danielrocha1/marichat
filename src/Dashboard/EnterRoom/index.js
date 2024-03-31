@@ -3,13 +3,19 @@ import './index.css'; // Arquivo de estilo CSS para centralizar o formulário
 import { useNavigate } from 'react-router-dom';
 
 
-function EnterRoom(user) {
+function EnterRoom(user, setUser) {
   const [chatroomName, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    console.log(user, e.target)
+    console.log(user, chatroomName)
+
+    setUser(prevData => ({
+      ...prevData,
+      [roomname]: chatroomName
+    }));
+    console.log(user, chatroomName)
     const queryString = new URLSearchParams(user).toString();  
     e.preventDefault();
       try {

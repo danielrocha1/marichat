@@ -134,7 +134,7 @@ const ChatTable = ({ userData, setChats, chats }) => {
 
 // App
 const Dashboard = () => {
-  const { userData, setChats, chats } = useContext(ChatContext);
+  const { userData, setUserData, setChats, chats } = useContext(ChatContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -150,7 +150,7 @@ const Dashboard = () => {
         <Sidebar user={userData} chats={chats} />
         <div className="container">
         <div className="createChat">
-            <EnterRoom user={userData} />
+            <EnterRoom user={userData} setUser={setUserData} />
           </div>
           <div className="createChat">
             <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
