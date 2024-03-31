@@ -187,7 +187,7 @@ function ChatRoom({ children }) {
     <div className="App">
       <header className="App-header" style={{ background: colors.background }} >
         <div>
-          <chatroom style={{ marginLeft: "710px" }}> {users[0].chatRoom} </chatroom>
+          <chatroom style={{ marginLeft: "710px" }}> {users ? '' : users[0].chatRoom} </chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={() => kickUser()} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
