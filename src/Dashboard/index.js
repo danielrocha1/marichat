@@ -70,6 +70,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
+    console.log(userDatam chat)
     const queryString = new URLSearchParams(chat).toString();  
     const addUserToChat = async () => {
       try {
