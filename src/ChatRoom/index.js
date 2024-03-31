@@ -78,9 +78,6 @@ function ChatRoom({ children }) {
         const data = await response.json();
         setUsers(data.users);
         setRoomname(data.roomname);
-
-        console.log("PASSOU DATA", userData)
-        console.log("PASSOU USERS", data.users)
         
       } catch (error) {
         console.error('Erro:', error.message);
@@ -176,7 +173,7 @@ function ChatRoom({ children }) {
           "username": userData.data.username,
           "hostid": userData.data.hostid,
           "chatid": userData.data.chatid,
-          "roomname": chat.roomname,
+          "roomname": roomname,
         }),
       });
 
@@ -192,7 +189,7 @@ function ChatRoom({ children }) {
     <div className="App">
       <header className="App-header" style={{ background: colors.background }} >
         <div>
-          <chatroom style={{ marginLeft: "710px" }}> {roomname ? roomname : 'SEM' } </chatroom>
+          <chatroom style={{ marginLeft: "710px" }}> {roomname ? roomname : 'SEM SALA' } </chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={() => kickUser()} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
@@ -201,7 +198,7 @@ function ChatRoom({ children }) {
               <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
                   {users.map((user, index) => (
-                    user.hostid === chat.hostid ? null : (
+                    user.hostid === userData.data.hostid ? null : (
                       <GuestInfo
                         isTyping={userTypingStatus[user]}
                         id={user.hostid}
