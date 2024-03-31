@@ -6,6 +6,8 @@ function EnterRoom(user) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleSubmit = async (e) => {
+    console.log(user, e.target)
+    const queryString = new URLSearchParams(user).toString();  
     e.preventDefault();
       try {
         const response = await fetch('https://marichat-go.onrender.com/enterroom', {
