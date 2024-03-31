@@ -173,7 +173,7 @@ function ChatRoom({ children }) {
           "username": userData.data.username,
           "hostid": userData.data.hostid,
           "chatid": chat.chatid,
-          "roomname": roomname,
+          "chatname": roomname,
         }),
       });
 
