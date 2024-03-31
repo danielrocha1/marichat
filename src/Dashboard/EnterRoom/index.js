@@ -16,6 +16,7 @@ function EnterRoom(user, setUser) {
       [roomname]: chatroomName
     }));
     console.log(user, chatroomName)
+    
     const queryString = new URLSearchParams(user).toString();  
     e.preventDefault();
       try {
