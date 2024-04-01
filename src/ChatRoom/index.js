@@ -211,7 +211,7 @@ function ChatRoom({ children }) {
               </div>
               <HostInfo name={userData.data.username} theme={colors.border} />
             </div>
-            <ChatBox messages={messages} chat={chat} roomname={roomname} theme={colors} setColors={setColors} />
+            <ChatBox chat={chat} messages={messages} chat={chat} roomname={roomname} theme={colors} setColors={setColors} />
           </div>
         </div>
       </header>

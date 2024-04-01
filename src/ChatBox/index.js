@@ -25,7 +25,7 @@ function ChatBox({ chat, messages, theme, color, setColors, roomname}) {
       <div className="chatScreen" style={{ borderColor: theme.border }} ref={chatContainerRef}>
         {messages}
       </div>
-      <Toolbar roomname={roomname} setShowEmoji={setShowEmoji} setText={setText} theme={theme} setColors={setColors} />
+      <Toolbar chat={chat} roomname={roomname} setShowEmoji={setShowEmoji} setText={setText} theme={theme} setColors={setColors} />
       <TextInput  chat={chat} showEmoji={showEmoji} text={text} setText={setText} />
     </div>
   );
