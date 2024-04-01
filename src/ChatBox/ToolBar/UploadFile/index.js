@@ -33,7 +33,7 @@ console.log("type:", "receiver",
 "hostid",userData.data.hostid,
 "message", fileContent,
 "upload", true,
-"chatid",chat.id,)
+"chatid",chat.chatid,)
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
