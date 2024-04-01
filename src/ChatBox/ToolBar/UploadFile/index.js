@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
 import ChatContext from '../../../ChatContext';
 
-function UploadFile({ roomname, id }) {
+function UploadFile({ chat, roomname, id }) {
   const { userData } = useContext(ChatContext);
   const [uploadStatus, setUploadStatus] = useState(null);
   const fileInputRef = useRef(null);
