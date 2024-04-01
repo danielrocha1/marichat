@@ -21,7 +21,7 @@ function UploadFile({ roomname, id }) {
             type: "receiver",
             label: "image",
             username: userData.data.username,
-            roomname: roomname,
+            hostid:userData.data.hostid,
             message: fileContent,
             upload: true,
             chatid:chat.id,
