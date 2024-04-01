@@ -617,7 +617,7 @@ func main() {
 			Label     string    `json:"label"`
 			Username  string    `json:"username"`
 			HostID  string    `json:"hostid"`
-			ChatID  string    `json:"roomname"`
+			ChatID  string    `json:"chatid"`
 			Message   string    `json:"message"`
 			Upload    bool      `json:"upload"`
 			Timestamp time.Time `json:"timestamp"`
