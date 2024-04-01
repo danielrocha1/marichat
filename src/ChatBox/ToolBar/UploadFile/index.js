@@ -24,7 +24,7 @@ function UploadFile({ chat, roomname, id }) {
             hostid:userData.data.hostid,
             message: fileContent,
             upload: true,
-            chatid:chat.id,
+            chatid:chat.chatid,
           }),
         });
 console.log("type:", "receiver",
