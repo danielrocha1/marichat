@@ -5,7 +5,7 @@ import UploadFile from './UploadFile';
 import ColorSelector from './ColorSelector';
 import './index.css';
 
-function Toolbar({ setShowEmoji, setText, theme, setColors }) {
+function Toolbar({ roomname, setShowEmoji, setText, theme, setColors }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleEmojiClick = () => {

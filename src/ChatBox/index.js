@@ -3,7 +3,7 @@ import TextInput from './TextBox';
 import Toolbar from './ToolBar';
 import './index.css';
 
-function ChatBox({ messages, theme, color, setColors, roomname}) {
+function ChatBox({ chat, messages, theme, color, setColors, roomname}) {
   const [showEmoji, setShowEmoji] = useState(false);
   const [text, setText] = useState('');
   const chatContainerRef = useRef(null);
