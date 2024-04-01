@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
 import ChatContext from '../../../ChatContext';
 
-function UploadFile({ id }) {
+function UploadFile({ roomname, id }) {
   const { userData } = useContext(ChatContext);
   const [uploadStatus, setUploadStatus] = useState(null);
   const fileInputRef = useRef(null);
@@ -20,8 +20,8 @@ function UploadFile({ id }) {
           body: JSON.stringify({
             type: "receiver",
             label: "image",
-            username: userData.user,
-            roomname: userData.chatroomName,
+            username: userData.data.username,
+            roomname: roomname,
             message: fileContent,
             upload: true,
           }),

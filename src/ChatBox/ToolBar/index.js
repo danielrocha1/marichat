@@ -67,7 +67,7 @@ function Toolbar({ setShowEmoji, setText, theme, setColors }) {
       <label htmlFor="file-upload" className="icon">
         <Paperclip />
       </label>
-      <UploadFile id="file-upload" setText={setText} />
+      <UploadFile roomname={roomname} id="file-upload" setText={setText} />
       <div className="icon">
         <Edit2 onClick={handleOpenModal} />
       </div>
