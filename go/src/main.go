@@ -644,7 +644,7 @@ func main() {
 			Name:      requestData.Username,
 			HostID:      requestData.HostID,
 			Message:   requestData.Message,
-			Chatroom:  requestData.RoomName,
+			ChatID:  requestData.ChatID,
 			Upload:    requestData.Upload,
 			Timestamp: time.Now(),
 		}
