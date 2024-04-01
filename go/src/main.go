@@ -617,7 +617,7 @@ func main() {
 			Label     string    `json:"label"`
 			Username  string    `json:"username"`
 			HostID  string    `json:"hostid"`
-			RoomName  string    `json:"roomname"`
+			ChatID  string    `json:"roomname"`
 			Message   string    `json:"message"`
 			Upload    bool      `json:"upload"`
 			Timestamp time.Time `json:"timestamp"`
@@ -629,7 +629,7 @@ func main() {
 		}
 
 		// Verifica se a sala de bate-papo existe
-		_, exists := chatrooms[requestData.RoomName]
+		_, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			// Se não existir, retorna um erro
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

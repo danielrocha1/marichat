@@ -24,6 +24,7 @@ function UploadFile({ roomname, id }) {
             roomname: roomname,
             message: fileContent,
             upload: true,
+            chatid:chat.id,
           }),
         });
 
