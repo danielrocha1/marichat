@@ -126,7 +126,8 @@ function ChatRoom({ children }) {
         const Message = (<SenderMessage Message={message.Message} />);
         setMessages(prevMessages => [...prevMessages, Message]);
       }
-
+console.log("first",message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid)
+console.log("second",message.Type === 'receiver' && message.HostID !== userData.data.hostid && message.upload === true && message.ChatID === chat.chatid)
       if (message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
         if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
           const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
