@@ -13,32 +13,37 @@ class SenderImage extends React.Component {
 
   componentDidMount() {
     // Decodificar a imagem base64
-    const imageData = this.decodeBase64Image(this.props.imageData);
-    this.setState({ imageData });
+    this.decodeBase64Image(this.props.imageData);
   }
 
   decodeBase64Image = (data) => {
-    const matches = data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    if (!matches || matches.length !== 3) {
-      throw new Error('Invalid input string');
+    try {
+      const matches = data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        throw new Error('Invalid input string');
+      }
+
+      const contentType = matches[1];
+      const base64Data = matches[2];
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: contentType });
+
+      const imageData = {
+        type: contentType,
+        data: URL.createObjectURL(blob)
+      };
+
+      this.setState({ imageData });
+    } catch (error) {
+      console.error('Error decoding base64 image:', error);
     }
-
-    const contentType = matches[1];
-    const base64Data = matches[2];
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: contentType });
-
-    return {
-      type: contentType,
-      data: URL.createObjectURL(blob)
-    };
   }
 
   toggleExpanded = (event) => {
@@ -54,34 +59,18 @@ class SenderImage extends React.Component {
       return null;
     }
 
-    const timestamp = new Date(this.props.Hour);
-    const hora = format(timestamp, 'HH:mm');
-
-    const containerStyle = {
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: 9999,
-      width: '40%',
-      maxHeight: '90%',
-      overflow: 'auto'
-    };
-
     const imageStyle = {
-      width: '80%',
+      width: '100%',
       cursor: 'pointer'
     };
 
     return (
-      <div style={containerStyle}>
-        <img
-          src={imageData.data}
-          alt={this.props.imageName}
-          style={imageStyle}
-          onClick={this.toggleExpanded}
-        />
-      </div>
+      <img
+        src={imageData.data}
+        alt={this.props.imageName}
+        style={imageStyle}
+        onClick={this.toggleExpanded}
+      />
     );
   }
 
@@ -99,7 +88,23 @@ class SenderImage extends React.Component {
           style={{ width: '80%', cursor: 'pointer' }}
           onClick={this.toggleExpanded}
         />
-        {expanded && ReactDOM.createPortal(this.renderExpandedImage(), document.getElementById('chatScreen'))}
+        {expanded && ReactDOM.createPortal(
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 9999,
+              width: '40%',
+              maxHeight: '90%',
+              overflow: 'auto'
+            }}
+          >
+            {this.renderExpandedImage()}
+          </div>,
+          document.getElementById('chatScreen')
+        )}
         <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px' }}>{hora}</p>
       </div>
     );
