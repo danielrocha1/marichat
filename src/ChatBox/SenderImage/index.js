@@ -1,114 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
+
 import { format } from 'date-fns';
+import ImageViewer from 'react-simple-image-viewer';
 
-class SenderImage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      imageData: null,
-      expanded: false // Estado para controlar a expansão
-    };
-  }
+const SenderImage = ({ imageData, imageName, Hour }) => {
+  const [expanded, setExpanded] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  componentDidMount() {
-    // Decodificar a imagem base64
-    this.decodeBase64Image(this.props.imageData);
-  }
+  const timestamp = new Date(Hour);
+  const hora = format(timestamp, 'HH:mm');
 
-  decodeBase64Image = (data) => {
-    try {
-      const matches = data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-      if (!matches || matches.length !== 3) {
-        throw new Error('Invalid input string');
-      }
-
-      const contentType = matches[1];
-      const base64Data = matches[2];
-      const byteCharacters = atob(base64Data);
-      const byteNumbers = new Array(byteCharacters.length);
-
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: contentType });
-
-      const imageData = {
-        type: contentType,
-        data: URL.createObjectURL(blob)
-      };
-
-      this.setState({ imageData });
-    } catch (error) {
-      console.error('Error decoding base64 image:', error);
-    }
-  }
-
-  toggleExpanded = (event) => {
-    event.preventDefault(); // Evitar o comportamento padrão do link
-    this.setState(prevState => ({
-      expanded: !prevState.expanded
-    }));
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
   };
 
-  renderExpandedImage() {
-    const { imageData } = this.state;
-    if (!imageData) {
-      return null;
-    }
+  const openImageViewer = (index) => {
+    setCurrentImageIndex(index);
+    setViewerOpen(true);
+  };
 
-    const imageStyle = {
-      width: '100%',
-      cursor: 'pointer'
-    };
+  const closeImageViewer = () => {
+    setCurrentImageIndex(0);
+    setViewerOpen(false);
+  };
 
-    return (
+  return (
+    <div className='senderImage' style={{ position: 'relative' }}>
       <img
-        src={imageData.data}
-        alt={this.props.imageName}
-        style={imageStyle}
-        onClick={this.toggleExpanded}
+        src={imageData}
+        alt={imageName}
+        style={{ width: '15%', cursor: 'pointer' }}
+        onClick={() => openImageViewer(0)}
       />
-    );
-  }
-
-  render() {
-    const timestamp = new Date(this.props.Hour);
-    const hora = format(timestamp, 'HH:mm');
-
-    const { expanded } = this.state;
-
-    return (
-      <div className='senderImage' style={{ position: 'relative' }}>
-        <img
-          src={this.props.imageData}
-          alt={this.props.imageName}
-          style={{ width: '80%', cursor: 'pointer' }}
-          onClick={this.toggleExpanded}
-        />
-        {expanded && ReactDOM.createPortal(
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 9999,
-              width: '40%',
-              maxHeight: '90%',
-              overflow: 'auto'
-            }}
-          >
-            {this.renderExpandedImage()}
-          </div>,
-          document.getElementById('chatScreen')
-        )}
-        <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px' }}>{hora}</p>
-      </div>
-    );
-  }
-}
+      {expanded && (
+        <div style={{ position: 'relative', marginTop: '10px' }}>
+          <img
+            src={imageData}
+            alt={imageName}
+            style={{ width: '100%', cursor: 'pointer' }}
+            onClick={toggleExpanded}
+          />
+          <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px' }}>{hora}</p>
+        </div>
+      )}
+      {viewerOpen && (
+        <div style={{ display: 'flex' }}>
+          <ImageViewer
+            src={[imageData]}
+            currentIndex={currentImageIndex}
+            onClose={closeImageViewer}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default SenderImage;
