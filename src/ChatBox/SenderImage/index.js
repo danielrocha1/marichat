@@ -7,7 +7,7 @@ class SenderImage extends React.Component {
     super(props);
     this.state = {
       imageData: null,
-      expanded: false // Estado para controlar a expansão
+      expanded: true // Estado para controlar a expansão
     };
   }
 
