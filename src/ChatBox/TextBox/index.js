@@ -26,7 +26,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleChange = (event) => {
-    const inputValue = event.target.value.trim('');
+    const inputValue = event.target.value;
     setText(inputValue);
 
     if (inputValue !== '') {
