@@ -132,18 +132,18 @@ function ChatRoom({ children }) {
         if (message.Label === 'image') {
           const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);
-          console.log(message)
-        } else if (message.Label !== 'image') {
+          console.log("second",Message)
+        } else if (message.Label === 'application/pdf') {
           const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
           setMessages(prevMessages => [...prevMessages, Message]);
         }
       }
 
       if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
-        if (message.Label === 'image') {
+        if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
           const Message = (<ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);
-        } else if (message.Label !== 'image') {
+        } else if (message.Label === 'application/pdf') {
           const Message = (<div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
           setMessages(prevMessages => [...prevMessages, Message]);
         }
