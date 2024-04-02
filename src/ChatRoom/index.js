@@ -133,7 +133,7 @@ function ChatRoom({ children }) {
           const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);
           console.log(message)
-        } else if (message.Label === 'application/pdf') {
+        } else if (message.Label !== 'image') {
           const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
           setMessages(prevMessages => [...prevMessages, Message]);
         }
