@@ -126,13 +126,13 @@ function ChatRoom({ children }) {
         const Message = (<SenderMessage Message={message.Message} />);
         setMessages(prevMessages => [...prevMessages, Message]);
       }
-console.log("first",message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid)
+
 
       if (message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
         if (message.Label === 'image') {
           const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);
-          console.log("second",Message)
+          console.log(message)
         } else if (message.Label === 'application/pdf') {
           const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
           setMessages(prevMessages => [...prevMessages, Message]);
