@@ -29,10 +29,11 @@ const SenderImage = ({ imageData, imageName, Hour }) => {
 
   return (
     <div className='senderImage' style={{ position: 'relative' }}>
+      <br/>
       <img
         src={imageData}
         alt={imageName}
-        style={{ width: '70%', cursor: 'pointer' }}
+        style={{ width: '60%', cursor: 'pointer' }}
         onClick={() => openImageViewer(0)}
       />
       <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px' }}>{hora}</p>
