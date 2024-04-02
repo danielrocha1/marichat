@@ -129,7 +129,7 @@ function ChatRoom({ children }) {
 
       if (message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
         if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
-          const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
+          const Message = (<SenderImage imageData={message.Message} imageName={message.Type} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);
           
         } else if (message.Label === 'application/pdf') {
