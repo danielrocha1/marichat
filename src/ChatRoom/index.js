@@ -137,7 +137,7 @@ function ChatRoom({ children }) {
         }
       }
 
-      if (message.Type === 'receiver' && message.Name !== userData.user && message.upload === true && message.Chatroom === userData.chatroomName) {
+      if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
         if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
           const Message = (<ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);

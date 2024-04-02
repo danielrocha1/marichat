@@ -27,13 +27,7 @@ function UploadFile({ chat, roomname, id }) {
             chatid:chat.chatid,
           }),
         });
-console.log("type:", "receiver",
-"label", "image",
-"username", userData.data.username,
-"hostid",userData.data.hostid,
-"message", fileContent,
-"upload", true,
-"chatid",chat.chatid,)
+
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
