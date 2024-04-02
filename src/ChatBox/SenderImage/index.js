@@ -32,9 +32,11 @@ const SenderImage = ({ imageData, imageName, Hour }) => {
       <img
         src={imageData}
         alt={imageName}
-        style={{ width: '15%', cursor: 'pointer' }}
+        style={{ width: '70%', cursor: 'pointer' }}
         onClick={() => openImageViewer(0)}
       />
+      <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px' }}>{hora}</p>
+
       {expanded && (
         <div style={{ position: 'relative', marginTop: '10px' }}>
           <img
@@ -42,8 +44,7 @@ const SenderImage = ({ imageData, imageName, Hour }) => {
             alt={imageName}
             style={{ width: '100%', cursor: 'pointer' }}
             onClick={toggleExpanded}
-          />
-          <p style={{ fontSize: '8px', textAlign: 'right', fontWeight: 'bold', marginRight: '10px' }}>{hora}</p>
+          />   
         </div>
       )}
       {viewerOpen && (
