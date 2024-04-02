@@ -129,7 +129,7 @@ function ChatRoom({ children }) {
 console.log("first",message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid)
 
       if (message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
-        if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
+        if (message.Label === 'image') {
           const Message = (<SenderImage imageData={message.Message} Hour={message.Timestamp} />);
           setMessages(prevMessages => [...prevMessages, Message]);
           console.log("second",Message)
