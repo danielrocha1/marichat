@@ -660,7 +660,7 @@ func main() {
 		reader := bytes.NewReader(data)
 
 		// Detecta o tipo MIME do arquivo
-		_, err = detectFileType(reader)
+		mime, err = detectFileType(reader)
 		if err != nil {
 			fmt.Println("Erro ao detectar o tipo MIME do arquivo:", err)
 			return err
@@ -668,6 +668,7 @@ func main() {
 
 		// Adiciona os bytes do arquivo à mensagem
 		message.File = data
+		message.Label = mime
 
 		// Serializa a mensagem para JSON
 		messageJSON, err := json.Marshal(message)
