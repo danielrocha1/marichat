@@ -36,10 +36,10 @@ const GuestInfo = (props) => {
 
   return (
     <div className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
-  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name, props.roomname)}>
+  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name,props.id, props.chatid, props.roomname)}>
         <p style={{ marginTop: "35px" }}>X</p>
       </div> }
-      <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
+      <div id={props.id} className={`guestBox ${isTyping ? 'typing' : ''}`}>
         <img src={props.name === "Daniel" ? avataaars : guestAvatar} className="guestPhoto" alt="logo" />
         <div className="">
           <p className="guestName">{props.name}</p>
