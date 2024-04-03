@@ -9,7 +9,7 @@ const GuestInfo = (props) => {
   // Atualiza o estado de "isTyping" quando a propriedade muda
   useEffect(() => {
     setIsTyping(props.isTyping);
-    console.log(props.isTyping, "DIGITANDO 45")
+    console.log(props.isTyping, "DIGITANDO 45", props.hostid)
 
 
   }, [props.isTyping]);
