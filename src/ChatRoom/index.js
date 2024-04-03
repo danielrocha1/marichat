@@ -152,6 +152,7 @@ function ChatRoom({ children }) {
         const updatedTypingStatus = { ...userTypingStatus };
         updatedTypingStatus[message.hostid] = message.isTyping;
         setUserTypingStatus(updatedTypingStatus);
+        console.log("STY",updatedTypingStatus)
       }
     };
 
