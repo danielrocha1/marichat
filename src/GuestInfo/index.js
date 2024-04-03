@@ -14,7 +14,7 @@ const GuestInfo = (props) => {
 
   }, [props.isTyping]);
 
-  const kickUser = async (name, chatid, hostid, roomname) => {
+  const kickUser = async (props) => {
     try {
       const response = await fetch('https://marichat-go.onrender.com/kickuser', {
         method: 'POST',
@@ -22,10 +22,10 @@ const GuestInfo = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username":name,
-          "hostid": hostid,
-          "chatid": chatid,
-          "roomname": roomname,
+          "username":props.name,
+          "hostid": props.hostid,
+          "chatid": props.chatid,
+          "roomname": props.roomname,
         }),
       });
   
