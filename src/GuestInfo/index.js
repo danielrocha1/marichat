@@ -10,11 +10,11 @@ const GuestInfo = (props) => {
   useEffect(() => {
     setIsTyping(props.isTyping);
     console.log(props.isTyping, "DIGITANDO 45")
-    console.log(isTyping, "DIGITANDO")
+
 
   }, [props.isTyping]);
 
-  const kickUser = async (username, roomname) => {
+  const kickUser = async (name, chatid, hostid, roomname) => {
     try {
       const response = await fetch('https://marichat-go.onrender.com/kickuser', {
         method: 'POST',
@@ -22,10 +22,10 @@ const GuestInfo = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username": props.name,
-          "hostid": props.hostid,
-          "chatid": props.chatid,
-          "roomname": props.roomname,
+          "username":name,
+          "hostid": hostid,
+          "chatid": chatid,
+          "roomname": roomname,
         }),
       });
   
@@ -38,7 +38,7 @@ const GuestInfo = (props) => {
   };
 
   return (
-    <div  id={props.hostid} className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
+    <div  id={`${props.hostid}`} className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
   {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name, props.hostid, props.chatid, props.roomname)}>
         <p style={{ marginTop: "35px" }}>X</p>
       </div> }
