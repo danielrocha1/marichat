@@ -148,9 +148,9 @@ function ChatRoom({ children }) {
         }
       }
 
-      if (message.type === 'typing' && message.user !== userData.user) {
+      if (message.type === 'typing' && message.hostid !== userData.data.hostid) {
         const updatedTypingStatus = { ...userTypingStatus };
-        updatedTypingStatus[message.user] = message.isTyping;
+        updatedTypingStatus[message.hostid] = message.isTyping;
         setUserTypingStatus(updatedTypingStatus);
       }
     };
@@ -188,7 +188,7 @@ function ChatRoom({ children }) {
     <div className="App">
       <header className="App-header" style={{ background: colors.background }} >
         <div>
-          <chatroom style={{ marginLeft: "710px" }}> {roomname ? roomname : 'SEM SALA' } </chatroom>
+          <chatroom style={{ marginLeft: "710px" }}> {roomname ? roomname : '' } </chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={() => kickUser()} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
