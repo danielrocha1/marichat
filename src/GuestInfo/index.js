@@ -9,6 +9,9 @@ const GuestInfo = (props) => {
   // Atualiza o estado de "isTyping" quando a propriedade muda
   useEffect(() => {
     setIsTyping(props.isTyping);
+    console.log(props.isTyping, "DIGITANDO 45")
+    console.log(isTyping, "DIGITANDO")
+
   }, [props.isTyping]);
 
   const kickUser = async (username, roomname) => {
@@ -20,7 +23,7 @@ const GuestInfo = (props) => {
         },
         body: JSON.stringify({
           "username": props.name,
-          "hostid": props.id,
+          "hostid": props.hostid,
           "chatid": props.chatid,
           "roomname": props.roomname,
         }),
@@ -35,11 +38,11 @@ const GuestInfo = (props) => {
   };
 
   return (
-    <div className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
-  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name,props.id, props.chatid, props.roomname)}>
+    <div  id={props.hostid} className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
+  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name, props.hostid, props.chatid, props.roomname)}>
         <p style={{ marginTop: "35px" }}>X</p>
       </div> }
-      <div id={props.id} className={`guestBox ${isTyping ? 'typing' : ''}`}>
+      <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
         <img src={props.name === "Daniel" ? avataaars : guestAvatar} className="guestPhoto" alt="logo" />
         <div className="">
           <p className="guestName">{props.name}</p>

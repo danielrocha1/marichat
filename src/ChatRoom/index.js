@@ -152,7 +152,7 @@ function ChatRoom({ children }) {
         const updatedTypingStatus = { ...userTypingStatus };
         updatedTypingStatus[message.hostid] = message.isTyping;
         setUserTypingStatus(updatedTypingStatus);
-        console.log("STY",users, updatedTypingStatus)
+        console.log("STY", updatedTypingStatus)
       }
     };
 
@@ -201,7 +201,7 @@ function ChatRoom({ children }) {
                     user.hostid === userData.data.hostid ? null : (
                       <GuestInfo
                         isTyping={userTypingStatus[user.hostid]}
-                        id={user.hostid}
+                        hostid={user.hostid}
                         key={index}
                         name={user.username}
                         roomname={user.chatRoom}
