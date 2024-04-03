@@ -147,7 +147,7 @@ function ChatRoom({ children }) {
           setMessages(prevMessages => [...prevMessages, Message]);
         }
       }
-
+      console.log(message.type === 'typing' && message.hostid !== userData.data.hostid, "||" , message )
       if (message.type === 'typing' && message.hostid !== userData.data.hostid) {
         const updatedTypingStatus = { ...userTypingStatus };
         updatedTypingStatus[message.hostid] = message.isTyping;
