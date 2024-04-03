@@ -14,7 +14,7 @@ const GuestInfo = (props) => {
 
   }, [props.isTyping]);
 
-  const kickUser = async (props) => {
+  const kickUser = async () => {
     try {
       const response = await fetch('https://marichat-go.onrender.com/kickuser', {
         method: 'POST',
@@ -39,7 +39,7 @@ const GuestInfo = (props) => {
 
   return (
     <div  id={`${props.hostid}`} className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
-  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser(props.name, props.hostid, props.chatid, props.roomname)}>
+  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser()}>
         <p style={{ marginTop: "35px" }}>X</p>
       </div> }
       <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
