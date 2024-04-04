@@ -80,14 +80,22 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
-        updatedTypingStatus[data.users.hostid] = false;
-        setUserTypingStatus(updatedTypingStatus);
+        
         setRoomname(data.roomname);
+
+        users.map((user, index) => {
+          updatedTypingStatus[user.hostid] = false;
+          setUserTypingStatus(prevMessages => [...prevMessages, updatedTypingStatus]);
+        })
+    
+        console.log(updatedTypingStatus)
         
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
+
+    
 
     fetchUsers();
 
