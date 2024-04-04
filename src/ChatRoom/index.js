@@ -86,9 +86,11 @@ function ChatRoom({ children }) {
         users.map((user, index) => {
           updatedTypingStatus[user.hostid] = false;
           setUserTypingStatus(prevMessages => [...prevMessages, updatedTypingStatus]);
+          console.log("foi",updatedTypingStatus)
+          console.log("user",user)
         })
     
-        console.log(updatedTypingStatus)
+        
         
       } catch (error) {
         console.error('Erro:', error.message);
