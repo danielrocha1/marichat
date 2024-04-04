@@ -52,7 +52,9 @@ function ChatRoom({ children }) {
 
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState({});
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([{
+    isTyping:false,
+  }]);
   const [colors, setColors] = useState({
     chatBox: '#7d3e5d',
     background: 'linear-gradient(to bottom, #482436, #000000)',
