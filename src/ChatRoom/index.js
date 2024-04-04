@@ -5,13 +5,11 @@ import HostInfo from '../HostInfo';
 import GuestInfo from '../GuestInfo';
 import ChatBox from '../ChatBox';
 import { FaSignOutAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import SenderImage from '../ChatBox/SenderImage';
 import ReceiverImage from '../ChatBox/ReceiverImage';
-import PDFViewer from '../ChatBox/ToolBar/UploadFile//PDFViewer'
+import PDFViewer from '../ChatBox/ToolBar/UploadFile/PDFViewer';
 
 function ReceiverMessage(props) {
   const timestamp = new Date(props.Hour);
@@ -36,145 +34,130 @@ function SenderMessage(props) {
   );
 }
 
-function ChatRoom({ children }) {
-  const { userData, setUserData } = useContext(ChatContext);
+function ChatRoom() {
+  const { userData } = useContext(ChatContext);
   const navigate = useNavigate();
-  
   const location = useLocation();
-  
   const searchParams = new URLSearchParams(location.search);
   const chat = Object.fromEntries(searchParams.entries());
 
-
   const [roomname, setRoomname] = useState('');
-
-
-
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState({});
-  const updatedTypingStatus = { ...userTypingStatus };
-  const [users, setUsers] = useState([{
-    isTyping:false,
-  }]);
+  const [users, setUsers] = useState([]);
   const [colors, setColors] = useState({
     chatBox: '#7d3e5d',
     background: 'linear-gradient(to bottom, #482436, #000000)',
     border: 'white',
   });
 
-  useEffect((users) => {
-    
-    const fetchUsers = async (users) => {
+  useEffect(() => {
+    const fetchUsers = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/listusers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ "chatid": chat.chatid }),
+          body: JSON.stringify({ chatid: chat.chatid }),
         });
         
         if (!response.ok) {
-          throw new Error('Erro ao enviar os dados');
+          throw new Error('Erro ao obter os usuários');
         }
 
         const data = await response.json();
         setUsers(data.users);
-        
         setRoomname(data.roomname);
-
-    
-        
-        
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
 
-    
-
     fetchUsers();
 
-    // users.map((user, index) => {
-    //   updatedTypingStatus[user.hostid] = false;
-    //   setUserTypingStatus(prevMessages => [...prevMessages, updatedTypingStatus]);
-    //   console.log("foi",updatedTypingStatus)
-    //   console.log("user",user)
-    // })
-    
-
-
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log("MENSAGEM",message)
-      if (message.type === 'newUser') {
-        console.log("USERS",users)
-        if (message.chatid === chat.chatid) {
-          setUsers((prevUsers) => [...prevUsers, {
-          "hostid":message.hostid,
-          "chatname":message.chatRoom,
-          "chatid":message.chatid,
-          "username":message.username
-          }]);
-        }
-     
-      }
-      if (message.type === 'removeUser') {
-        if (message.chatid === chat.chatid) {
-          setUsers(prevUsers => {
-            const updatedUsers = prevUsers.filter(user => user.hostid !== message.hostid);
-            return updatedUsers;
-          });
-          if (message.hostid === userData.data.hostid) {
-            navigate(`/dashboard`, userData);
-          }
-        }
-      }
-
-      if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.chatRoom === userData.Chatroom) {
-        const Message = (<ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />)
-        setMessages(prevMessages => [...prevMessages, Message]);
-      }
-
-      if (message.Type === 'receiver' && message.HostID === userData.data.hostid && !message.upload) {
-        const Message = (<SenderMessage Message={message.Message} />);
-        setMessages(prevMessages => [...prevMessages, Message]);
-      }
-
-      if (message.Type === 'receiver' && message.HostID === userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
-        if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
-          const Message = (<SenderImage imageData={message.Message} imageName={message.Type} Hour={message.Timestamp} />);
-          setMessages(prevMessages => [...prevMessages, Message]);
-          
-        } else if (message.Label === 'application/pdf') {
-          const Message = (<div className='senderMessage'> <PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        }
-      }
-
-      if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && message.upload === true && message.ChatID === chat.chatid) {
-        if (message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg') {
-          const Message = (<ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} />);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        } else if (message.Label === 'application/pdf') {
-          const Message = (<div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>);
-          setMessages(prevMessages => [...prevMessages, Message]);
-        }
-      }
-      console.log(message.type === 'typing' && message.hostid !== userData.data.hostid, "||" , message )
-      if (message.type === 'typing' && message.hostid !== userData.data.hostid) {
-        const updatedTypingStatus = { ...userTypingStatus };
-        updatedTypingStatus[message.hostid] = message.isTyping;
-        setUserTypingStatus(updatedTypingStatus);
-        console.log("STY", updatedTypingStatus)
-      }
-    };
+    socket.onmessage = handleWebSocketMessage;
 
     return () => {
       socket.close();
     };
   }, []);
+
+  const handleWebSocketMessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log("MENSAGEM",message)
+
+    switch (message.type) {
+      case 'newUser':
+        handleNewUserMessage(message);
+        break;
+      case 'removeUser':
+        handleRemoveUserMessage(message);
+        break;
+      case 'receiver':
+        handleReceiverMessage(message);
+        break;
+      case 'typing':
+        handleTypingMessage(message);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleNewUserMessage = (message) => {
+    if (message.chatid === chat.chatid) {
+      setUsers(prevUsers => [...prevUsers, {
+        hostid: message.hostid,
+        chatname: message.chatRoom,
+        chatid: message.chatid,
+        username: message.username
+      }]);
+    }
+  };
+
+  const handleRemoveUserMessage = (message) => {
+    if (message.chatid === chat.chatid) {
+      setUsers(prevUsers => prevUsers.filter(user => user.hostid !== message.hostid));
+      if (message.hostid === userData.data.hostid) {
+        navigate(`/dashboard`, userData);
+      }
+    }
+  };
+
+  const handleReceiverMessage = (message) => {
+    if (message.upload && message.ChatID === chat.chatid) {
+      if (message.Type === 'receiver' && message.HostID === userData.data.hostid) {
+        const Message = message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ?
+          <SenderImage imageData={message.Message} imageName={message.Type} Hour={message.Timestamp} /> :
+          <div className='senderMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>;
+
+        setMessages(prevMessages => [...prevMessages, Message]);
+      } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid) {
+        const Message = message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ?
+          <ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} /> :
+          <div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>;
+
+        setMessages(prevMessages => [...prevMessages, Message]);
+      }
+    } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.chatRoom === userData.Chatroom) {
+      const Message = <ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />;
+      setMessages(prevMessages => [...prevMessages, Message]);
+    } else if (message.Type === 'receiver' && message.HostID === userData.data.hostid && !message.upload) {
+      const Message = <SenderMessage Message={message.Message} />;
+      setMessages(prevMessages => [...prevMessages, Message]);
+    }
+  };
+
+  const handleTypingMessage = (message) => {
+    if (message.hostid !== userData.data.hostid) {
+      setUserTypingStatus(prevTypingStatus => ({
+        ...prevTypingStatus,
+        [message.hostid]: message.isTyping
+      }));
+    }
+  };
 
   const kickUser = async () => {
     try {
@@ -184,17 +167,16 @@ function ChatRoom({ children }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username": userData.data.username,
-          "hostid": userData.data.hostid,
-          "chatid": chat.chatid,
-          "chatname": roomname,
+          username: userData.data.username,
+          hostid: userData.data.hostid,
+          chatid: chat.chatid,
+          chatname: roomname,
         }),
       });
 
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
-      console.log()
     } catch (error) {
       console.error('Erro:', error.message);
     }
@@ -202,10 +184,10 @@ function ChatRoom({ children }) {
 
   return (
     <div className="App">
-      <header className="App-header" style={{ background: colors.background }} >
+      <header className="App-header" style={{ background: colors.background }}>
         <div>
-          <chatroom style={{ marginLeft: "710px" }}> {roomname ? roomname : '' } </chatroom>
-          <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={() => kickUser()} />
+          <chatroom style={{ marginLeft: "710px" }}>{roomname ? roomname : ''}</chatroom>
+          <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
           <div className="flexBox">
