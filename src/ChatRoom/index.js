@@ -95,12 +95,12 @@ function ChatRoom({ children }) {
 
     fetchUsers();
 
-    users.map((user, index) => {
-      updatedTypingStatus[user.hostid] = false;
-      setUserTypingStatus(prevMessages => [...prevMessages, updatedTypingStatus]);
-      console.log("foi",updatedTypingStatus)
-      console.log("user",user)
-    })
+    // users.map((user, index) => {
+    //   updatedTypingStatus[user.hostid] = false;
+    //   setUserTypingStatus(prevMessages => [...prevMessages, updatedTypingStatus]);
+    //   console.log("foi",updatedTypingStatus)
+    //   console.log("user",user)
+    // })
     
 
 
