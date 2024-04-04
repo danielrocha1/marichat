@@ -52,6 +52,7 @@ function ChatRoom({ children }) {
 
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState({});
+  const updatedTypingStatus = { ...userTypingStatus };
   const [users, setUsers] = useState([{
     isTyping:false,
   }]);
@@ -79,6 +80,8 @@ function ChatRoom({ children }) {
 
         const data = await response.json();
         setUsers(data.users);
+        updatedTypingStatus[data.users.hostid] = false;
+        setUserTypingStatus(updatedTypingStatus);
         setRoomname(data.roomname);
         
       } catch (error) {
