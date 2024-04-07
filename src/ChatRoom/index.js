@@ -45,6 +45,7 @@ function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState({});
   const [users, setUsers] = useState([]);
+
   const [colors, setColors] = useState({
     chatBox: '#7d3e5d',
     background: 'linear-gradient(to bottom, #482436, #000000)',
@@ -197,7 +198,7 @@ function ChatRoom() {
                   {users.map((user, index) => (
                     user.hostid === userData.data.hostid ? null : (
                       <GuestInfo
-                        isTyping={userTypingStatus[user.hostid]}
+                        Typing={userTypingStatus[user.hostid]}
                         hostid={user.hostid}
                         key={index}
                         name={user.username}

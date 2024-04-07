@@ -3,16 +3,15 @@ import './index.css';
 import avataaars from '../HostInfo/avataaars.png'
 import guestAvatar from './guestAvatar.png'; // Importe a imagem corretamente
 
-const GuestInfo = (props) => {
+const GuestInfo = (props, Typing) => {
   const [isTyping, setIsTyping] = useState(false);
 
   // Atualiza o estado de "isTyping" quando a propriedade muda
   useEffect(() => {
-    console.log( props.isTyping !== undefined || props.isTyping !== "undefined")
-    if( props.isTyping !== undefined || props.isTyping !== "undefined" ){
-    setIsTyping(props.isTyping);
-    console.log(props.isTyping, "DIGITANDO 45", props.hostid)
-    }
+    console.log("TYPING", Typing)
+
+    setIsTyping(Typing);
+  
 
   }, [props.isTyping]);
 
