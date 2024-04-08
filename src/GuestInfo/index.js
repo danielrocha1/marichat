@@ -13,7 +13,7 @@ const GuestInfo = (props, Typing) => {
     setIsTyping(Typing);
   
 
-  }, [props.isTyping]);
+  }, [Typing]);
 
   const kickUser = async () => {
     try {
