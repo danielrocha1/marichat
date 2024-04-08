@@ -78,12 +78,7 @@ function ChatRoom() {
     };
 
     fetchUsers();
-
-    setUserTypingStatus(prevTypingStatus => ({
-      ...prevTypingStatus,
-      [users.hostid]: false
-    }));
-    console.log(userTypingStatus)
+    
 
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
     socket.onmessage = handleWebSocketMessage;
@@ -165,13 +160,8 @@ function ChatRoom() {
         ...prevTypingStatus,
         [message.hostid]: message.isTyping
       }));
+      console.log("TESTE", userTypingStatus[message.hostid])
     }
-    return(
-    users.map((user) => (
-      console.log("USERS",userTypingStatus[user.hostid])
-    ))
-    )
-    
   };
 
   const kickUser = async () => {
