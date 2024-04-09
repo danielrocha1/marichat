@@ -280,27 +280,20 @@ func main() {
 
 	app.Post("/addUser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
-		var requestData struct {
-			ChatName string `json:"chatname"`
-			Name     string `json:"username"`
-			ChatID   string `json:"chatid"`
-			HostID   string `json:"hostid"`
-		}
-		if err := c.BodyParser(&requestData); err != nil {
+		var user Users
+		if err := c.BodyParser(&user); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Failed to parse request body",
 			})
 		}
-
-		fmt.Println(requestData)
+		fmt.Println(user)
 		// Verifica se o chat existe
-		chatroom, exists := chatrooms[requestData.ChatID]
+		chatroom, exists := chatrooms[user.ChatID]
 		if !exists {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Chatroom not found",
 			})
 		} else {
-			requestData.ChatName = chatroom.Name
 			// Verifica se o usuário já está na sala
 			for _, users := range chatroom.Users {
 				if user.HostID == users.HostID {
@@ -310,16 +303,16 @@ func main() {
 				}
 			}
 			// Se o usuário não estiver na sala, adiciona-o
-			chatroom.Users = append(chatroom.Users, requestData)
+			chatroom.Users = append(chatroom.Users, user)
 		}
 
 		// Adiciona o usuário à sala de bate-papo existente
 
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"username":     requestData.Name,
-			"guestid": requestData.HostID,
-			"chatid":     requestData.ChatID,
+			"username":     user.Name,
+			"guestid": user.HostID,
+			"chatid":     user.ChatID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
