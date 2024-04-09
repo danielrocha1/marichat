@@ -5,7 +5,7 @@ import ChatContext from '../../ChatContext';
 
 function EnterRoom() {
   
-  const { userData, setUserData} = useContext(ChatContext);
+  
   const [chatRoom, setChatroomName] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -15,9 +15,9 @@ function EnterRoom() {
   }
 
   const handleSubmit = async (e) => {
+    const { userData, setUserData} = useContext(ChatContext);
     
-    
-    console.log(userData, chat)
+    console.log(userData.data, userData.data.hostid)
     const queryString = new URLSearchParams(chat).toString();  
     e.preventDefault();
       try {
