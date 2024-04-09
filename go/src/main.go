@@ -280,20 +280,27 @@ func main() {
 
 	app.Post("/addUser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
-		var user Users
-		if err := c.BodyParser(&user); err != nil {
+		var requestData struct {
+			ChatName string `json:"chatname"`
+			Name     string `json:"username"`
+			ChatID   string `json:"chatid"`
+			HostID   string `json:"hostid"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Failed to parse request body",
 			})
 		}
-		fmt.Println(user)
+
+		fmt.Println(requestData)
 		// Verifica se o chat existe
-		chatroom, exists := chatrooms[user.ChatID]
+		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Chatroom not found",
 			})
 		} else {
+			requestData.ChatName = chatroom.Name
 			// Verifica se o usuário já está na sala
 			for _, users := range chatroom.Users {
 				if user.HostID == users.HostID {
@@ -303,16 +310,16 @@ func main() {
 				}
 			}
 			// Se o usuário não estiver na sala, adiciona-o
-			chatroom.Users = append(chatroom.Users, user)
+			chatroom.Users = append(chatroom.Users, requestData)
 		}
 
 		// Adiciona o usuário à sala de bate-papo existente
 
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"username":     user.Name,
-			"guestid": user.HostID,
-			"chatid":     user.ChatID,
+			"username":     requestData.Name,
+			"guestid": requestData.HostID,
+			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
@@ -336,6 +343,7 @@ func main() {
 	app.Post("/enterroom", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
+			ChatName string `json:"chatname"`
 			Name     string `json:"username"`
 			ChatID   string `json:"chatid"`
 			HostID   string `json:"hostid"`
@@ -345,10 +353,21 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-		fmt.Println(requestData)
+	
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[requestData.ChatID]
-		if exists {
+		if !exists {
+			// Se o chat não existir, cria uma nova sala de chat e adiciona o usuário
+			chatroom = &Chatroom{
+				Name:   requestData.ChatName,
+				HostID: requestData.HostID,
+				ChatID: requestData.ChatID,
+				Users: []Users{
+					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+				},
+			}
+			chatrooms[requestData.ChatID] = chatroom
+		} else {
 			// Verifica se o usuário já está na sala
 			for _, user := range chatroom.Users {
 				if requestData.HostID == user.HostID {
