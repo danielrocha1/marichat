@@ -162,8 +162,10 @@ function ChatRoom() {
         return updatedTypingStatus;
       });
     }
-    console.log("TESTE", userTypingStatus)
   };
+
+  console.log("TESTE", userTypingStatus)
+
 
   const kickUser = async () => {
     try {
