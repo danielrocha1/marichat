@@ -286,7 +286,7 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-
+		fmt.Println(user)
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[user.ChatID]
 		if !exists {
@@ -336,7 +336,6 @@ func main() {
 	app.Post("/enterroom", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
-			ChatName string `json:"chatname"`
 			Name     string `json:"username"`
 			ChatID   string `json:"chatid"`
 			HostID   string `json:"hostid"`
@@ -346,21 +345,10 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-	
+		fmt.Println(requestData)
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[requestData.ChatID]
-		if !exists {
-			// Se o chat não existir, cria uma nova sala de chat e adiciona o usuário
-			chatroom = &Chatroom{
-				Name:   requestData.ChatName,
-				HostID: requestData.HostID,
-				ChatID: requestData.ChatID,
-				Users: []Users{
-					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
-				},
-			}
-			chatrooms[requestData.ChatID] = chatroom
-		} else {
+		if exists {
 			// Verifica se o usuário já está na sala
 			for _, user := range chatroom.Users {
 				if requestData.HostID == user.HostID {
