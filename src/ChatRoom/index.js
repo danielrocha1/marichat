@@ -156,10 +156,10 @@ function ChatRoom() {
 
   const handleTypingMessage = (message) => {
     if (message.hostid !== userData.data.hostid) {
-      setUserTypingStatus(prevTypingStatus => ({
-        ...prevTypingStatus,
-        [message.hostid]: message.isTyping
-      }));
+      setUserTypingStatus((prevTypingStatus) => {
+        const updatedTypingStatus = { ...prevTypingStatus, [message.hostid]: message.isTyping };
+        return updatedTypingStatus;
+      });
       console.log("TESTE", userTypingStatus[0])
     }
   };
