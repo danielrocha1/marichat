@@ -160,7 +160,7 @@ function ChatRoom() {
         ...prevTypingStatus,
         [message.hostid]: message.isTyping
       }));
-      console.log("TESTE", userTypingStatus)
+      console.log("TESTE", userTypingStatus[0])
     }
   };
 
