@@ -17,7 +17,7 @@ function EnterRoom() {
   const handleSubmit = async (e) => {
     
     
-    console.log(userData.data, userData.data.hostid)
+    console.log(userData.data, userData)
     const queryString = new URLSearchParams(chat,userData).toString();  
 
     e.preventDefault();
