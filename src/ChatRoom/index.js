@@ -43,7 +43,7 @@ function ChatRoom() {
 
   const [roomname, setRoomname] = useState('');
   const [messages, setMessages] = useState([]);
-  const [userTypingStatus, setUserTypingStatus] = useState({});
+  const [userTypingStatus, setUserTypingStatus] = useState([]);
   const [users, setUsers] = useState([]);
 
   const [colors, setColors] = useState({
