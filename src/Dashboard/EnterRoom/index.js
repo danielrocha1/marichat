@@ -13,12 +13,13 @@ function EnterRoom() {
   const chat = {
     "chatid": chatRoom  
   }
-
-  const handleSubmit = async (userData,e) => {
+  console.log(userData.data, userData.data.hostid)
+  const handleSubmit = async (e) => {
     
     
     console.log(userData.data, userData.data.hostid)
-    const queryString = new URLSearchParams(chat).toString();  
+    const queryString = new URLSearchParams(chat,userData).toString();  
+
     e.preventDefault();
       try {
         const response = await fetch('https://marichat-go.onrender.com/addUser', {
