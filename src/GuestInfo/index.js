@@ -3,7 +3,7 @@ import './index.css';
 import avataaars from '../HostInfo/avataaars.png'
 import guestAvatar from './guestAvatar.png'; // Importe a imagem corretamente
 
-const GuestInfo = (props, Typing) => {
+const GuestInfo = (props, {Typing}) => {
   const [isTyping, setIsTyping] = useState(false);
 
   // Atualiza o estado de "isTyping" quando a propriedade muda
