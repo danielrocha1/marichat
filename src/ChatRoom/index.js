@@ -98,7 +98,7 @@ function ChatRoom() {
     const message = JSON.parse(event.data);
     console.log("MENSAGEM",message)
 
-    switch (message.type) {
+    switch (message.type || message.Type) {
       case 'newUser':
         handleNewUserMessage(message);
         break;
