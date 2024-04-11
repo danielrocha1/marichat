@@ -311,7 +311,7 @@ func main() {
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"username":     user.Name,
-			"guestid": user.HostID,
+			"hostid": user.HostID,
 			"chatid":     user.ChatID,
 			"chatRoom": chatroom.Name,
 		})
@@ -346,7 +346,7 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-	
+		fmt.Println(requestData)
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
