@@ -68,6 +68,7 @@ function ChatRoom() {
         }
 
         const data = await response.json();
+        console.log(users.data, "DATAAA")
         setUsers(data.users);
         setRoomname(data.roomname);
 
