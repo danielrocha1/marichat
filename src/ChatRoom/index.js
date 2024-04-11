@@ -90,8 +90,8 @@ function ChatRoom() {
   }, []);
  
   useEffect(() => {
-    console.log(users)
-  }, [users]);
+    console.log(userTypingStatus)
+  }, [userTypingStatus]);
 
 
   const handleWebSocketMessage = (event) => {
