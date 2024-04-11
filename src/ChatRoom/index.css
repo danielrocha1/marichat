@@ -68,6 +68,7 @@
 }
 
 .columnFlexBox {
+  overflow: auto;
   display: flex;
   flex-direction: column; /* Coloca os itens um embaixo do outro */
 }
