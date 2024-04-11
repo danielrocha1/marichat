@@ -1,12 +1,11 @@
-import './index.css';
 import React, { useState, useEffect, useContext } from 'react';
+import { FaSignOutAlt } from 'react-icons/fa';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { format } from 'date-fns';
 import ChatContext from '../ChatContext';
 import HostInfo from '../HostInfo';
 import GuestInfo from '../GuestInfo';
 import ChatBox from '../ChatBox';
-import { FaSignOutAlt } from 'react-icons/fa';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { format } from 'date-fns';
 import SenderImage from '../ChatBox/SenderImage';
 import ReceiverImage from '../ChatBox/ReceiverImage';
 import PDFViewer from '../ChatBox/ToolBar/UploadFile/PDFViewer';
@@ -24,7 +23,7 @@ function ReceiverMessage(props) {
 }
 
 function SenderMessage(props) {
-  const timestamp = new Date();
+  const timestamp = new Date(props.Hour);
   const hora = format(timestamp, 'HH:mm');
   return (
     <div className="senderMessage">
@@ -43,7 +42,7 @@ function ChatRoom() {
 
   const [roomname, setRoomname] = useState('');
   const [messages, setMessages] = useState([]);
-  const [userTypingStatus, setUserTypingStatus] = useState([]);
+  const [userTypingStatus, setUserTypingStatus] = useState({});
   const [users, setUsers] = useState([]);
 
   const [colors, setColors] = useState({
@@ -70,7 +69,6 @@ function ChatRoom() {
         const data = await response.json();
         setUsers(data.users);
         setRoomname(data.roomname);
-
      
       } catch (error) {
         console.error('Erro:', error.message);
@@ -79,7 +77,6 @@ function ChatRoom() {
 
     fetchUsers();
     
-
     const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
     socket.onmessage = handleWebSocketMessage;
 
@@ -88,9 +85,13 @@ function ChatRoom() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
+
   const handleWebSocketMessage = (event) => {
     const message = JSON.parse(event.data);
-    console.log("MENSAGEM",message)
+    console.log("MENSAGEM", message);
 
     switch (message.type) {
       case 'newUser':
@@ -124,7 +125,7 @@ function ChatRoom() {
   const handleRemoveUserMessage = (message) => {
     if (message.chatid === chat.chatid) {
       setUsers(prevUsers => prevUsers.filter(user => user.hostid !== message.hostid));
-      if (message.hostid === userData.data.hostid) {
+      if (message.hostid === userData?.data?.hostid) {
         navigate(`/dashboard`, userData);
       }
     }
@@ -132,40 +133,37 @@ function ChatRoom() {
 
   const handleReceiverMessage = (message) => {
     if (message.upload && message.ChatID === chat.chatid) {
-      if (message.Type === 'receiver' && message.HostID === userData.data.hostid) {
+      if (message.Type === 'receiver' && message.HostID === userData?.data?.hostid) {
         const Message = message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ?
           <SenderImage imageData={message.Message} imageName={message.Type} Hour={message.Timestamp} /> :
           <div className='senderMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>;
 
         setMessages(prevMessages => [...prevMessages, Message]);
-      } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid) {
+      } else if (message.Type === 'receiver' && message.HostID !== userData?.data?.hostid) {
         const Message = message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ?
           <ReceiverImage Name={message.Name} imageData={message.Message} Hour={message.Timestamp} /> :
           <div className='receiverMessage'><PDFViewer Name={message.Name} Message={message.Message} Hour={message.Timestamp} /></div>;
 
         setMessages(prevMessages => [...prevMessages, Message]);
       }
-    } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.chatRoom === userData.Chatroom) {
+    } else if (message.Type === 'receiver' && message.HostID !== userData?.data?.hostid && !message.upload && message.chatRoom === userData?.Chatroom) {
       const Message = <ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />;
       setMessages(prevMessages => [...prevMessages, Message]);
-    } else if (message.Type === 'receiver' && message.HostID === userData.data.hostid && !message.upload) {
-      const Message = <SenderMessage Message={message.Message} />;
+    } else if (message.Type === 'receiver' && message.HostID === userData?.data?.hostid && !message.upload) {
+      const Message = <SenderMessage Message={message.Message} Hour={message.Timestamp} />;
       setMessages(prevMessages => [...prevMessages, Message]);
     }
   };
 
   const handleTypingMessage = (message) => {
-    if (message.hostid !== userData.data.hostid) {
+    if (message?.hostid !== userData?.data?.hostid) {
       setUserTypingStatus((prevTypingStatus) => {
         const updatedTypingStatus = { ...prevTypingStatus, [message.hostid]: message.isTyping };
-        console.log("UPDATED",updatedTypingStatus)
+        console.log("UPDATED", updatedTypingStatus);
         return updatedTypingStatus;
       });
     }
   };
-
-  console.log("TESTE", userTypingStatus)
-
 
   const kickUser = async () => {
     try {
@@ -175,8 +173,8 @@ function ChatRoom() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: userData.data.username,
-          hostid: userData.data.hostid,
+          username: userData?.data?.username,
+          hostid: userData?.data?.hostid,
           chatid: chat.chatid,
           chatname: roomname,
         }),
@@ -203,7 +201,7 @@ function ChatRoom() {
               <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
                   {users.map((user, index) => (
-                    user.hostid === userData.data.hostid ? null : (
+                    user.hostid === userData?.data?.hostid ? null : (
                       <GuestInfo
                         Typing={userTypingStatus[user.hostid]}
                         hostid={user.hostid}
@@ -216,7 +214,7 @@ function ChatRoom() {
                   ))}
                 </ul>
               </div>
-              <HostInfo name={userData.data.username} theme={colors.border} />
+              <HostInfo name={userData?.data?.username} theme={colors.border} />
             </div>
             <ChatBox chat={chat} messages={messages} chat={chat} roomname={roomname} theme={colors} setColors={setColors} />
           </div>
