@@ -11,7 +11,7 @@ const SenderImage = ({ imageData, imageName, Hour }) => {
   const timestamp = new Date(Hour);
   const hora = format(timestamp, 'HH:mm');
 
-  console.log(hora)
+
 
   const toggleExpanded = () => {
     setExpanded(!expanded);

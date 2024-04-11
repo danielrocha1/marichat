@@ -68,7 +68,7 @@ function ChatRoom() {
         }
 
         const data = await response.json();
-        console.log(users.data, "DATAAA")
+
         setUsers(data.users);
         setRoomname(data.roomname);
 
@@ -89,14 +89,11 @@ function ChatRoom() {
     };
   }, []);
  
-  useEffect(() => {
-    console.log(userTypingStatus)
-  }, [userTypingStatus]);
 
 
   const handleWebSocketMessage = (event) => {
     const message = JSON.parse(event.data);
-    console.log("MENSAGEM",message)
+
 
     switch (message.type || message.Type) {
       case 'newUser':
@@ -137,7 +134,6 @@ function ChatRoom() {
   };
 
   const handleReceiverMessage = (message) => {
-    console.log(message.HostID , userData.data.hostid , message.ChatID , chat.chatid)
     if (message.upload && message.ChatID === chat.chatid) {
       if (message.Type === 'receiver' && message.HostID === userData.data.hostid) {
         const Message = message.Label === 'image/png' || message.Label === 'image/jpg' || message.Label === 'image/jpeg' ?
@@ -166,7 +162,6 @@ function ChatRoom() {
     if (message.hostid !== userData.data.hostid) {
       setUserTypingStatus((prevTypingStatus) => {
         const updatedTypingStatus = { ...prevTypingStatus, [message.hostid]: message.isTyping };
-        console.log("UPDATED",updatedTypingStatus)
         return updatedTypingStatus;
       });
     }

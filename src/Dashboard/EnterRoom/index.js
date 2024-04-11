@@ -13,7 +13,7 @@ function EnterRoom() {
   const chat = {
     "chatid": chatRoom  
   }
-  console.log(userData.data, userData.data.hostid)
+  
   const handleSubmit = async (e) => {
 
     const queryString = new URLSearchParams(chat,userData).toString();  

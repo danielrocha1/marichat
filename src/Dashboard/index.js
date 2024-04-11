@@ -70,7 +70,6 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
   }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
-    console.log(userData, chat)
     const queryString = new URLSearchParams(chat).toString();  
     const addUserToChat = async () => {
       try {
@@ -89,10 +88,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
         });
 
         if (!response.ok) {
-          console.log( "chatname", chat.chatname,
-            "username", userData.data.username,
-            "hostid", userData.data.hostid,
-            "chatid", chat.chatid )
+         
           throw new Error('Erro ao enviar os dados');
         }
             
@@ -144,11 +140,10 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("Logout");
+    ("Logout");
   };
-  const handleEnterroom = () => {
-    console.log("Logout");
-  };
+
+
   return (
     <div>
       <TopHeader handleLogout={handleLogout} />
