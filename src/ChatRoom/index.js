@@ -211,7 +211,7 @@ function ChatRoom() {
                   {users.map((user, index) => (
                     user.hostid === userData.data.hostid ? null : (
                       <GuestInfo
-                        Typing={userTypingStatus[user.hostid]}
+                        isTyping={userTypingStatus[user.hostid]}
                         hostid={user.hostid}
                         key={index}
                         name={user.username}
