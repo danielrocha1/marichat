@@ -29,9 +29,9 @@
   border: 7px double #ffffff;
   border-radius: 8px;
   padding: 1px;
-  width: 140px;
+  width: auto;
   background-color: #6d2082;
-  overflow: auto;
+  
 }
 
 .guestPhoto {
