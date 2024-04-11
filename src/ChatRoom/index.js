@@ -151,7 +151,8 @@ function ChatRoom() {
 
         setMessages(prevMessages => [...prevMessages, Message]);
       }
-    } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.chatRoom === userData.Chatroom) {
+    } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.ChatID === chat.chatid) {
+      console.log(message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.ChatID === chat.chatid)
       const Message = <ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />;
       setMessages(prevMessages => [...prevMessages, Message]);
     } else if (message.Type === 'receiver' && message.HostID === userData.data.hostid && !message.upload) {
@@ -170,7 +171,6 @@ function ChatRoom() {
     }
   };
 
-  console.log("TESTE", userTypingStatus)
 
 
   const kickUser = async () => {
