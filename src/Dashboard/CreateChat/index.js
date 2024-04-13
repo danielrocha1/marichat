@@ -7,8 +7,8 @@ function CreateChat() {
   const { userData, setUserData} = useContext(ChatContext);
   
   const [chatRoom, setChatroomName] = useState('');
-  const [chatid, setChatroomName] = useState('');
-  const [private, setChatroomName] = useState('');
+  const [chatid, setChatID] = useState('');
+  const [private, setPrivate] = useState('');
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();

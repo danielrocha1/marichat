@@ -153,10 +153,10 @@ const Dashboard = () => {
         <Sidebar user={userData} chats={chats} />
         <div className="container">
         <div className="createChat">
-            <EnterRoom user={userData} setUserData={setUserData} />
+            <EnterRoom />
           </div>
           <div className="createChat">
-          <CreateChat user={userData} setUserData={setUserData} />
+          <CreateChat />
           </div>
           <div className="">
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
