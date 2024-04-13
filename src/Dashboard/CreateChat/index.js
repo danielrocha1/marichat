@@ -17,11 +17,11 @@ function CreateChat() {
   
   const handleSubmit = async (e) => {
 
-    const queryString = new URLSearchParams(chat,userData).toString();  
+    
 
     e.preventDefault();
       try {
-        const response = await fetch('https://marichat-go.onrender.com/addUser', {
+        const response = await fetch('https://marichat-go.onrender.com/createchat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ function CreateChat() {
           body: JSON.stringify({ 
             username: userData.data.username,
             hostid: userData.data.hostid,
-            chatid: chat.chatid 
+            
           }),
         });
 
