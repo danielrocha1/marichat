@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
 
 import EnterRoom from '../Dashboard/EnterRoom';
+import CreateChat from '../Dashboard/CreateChat';
+
 import './index.css';
 
 // Componentes
@@ -154,7 +156,7 @@ const Dashboard = () => {
             <EnterRoom user={userData} setUserData={setUserData} />
           </div>
           <div className="createChat">
-            <button onClick={() => console.log("criar chat")} className="violet-button">Criar Chat</button>
+          <CreateChat user={userData} setUserData={setUserData} />
           </div>
           <div className="">
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
