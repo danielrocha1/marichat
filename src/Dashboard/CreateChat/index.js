@@ -8,16 +8,23 @@ function CreateChat() {
   
   const [chatRoom, setChatroomName] = useState('');
   const [chatid, setChatID] = useState('');
-  const [chatprivate, setChatPrivate] = useState('');
+  const [isPrivate, setIsPrivate] = useState('');
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   
  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aqui você pode adicionar a lógica para enviar os dados do formulário
+    console.log("Nome do chat", chatRoom)
+    console.log("Tipo de chat", isPrivate)
+    
+    // Fechar o modal após enviar o formulário
+    setModalIsOpen(false);
+  };
   
   const handleSubmit = async (e) => {
-
-    
 
     e.preventDefault();
       try {
@@ -43,52 +50,58 @@ function CreateChat() {
       }
   };
 
-  return (
-    <div>
-      {/* Botão para abrir o modal */}
-      <button onClick={() => setModalIsOpen(!modalIsOpen)} className="violet-button">Criar Sala</button>
-
-      {/* Modal */}
-      {modalIsOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <form onSubmit={handleSubmit} className="form">
-              <h2>Entrar na sala</h2>
-              <div className="form-group">
-                <label htmlFor="user">Nome da Sala:</label>
-                <input
-                  type="text"
-                  id="chatroomName"
-                  value={chatRoom}
-                  onChange={(e) =>
-                    setChatroomName(e.target.value)
-                    }
-                />
-                <label htmlFor="user">ID da Sala:</label>
-                <input
-                  type="text"
-                  id="id"
-                  value={chatRoom}
-                />
-                <label htmlFor="user">Chat Privado ou Público:</label>
-                <input
-                  type="radio"
-                  id="private"
-                  value={chatRoom}
-                />
-                <input
-                  type="radio"
-                  id="public"
-                  value={chatRoom}
-                />
-              </div>
-              <button type="submit">Entrar na Sala de Chat</button>
-            </form>
+  
+    return (
+      <div>
+        {/* Botão para abrir o modal */}
+        <button onClick={() => setModalIsOpen(!modalIsOpen)} className="violet-button">
+          Criar Sala
+        </button>
+  
+        {/* Modal */}
+        {modalIsOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <form onSubmit={handleSubmit} className="form">
+                <h2>Criar Sala</h2>
+                <div className="form-group">
+                  <label htmlFor="chatroomName">Nome da Sala:</label>
+                  <input
+                    type="text"
+                    id="chatroomName"
+                    value={chatRoom}
+                    onChange={(e) => setChatroomName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Tipo de Sala:</label>
+                  <label htmlFor="public">
+                    <input
+                      type="radio"
+                      id="public"
+                      checked={!isPrivate}
+                      onChange={() => setIsPrivate(false)}
+                    />
+                    Público
+                  </label>
+                  <label htmlFor="private">
+                    <input
+                      type="radio"
+                      id="private"
+                      checked={isPrivate}
+                      onChange={() => setIsPrivate(true)}
+                    />
+                    Privado
+                  </label>
+                </div>
+                <button type="submit">Criar Sala de Chat</button>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-}
+        )}
+      </div>
+    );
+  }
 
 export default CreateChat;
