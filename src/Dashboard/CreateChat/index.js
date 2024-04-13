@@ -46,7 +46,7 @@ function CreateChat() {
   return (
     <div>
       {/* Botão para abrir o modal */}
-      <button onClick={() => setModalIsOpen(!modalIsOpen)} className="violet-button">Entrar na Sala</button>
+      <button onClick={() => setModalIsOpen(!modalIsOpen)} className="violet-button">Criar Sala</button>
 
       {/* Modal */}
       {modalIsOpen && (
@@ -74,6 +74,11 @@ function CreateChat() {
                 <input
                   type="radio"
                   id="private"
+                  value={chatRoom}
+                />
+                <input
+                  type="radio"
+                  id="public"
                   value={chatRoom}
                 />
               </div>
