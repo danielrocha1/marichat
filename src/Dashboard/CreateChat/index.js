@@ -37,7 +37,7 @@ function CreateChat() {
           throw new Error('Erro ao enviar os dados');
         }
 
-        navigate(`/chatroom?${queryString}`);
+        navigate(`/chatroom`);
       } catch (error) {
         console.error('Erro:', error.message);
       }
