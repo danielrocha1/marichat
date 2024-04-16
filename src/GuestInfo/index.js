@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
-import avataaars from '../HostInfo/avataaars.png'
+import avataaars from '../HostInfo/ImageHost/avt.png'
 import guestAvatar from './guestAvatar.png'; // Importe a imagem corretamente
 
 const GuestInfo = (props) => {
