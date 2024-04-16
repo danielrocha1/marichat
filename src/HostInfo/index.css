@@ -30,7 +30,7 @@
     font-size: 21px;
   }
   .hostBox {
-    height: 190px;
+    height: auto;
   }
 }
 
@@ -40,7 +40,7 @@
     font-size: 19px;
   }
   .hostBox {
-    height: 190px;
+    height: auto;
   }
 }
 
@@ -50,6 +50,6 @@
     font-size: 17px;
   }
   .hostBox {
-    height: 220px;
+    height: auto;
   }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
 
+import ImageHost from './ImageHost';
 import EnterRoom from '../Dashboard/EnterRoom';
 import CreateChat from '../Dashboard/CreateChat';
 
@@ -25,7 +26,7 @@ const Sidebar = ({ user, chats }) => {
         </div>
       </div>
       <div className="user-info">
-        <img src={user.photo} alt="User" />
+      <ImageHost/>
         <p>{user.data.fullname}</p>
         <p>{user.data.email}</p>
         <p>{user.data.birthdate}</p>
