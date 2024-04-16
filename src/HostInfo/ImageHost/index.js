@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css"; // Importe o arquivo CSS para estilização
+import "./index.css"; // Importe o arquivo CSS para estilização
 
 import photo from "./av.png";
 
