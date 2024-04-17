@@ -3,7 +3,7 @@ import "./index.css"; // Importe o arquivo CSS para estilização
 
 import photo from "./av.png";
 
-const ImageHost = () => {
+const ImageHost = ({userData}) => {
   const [image, setImage] = useState(photo);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,9 +26,10 @@ const ImageHost = () => {
 
       const formData = new FormData();
       formData.append("photo", image);
+      formData.append("hostid", userData.data.hostid);
 
       try {
-        const response = await fetch("http://localhost:3000/upload", {
+        const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
           method: "POST",
           body: formData,
         });
