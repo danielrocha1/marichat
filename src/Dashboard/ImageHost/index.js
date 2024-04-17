@@ -8,7 +8,7 @@ const ImageHost = ({ user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleImageChange = async (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -16,8 +16,7 @@ const ImageHost = ({ user }) => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
-
-      await uploadImage(file);
+      uploadImage(file);
     }
   };
 
@@ -69,7 +68,7 @@ const ImageHost = ({ user }) => {
             className="file-input"
             id="fileInput"
           />
-          <button className="upload-button">Upload</button>
+          <label htmlFor="fileInput" className="upload-button">Upload</label>
         </div>
       </div>
       {error && <div className="error">{error}</div>}
