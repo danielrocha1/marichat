@@ -8,7 +8,7 @@ const ImageHost = ({ user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -16,39 +16,35 @@ const ImageHost = ({ user }) => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+
+      await uploadImage(file);
     }
   };
 
-  const uploadImage = async () => {
-    if (image) {
-      setIsLoading(true);
-      setError(null);
+  const uploadImage = async (file) => {
+    setIsLoading(true);
+    setError(null);
 
-      const formData = new FormData();
-      formData.append("photo", image);
-      formData.append("hostid", user.data.hostid);
+    const formData = new FormData();
+    formData.append("photo", file);
+    formData.append("hostid", user.data.hostid);
 
-      try {
-        const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
-          method: "POST",
-          body: formData,
-        });
+    try {
+      const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (response.ok) {
-          console.log("Imagem enviada com sucesso!");
-        } else {
-          throw new Error("Falha ao enviar imagem.");
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
+      if (response.ok) {
+        console.log("Imagem enviada com sucesso!");
+      } else {
+        throw new Error("Falha ao enviar imagem.");
       }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleUpload = () => {
-    uploadImage();
   };
 
   return (
@@ -73,7 +69,7 @@ const ImageHost = ({ user }) => {
             className="file-input"
             id="fileInput"
           />
-          <button onClick={handleUpload} className="upload-button">Upload</button>
+          <button className="upload-button">Upload</button>
         </div>
       </div>
       {error && <div className="error">{error}</div>}
