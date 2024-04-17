@@ -4,7 +4,7 @@ import "./index.css"; // Importe o arquivo CSS para estilização
 import photo from "./av.png";
 
 const ImageHost = ({ user }) => {
-  const [image, setImage] = useState(photo); // Inicializando com null ou uma imagem padrão, se desejar
+  const [image, setImage] = useState(photo);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -71,9 +71,9 @@ const ImageHost = ({ user }) => {
             accept="image/*"
             onChange={handleImageChange}
             className="file-input"
-            id="fileInput" // Adiciona um id para associar ao label
+            id="fileInput"
           />
-          <button onClick={handleUpload} className="upload-button">Upload</button> {/* Botão de upload */}
+          <button onClick={handleUpload} className="upload-button">Upload</button>
         </div>
       </div>
       {error && <div className="error">{error}</div>}
