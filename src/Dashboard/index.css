@@ -31,7 +31,6 @@
   .user-info {
     margin: 50px 0;
     padding: 20px;
-    font-size: 13px;
   }
   
   .user-info img {
@@ -41,6 +40,8 @@
   
   .user-info p {
     margin: 5px 0;
+    font-size: 13px;
+
   }
   
   /* Estilo para os links do menu lateral */
