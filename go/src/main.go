@@ -80,6 +80,12 @@ type UserInfo struct {
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	Birthdate string `json:"birthdate"`
+	UserPhoto
+}
+
+type UserPhoto struct {
+	ID    int
+	Photo []byte
 }
 
 func detectFileType(reader io.Reader) (string, error) {
@@ -182,12 +188,56 @@ func main() {
 			if err != nil {
 				return err // Trate o erro adequadamente
 			}
+
+			var userPhoto UserPhoto
+			err = db.QueryRow("SELECT * FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userPhoto.ID, &userPhoto.Photo)
+			if err != nil {
+				log.Fatalf("Failed to execute query: %v", err)
+			}
+			userInfo.UserPhoto = userPhoto
+
 			return c.JSON(userInfo)
 		} else {
 			// Credenciais inválidas, retornar uma resposta de erro
 			return c.Status(fiber.StatusUnauthorized).SendString("Credenciais inválidas")
 		}
 	})
+
+	app.Post("/upload-photo", func(c *fiber.Ctx) error {
+		var requestData struct {
+			HostID string    `json:"hostid"`
+			image  []byte 	`json:"photo"`
+		}
+
+		// Parsear os dados do corpo da solicitação para a estrutura UserPhotoRequest
+		if err := c.BodyParser(&photoReq); err != nil {
+			return err
+		}
+
+		// Verificar se já existe uma foto para o hostid
+		var count int
+		err := db.QueryRow("SELECT COUNT(*) FROM user_photos WHERE hostid = $1", photoReq.HostID).Scan(&count)
+		if err != nil {
+			return err
+		}
+
+		if count == 1 {
+			// Atualizar a foto para o hostid existente
+			_, err = db.Exec("UPDATE user_photos SET photo = $1 WHERE hostid = $2", photoReq.Photo, photoReq.HostID)
+			if err != nil {
+				return err
+			}
+		} else {
+			// Inserir uma nova foto para o hostid
+			_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", photoReq.HostID, photoReq.Photo)
+			if err != nil {
+				return err
+			}
+		}
+
+		return c.SendString("Foto enviada com sucesso!")
+	})
+
 
 	// Rota WebSocket
 	app.Get("/websocket", websocket.New(func(c *websocket.Conn) {
