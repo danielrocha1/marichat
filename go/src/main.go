@@ -193,7 +193,7 @@ func main() {
 			if err != nil {
 				log.Fatalf("Failed to execute query: %v", err)
 			}
-
+			fmt.Println(userInfo.UserPhoto)
 
 			return c.JSON(userInfo)
 		} else {
