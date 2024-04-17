@@ -3,8 +3,8 @@ import "./index.css"; // Importe o arquivo CSS para estilização
 
 import photo from "./av.png";
 
-const ImageHost = ({user}) => {
-  const [image, setImage] = useState(photo);
+const ImageHost = ({ user }) => {
+  const [image, setImage] = useState(null); // Inicializando com null ou uma imagem padrão, se desejar
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -68,7 +68,7 @@ const ImageHost = ({user}) => {
             onChange={handleImageChange}
             className="file-input"
           />
-        
+          <button onClick={uploadImage}>Upload</button> {/* Botão para acionar o upload da imagem */}
         </div>
       </div>
       {error && <div className="error">{error}</div>}
