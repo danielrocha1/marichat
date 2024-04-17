@@ -19,9 +19,7 @@ const ImageHost = ({ user }) => {
       reader.readAsDataURL(file);
     }
   };
-
-  useEffect(() => {
-    
+   
 
     const uploadData = async () => {
         setIsLoading(true);
@@ -48,8 +46,7 @@ const ImageHost = ({ user }) => {
         }
     };
 
-    uploadData();
-  }, [formData, user.data.hostid]);
+
 
   return (
     <div className="">
