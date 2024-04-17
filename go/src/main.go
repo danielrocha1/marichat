@@ -84,8 +84,8 @@ type UserInfo struct {
 }
 
 type UserPhoto struct {
-	ID    int
-	Photo []byte
+	ID    int `json:"id"`
+	Photo []byte `json:"photo"`
 }
 
 func detectFileType(reader io.Reader) (string, error) {
@@ -212,6 +212,8 @@ func main() {
 		if err := c.BodyParser(&photoReq); err != nil {
 			return err
 		}
+		
+		fmt.Println(photoReq.Photo)
 
 		// Verificar se já existe uma foto para o hostid
 		var count int
