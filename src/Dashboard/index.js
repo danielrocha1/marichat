@@ -48,6 +48,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
   
 
   useEffect(() => {
+    console.log(userData)
     const fetchChats = async () => {
       try {
         const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
