@@ -19,6 +19,10 @@ const ImageHost = ({ user }) => {
     }
   };
 
+  const handleUpload = () => {
+    // Aqui você pode adicionar a lógica para fazer o upload da imagem
+  };
+
   return (
     <div className="">
       <div className="image-container">
@@ -39,7 +43,9 @@ const ImageHost = ({ user }) => {
             accept="image/*"
             onChange={handleImageChange}
             className="file-input"
+            id="fileInput" // Adiciona um id para associar ao label
           />
+          <label htmlFor="fileInput" className="upload-button">Upload</label> {/* Label associado ao input de arquivo */}
         </div>
       </div>
       {error && <div className="error">{error}</div>}
