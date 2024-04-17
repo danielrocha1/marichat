@@ -27,9 +27,9 @@ const Sidebar = ({ user, chats }) => {
       </div>
       <div className="user-info">
       <ImageHost/>
-        <p>{user.data.fullname}</p>
+        <p style={{marginTop:"30px"}}> {user.data.fullname}</p>
         <p>{user.data.email}</p>
-        <p>{user.data.birthdate}</p>
+        <p>{user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
       </div>
     </div>
   );
