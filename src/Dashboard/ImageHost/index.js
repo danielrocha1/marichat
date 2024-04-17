@@ -19,8 +19,36 @@ const ImageHost = ({ user }) => {
     }
   };
 
+  const uploadImage = async () => {
+    if (image) {
+      setIsLoading(true);
+      setError(null);
+
+      const formData = new FormData();
+      formData.append("photo", image);
+      formData.append("hostid", user.data.hostid);
+
+      try {
+        const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          console.log("Imagem enviada com sucesso!");
+        } else {
+          throw new Error("Falha ao enviar imagem.");
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   const handleUpload = () => {
-    // Aqui você pode adicionar a lógica para fazer o upload da imagem
+    uploadImage();
   };
 
   return (
@@ -45,7 +73,7 @@ const ImageHost = ({ user }) => {
             className="file-input"
             id="fileInput" // Adiciona um id para associar ao label
           />
-          <label htmlFor="fileInput" className="upload-button">Upload</label> {/* Label associado ao input de arquivo */}
+          <button onClick={handleUpload} className="upload-button">Upload</button> {/* Botão de upload */}
         </div>
       </div>
       {error && <div className="error">{error}</div>}
@@ -54,41 +82,3 @@ const ImageHost = ({ user }) => {
 };
 
 export default ImageHost;
-
-
-// <button
-// onClick={uploadImage}
-// className="upload-button"
-// disabled={isLoading}
-// >
-// Alterar Imagem
-// </button>
-
-
-// const uploadImage = async () => {
-//   if (image) {
-//     setIsLoading(true);
-//     setError(null);
-
-//     const formData = new FormData();
-//     formData.append("photo", image);
-//     formData.append("hostid", user.data.hostid);
-
-//     try {
-//       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (response.ok) {
-//         console.log("Imagem enviada com sucesso!");
-//       } else {
-//         throw new Error("Falha ao enviar imagem.");
-//       }
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   }
-// };
