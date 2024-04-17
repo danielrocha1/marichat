@@ -80,7 +80,7 @@ type UserInfo struct {
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	Birthdate string `json:"birthdate"`
-	UserPhoto
+	UserPhoto UserPhoto
 }
 
 type UserPhoto struct {
@@ -189,12 +189,11 @@ func main() {
 				return err // Trate o erro adequadamente
 			}
 
-			var userPhoto UserPhoto
-			err = db.QueryRow("SELECT id, photo FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userPhoto.ID, &userPhoto.Photo)
+			err = db.QueryRow("SELECT id, photo FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.UserPhoto.ID, &userInfo.UserPhoto.Photo)
 			if err != nil {
 				log.Fatalf("Failed to execute query: %v", err)
 			}
-			userInfo.UserPhoto = userPhoto
+
 
 			return c.JSON(userInfo)
 		} else {
