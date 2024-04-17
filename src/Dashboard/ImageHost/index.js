@@ -68,13 +68,7 @@ const ImageHost = ({user}) => {
             onChange={handleImageChange}
             className="file-input"
           />
-          <button
-            onClick={uploadImage}
-            className="upload-button"
-            disabled={isLoading}
-          >
-            Alterar Imagem
-          </button>
+        
         </div>
       </div>
       {error && <div className="error">{error}</div>}
@@ -83,3 +77,12 @@ const ImageHost = ({user}) => {
 };
 
 export default ImageHost;
+
+
+// <button
+// onClick={uploadImage}
+// className="upload-button"
+// disabled={isLoading}
+// >
+// Alterar Imagem
+// </button>
