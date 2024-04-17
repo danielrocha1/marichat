@@ -204,7 +204,7 @@ func main() {
 	})
 
 	app.Post("/upload-photo", func(c *fiber.Ctx) error {
-		var requestData struct {
+		var photoReq struct {
 			HostID string    `json:"hostid"`
 			image  []byte 	`json:"photo"`
 		}
