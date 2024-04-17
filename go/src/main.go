@@ -190,7 +190,7 @@ func main() {
 			}
 
 			var userPhoto UserPhoto
-			err = db.QueryRow("SELECT * FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userPhoto.ID, &userPhoto.Photo)
+			err = db.QueryRow("SELECT id, photo FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userPhoto.ID, &userPhoto.Photo)
 			if err != nil {
 				log.Fatalf("Failed to execute query: %v", err)
 			}
