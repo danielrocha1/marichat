@@ -19,34 +19,6 @@ const ImageHost = ({ user }) => {
     }
   };
 
-  const uploadImage = async () => {
-    if (image) {
-      setIsLoading(true);
-      setError(null);
-
-      const formData = new FormData();
-      formData.append("photo", image);
-      formData.append("hostid", user.data.hostid);
-
-      try {
-        const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (response.ok) {
-          console.log("Imagem enviada com sucesso!");
-        } else {
-          throw new Error("Falha ao enviar imagem.");
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
   return (
     <div className="">
       <div className="image-container">
@@ -68,7 +40,6 @@ const ImageHost = ({ user }) => {
             onChange={handleImageChange}
             className="file-input"
           />
-          <button onClick={handleImageChange}>Upload</button> {/* Botão para acionar o upload da imagem */}
         </div>
       </div>
       {error && <div className="error">{error}</div>}
@@ -86,3 +57,32 @@ export default ImageHost;
 // >
 // Alterar Imagem
 // </button>
+
+
+// const uploadImage = async () => {
+//   if (image) {
+//     setIsLoading(true);
+//     setError(null);
+
+//     const formData = new FormData();
+//     formData.append("photo", image);
+//     formData.append("hostid", user.data.hostid);
+
+//     try {
+//       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       if (response.ok) {
+//         console.log("Imagem enviada com sucesso!");
+//       } else {
+//         throw new Error("Falha ao enviar imagem.");
+//       }
+//     } catch (error) {
+//       setError(error.message);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }
+// };
