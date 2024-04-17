@@ -26,7 +26,8 @@ const ImageHost = ({ user }) => {
   };
 
   useEffect(() => {
-    console.log(formData)
+    console.log(formData.get("photo"))
+    
     const uploadData = async () => {
       if (formData.get("photo")) {
         setIsLoading(true);
