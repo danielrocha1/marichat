@@ -47,7 +47,7 @@ const ImageHost = () => {
   };
 
   return (
-    <div className="image-uploader-container">
+    <div className="">
       <div className="image-container">
         {isLoading ? (
           <div className="loading">Carregando...</div>
