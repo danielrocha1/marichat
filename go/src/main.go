@@ -148,6 +148,11 @@ func main() {
 		if err != nil {
 			return err
 		}
+		// Inserir uma nova foto para o hostid
+		_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, '')", photoReq.HostID)
+		if err != nil {
+			return err
+		}
 
 		return c.SendString("Usuário registrado com  sucesso!")
 	})
@@ -760,6 +765,28 @@ func main() {
 				"error": "Chatroom not found",
 			})
 		}
+
+		for i, user := range room.Users {
+			rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = ?", user.HostID)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to fetch user photos",
+				})
+			}
+			defer rows.Close()
+
+			for rows.Next() {
+				var photoURL string
+				if err := rows.Scan(&photoURL); err != nil {
+					return err
+				}
+				// Adicionar PhotoURL ao User correspondente
+				room.Users[i] = User{
+					HostID:   user.HostID,
+					ChatID: 	user.ChatID
+					PhotoURL: photoURL,
+				}
+			}
 
 		return c.JSON(fiber.Map{
 			"roomname": room.Name,
