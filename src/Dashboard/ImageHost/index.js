@@ -70,7 +70,7 @@ const ImageHost = ({ user }) => {
           <div className="loading">Carregando...</div>
         ) : image ? (
           <img
-            src={`data:image/png;base64,${image}`}
+            src={`data:image/png;base64,${user.data.UserPhoto.photo}`}
             alt="Imagem selecionada"
             className="uploaded-image"
           />
