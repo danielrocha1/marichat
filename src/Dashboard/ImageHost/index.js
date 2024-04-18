@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./index.css"; // Importe o arquivo CSS para estilização
 
 import photo from "./av.png";
@@ -7,7 +7,6 @@ const ImageHost = ({ user }) => {
   const [image, setImage] = useState(photo);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -17,39 +16,38 @@ const ImageHost = ({ user }) => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+      uploadImage(file);
     }
   };
+  
 
-  useEffect(() => {
+  const uploadImage = async (file) => {
+    setIsLoading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("photo", file);
+    formData.append("hostid", user.data.hostid);
+  
+    try {
+      const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
+        method: "POST",
+        body: JSON.stringify({ hostid: user.data.hostid, photo:image }),
+      });
+
     
 
-    const uploadData = async () => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-          const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
-            method: "POST",
-            body: JSON.stringify({
-              hostid:user.data.hostid,
-              photo:image,
-            }),
-          });
-
-          if (response.ok) {
-            console.log("Imagem enviada com sucesso!");
-          } else {
-            throw new Error("Falha ao enviar imagem.");
-          }
-        } catch (error) {
-          setError(error.message);
-        } finally {
-          setIsLoading(false);
-        }
-    };
-
-    uploadData();
-  }, []);
+      if (response.ok) {
+        console.log("Imagem enviada com sucesso!");
+      } else {
+        throw new Error("Falha ao enviar imagem.");
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="">
