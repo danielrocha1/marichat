@@ -11,12 +11,14 @@ const ImageHost = ({ user }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-      uploadImage(file);
+      readFileAsDataURL(file)
+        .then((fileContent) => {
+          setImage(fileContent);
+          uploadImage(fileContent);
+        })
+        .catch((error) => {
+          setError("Falha ao ler o arquivo.");
+        });
     }
   };
 
@@ -36,20 +38,19 @@ const ImageHost = ({ user }) => {
     });
   };
 
-  const uploadImage = async (file) => {
+  const uploadImage = async (fileContent) => {
     setIsLoading(true);
     setError(null);
-  
+
     try {
-      const fileContent = await readFileAsDataURL(file);
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
         headers: {
           'Content-Type': 'image/*', // Aceita todos os tipos de MIME de imagem
         },
-        body: JSON.stringify({ hostid: user.data.hostid, photo:fileContent }),
+        body: JSON.stringify({ hostid: user.data.hostid, photo: fileContent }),
       });
-  
+
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
       } else {
