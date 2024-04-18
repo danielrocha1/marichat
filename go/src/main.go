@@ -23,6 +23,7 @@ type Users struct {
 	Name   string `json:"username"`
 	ChatID string `json:"chatid"`
 	HostID string `json:"hostid"`
+	PhotoURL string `json:"photo"`
 }
 
 type Chatroom struct {
