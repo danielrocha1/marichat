@@ -4,7 +4,7 @@ import "./index.css";
 const ImageHost = ({ user }) => {
   const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`;
   const [image, setImage] = useState(photo);
-  const [originalImage, setOriginalImage] = useState(photo); // Nova variável para a imagem original
+  const [originalImage, setOriginalImage] = useState(photo); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -13,8 +13,6 @@ const ImageHost = ({ user }) => {
     if (file) {
       readFileAsDataURL(file)
         .then((fileContent) => {
-          setOriginalImage(image); // Armazenar a imagem original
-          setImage(fileContent);    // Atualizar para a nova imagem carregada
           uploadImage(fileContent);
         })
         .catch((error) => {
@@ -54,7 +52,9 @@ const ImageHost = ({ user }) => {
 
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
-        setOriginalImage(image);  // Atualizar a imagem original após o upload bem-sucedido
+        const updatedImage = `data:image/png;base64,${fileContent}`;
+        setImage(updatedImage); // Atualizar a imagem com a nova imagem carregada
+        setOriginalImage(updatedImage); // Atualizar a imagem original
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
@@ -75,6 +75,7 @@ const ImageHost = ({ user }) => {
             src={image}
             alt="Imagem selecionada"
             className="uploaded-image"
+            onError={() => setError("Falha ao carregar a imagem")}
           />
         ) : (
           <div className="no-image">Sem imagem</div>
