@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import "./index.css"; // Importe o arquivo CSS para estilização
-
-
+import "./index.css";
 
 const ImageHost = ({ user }) => {
-  const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`
+  const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`;
   const [image, setImage] = useState(photo);
+  const [originalImage, setOriginalImage] = useState(photo); // Nova variável para a imagem original
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,13 +13,13 @@ const ImageHost = ({ user }) => {
     if (file) {
       readFileAsDataURL(file)
         .then((fileContent) => {
+          setOriginalImage(image); // Armazenar a imagem original
+          setImage(fileContent);    // Atualizar para a nova imagem carregada
           uploadImage(fileContent);
-          setImage(fileContent);
         })
         .catch((error) => {
           setError("Falha ao ler o arquivo.");
         });
-        
     }
   };
 
@@ -29,7 +28,7 @@ const ImageHost = ({ user }) => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        resolve(reader.result.split(',')[1]); // Removendo o prefixo 'data:image/png;base64,' e mantendo apenas a base64
+        resolve(reader.result.split(',')[1]);
       };
 
       reader.onerror = (error) => {
@@ -55,6 +54,7 @@ const ImageHost = ({ user }) => {
 
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
+        setOriginalImage(image);  // Atualizar a imagem original após o upload bem-sucedido
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
