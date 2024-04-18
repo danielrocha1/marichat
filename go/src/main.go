@@ -149,7 +149,7 @@ func main() {
 			return err
 		}
 		// Inserir uma nova foto para o hostid
-		_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", photoReq.HostID, " ")
+		_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", RegisterRequest.HostID, " ")
 		if err != nil {
 			return err
 		}
