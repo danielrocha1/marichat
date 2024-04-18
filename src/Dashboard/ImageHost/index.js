@@ -4,7 +4,6 @@ import "./index.css";
 const ImageHost = ({ user }) => {
   const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`;
   const [image, setImage] = useState(photo);
-  const [originalImage, setOriginalImage] = useState(photo); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -15,7 +14,7 @@ const ImageHost = ({ user }) => {
         .then((fileContent) => {
           uploadImage(fileContent);
         })
-        .catch((error) => {
+        .catch(() => {
           setError("Falha ao ler o arquivo.");
         });
     }
@@ -29,8 +28,8 @@ const ImageHost = ({ user }) => {
         resolve(reader.result.split(',')[1]);
       };
 
-      reader.onerror = (error) => {
-        reject(error);
+      reader.onerror = () => {
+        reject(new Error("Falha ao ler o arquivo."));
       };
 
       reader.readAsDataURL(file);
@@ -51,10 +50,8 @@ const ImageHost = ({ user }) => {
       });
 
       if (response.ok) {
-        console.log("Imagem enviada com sucesso!");
         const updatedImage = `data:image/png;base64,${fileContent}`;
-        setImage(updatedImage); // Atualizar a imagem com a nova imagem carregada
-        setOriginalImage(updatedImage); // Atualizar a imagem original
+        setImage(updatedImage);
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
@@ -70,15 +67,13 @@ const ImageHost = ({ user }) => {
       <div className="image-container">
         {isLoading ? (
           <div className="loading">Carregando...</div>
-        ) : image ? (
+        ) : (
           <img
             src={image}
             alt="Imagem selecionada"
             className="uploaded-image"
             onError={() => setError("Falha ao carregar a imagem")}
           />
-        ) : (
-          <div className="no-image">Sem imagem</div>
         )}
         <div className="overlay">
           <input
