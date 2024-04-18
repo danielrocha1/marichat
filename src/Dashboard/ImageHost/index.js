@@ -28,6 +28,9 @@ const ImageHost = ({ user }) => {
     try {
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
+        headers: {
+          'Content-Type': 'image/*', // Aceita todos os tipos de MIME de imagem
+        },
         body: JSON.stringify({ hostid: user.data.hostid, photo:file }),
       });
 
