@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./index.css"; // Importe o arquivo CSS para estilização
 
-import photo from "./av.png";
+
 
 const ImageHost = ({ user }) => {
-  const [image, setImage] = useState(`data:image/png;base64,${user.data.UserPhoto.photo}`);
+  const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`
+  const [image, setImage] = useState(photo);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
