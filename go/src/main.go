@@ -768,6 +768,7 @@ func main() {
 		}
 
 		for i, user := range room.Users {
+			fmt.Println("users", user)
 			rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = ?", user.HostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
