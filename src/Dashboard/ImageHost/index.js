@@ -19,7 +19,7 @@ const ImageHost = ({ user }) => {
         .catch((error) => {
           setError("Falha ao ler o arquivo.");
         });
-        setImage(file);
+        setImage(fileContent);
     }
   };
 
