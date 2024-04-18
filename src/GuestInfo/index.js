@@ -40,7 +40,7 @@ const GuestInfo = (props) => {
         <p style={{ marginTop: "35px" }}>X</p>
       </div> }
       <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
-        <img src={props.name === "Daniel" ? avataaars : guestAvatar} className="guestPhoto" alt="logo" />
+        <img src={`data:image/png;base64,${props.photo}`} className="guestPhoto" alt="logo" />
         <div className="">
           <p className="guestName">{props.name}</p>
           {isTyping && <p className="typingIndicator">Digitando...</p>}

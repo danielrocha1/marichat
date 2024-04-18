@@ -213,6 +213,7 @@ function ChatRoom() {
                         name={user.username}
                         roomname={user.chatRoom}
                         chatid={user.chatid}
+                        photo={user.photo}
                       />
                     )
                   ))}
