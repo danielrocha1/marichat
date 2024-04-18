@@ -213,7 +213,7 @@ function ChatRoom() {
                         name={user.username}
                         roomname={user.chatRoom}
                         chatid={user.chatid}
-                        photo={user.photo}
+                        photo={`data:image/png;base64,${user.photo}`}
                       />
                     )
                   ))}
