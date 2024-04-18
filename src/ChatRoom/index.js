@@ -218,7 +218,7 @@ function ChatRoom() {
                   ))}
                 </ul>
               </div>
-              <HostInfo name={userData.data.username} theme={colors.border} />
+              <HostInfo name={userData.data.username} photo={userData.data.UserPhoto.photo} theme={colors.border} />
             </div>
             <ChatBox chat={chat} messages={messages} chat={chat} roomname={roomname} theme={colors} setColors={setColors} />
           </div>
