@@ -1,7 +1,21 @@
 import React, { useState } from "react";
 import "./index.css";
+import ChatContext from "../../ChatContext"
+
+// setUser({
+//   ...user,
+//   data: {
+//     ...user.data,
+//     UserPhoto: {
+//       ...user.data.UserPhoto,
+//       photo: 'new/path/to/photo.jpg',
+//     },
+//   },
+// });
 
 const ImageHost = ({ user }) => {
+  const { setUserData} = useContext(ChatContext);
+
   const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`;
   const [image, setImage] = useState(photo);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +66,16 @@ const ImageHost = ({ user }) => {
       if (response.ok) {
         const updatedImage = `data:image/png;base64,${fileContent}`;
         setImage(updatedImage);
+        setUserData({
+            ...user,
+            data: {
+              ...user.data,
+              UserPhoto: {
+                ...user.data.UserPhoto,
+                photo: fileContent,
+              },
+            },
+          })
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
