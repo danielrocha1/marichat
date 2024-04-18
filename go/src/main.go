@@ -769,7 +769,7 @@ func main() {
 
 		for i, user := range room.Users {
 			fmt.Println("users", user)
-			rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = ?", user.HostID)
+			rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user photos",
