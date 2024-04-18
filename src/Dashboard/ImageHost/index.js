@@ -41,7 +41,7 @@ const ImageHost = ({ user }) => {
   const uploadImage = async (fileContent) => {
     setIsLoading(true);
     setError(null);
-
+  
     try {
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
@@ -50,10 +50,11 @@ const ImageHost = ({ user }) => {
         },
         body: JSON.stringify({ hostid: user.data.hostid, photo: fileContent }),
       });
-
+  
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
-        setImage(null); // Limpar a imagem após o upload
+        const uploadedImage = await readFileAsDataURL(fileContent); // Lê o conteúdo do arquivo novamente
+        setImage(uploadedImage); // Atualiza a imagem com o conteúdo carregado
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
