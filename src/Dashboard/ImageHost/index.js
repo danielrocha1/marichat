@@ -29,6 +29,10 @@ const ImageHost = ({ user }) => {
       const formData = new FormData();
       formData.append('hostid', user.data.hostid);
       formData.append('photo', file);
+
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
   
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
@@ -46,7 +50,7 @@ const ImageHost = ({ user }) => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="">
       <div className="image-container">
