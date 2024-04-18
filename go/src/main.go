@@ -783,7 +783,7 @@ func main() {
 				// Adicionar PhotoURL ao User correspondente
 				room.Users[i] = User{
 					HostID:   user.HostID,
-					ChatID: 	user.ChatID
+					ChatID:   user.ChatID,
 					PhotoURL: photoURL,
 				}
 			}
