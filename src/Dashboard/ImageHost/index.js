@@ -19,7 +19,7 @@ const ImageHost = ({ user }) => {
         .catch((error) => {
           setError("Falha ao ler o arquivo.");
         });
-        
+        setImage(file);
     }
   };
 
@@ -34,7 +34,7 @@ const ImageHost = ({ user }) => {
       reader.onerror = (error) => {
         reject(error);
       };
-      setImage(file);
+
       reader.readAsDataURL(file);
     });
   };
@@ -54,7 +54,6 @@ const ImageHost = ({ user }) => {
 
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
-        setImage()
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
