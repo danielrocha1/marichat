@@ -76,6 +76,7 @@ const ImageHost = ({ user }) => {
               },
             },
           })
+          console.log('USER',{user}, user)
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
