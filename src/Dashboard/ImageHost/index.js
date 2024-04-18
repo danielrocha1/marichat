@@ -27,7 +27,7 @@ const ImageHost = ({ user }) => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        resolve(reader.result);
+        resolve(reader.result.split(',')[1]); // Removendo o prefixo 'data:image/png;base64,' e mantendo apenas a base64
       };
 
       reader.onerror = (error) => {
@@ -46,7 +46,7 @@ const ImageHost = ({ user }) => {
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
         headers: {
-          'Content-Type': 'image/*', // Aceita todos os tipos de MIME de imagem
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ hostid: user.data.hostid, photo: fileContent }),
       });
@@ -70,7 +70,7 @@ const ImageHost = ({ user }) => {
           <div className="loading">Carregando...</div>
         ) : image ? (
           <img
-            src={image}
+            src={`data:image/png;base64,${image}`}
             alt="Imagem selecionada"
             className="uploaded-image"
           />
