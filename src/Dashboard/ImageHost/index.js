@@ -2,16 +2,6 @@ import React, { useState, useContext } from "react";
 import "./index.css";
 import ChatContext from "../../ChatContext"
 
-// setUser({
-//   ...user,
-//   data: {
-//     ...user.data,
-//     UserPhoto: {
-//       ...user.data.UserPhoto,
-//       photo: 'new/path/to/photo.jpg',
-//     },
-//   },
-// });
 
 const ImageHost = ({ user }) => {
   const { setUserData} = useContext(ChatContext);

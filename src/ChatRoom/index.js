@@ -167,7 +167,7 @@ function ChatRoom() {
     }
   };
 
-
+ 
 
   const kickUser = async () => {
     try {
@@ -205,6 +205,7 @@ function ChatRoom() {
               <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
                   {users.map((user, index) => (
+                    
                     user.hostid === userData.data.hostid ? null : (
                       <GuestInfo
                         isTyping={userTypingStatus[user.hostid]}
@@ -213,7 +214,7 @@ function ChatRoom() {
                         name={user.username}
                         roomname={user.chatRoom}
                         chatid={user.chatid}
-                        photo={`data:image/png;base64,${user.photo}`}
+                        photo={`data:image/*;base64,${user.photo}`}  // Passando a imagem base64 como propriedade
                       />
                     )
                   ))}
