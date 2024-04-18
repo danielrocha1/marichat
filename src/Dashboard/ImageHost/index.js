@@ -4,7 +4,7 @@ import "./index.css"; // Importe o arquivo CSS para estilização
 import photo from "./av.png";
 
 const ImageHost = ({ user }) => {
-  const [image, setImage] = useState(photo);
+  const [image, setImage] = useState(`data:image/png;base64,${user.data.UserPhoto.photo}`);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,7 +16,7 @@ const ImageHost = ({ user }) => {
           setImage(fileContent);
           uploadImage(fileContent);
         })
-        .catch((error) => {
+        .catch(() => {
           setError("Falha ao ler o arquivo.");
         });
     }
@@ -30,8 +30,8 @@ const ImageHost = ({ user }) => {
         resolve(reader.result.split(',')[1]); // Removendo o prefixo 'data:image/png;base64,' e mantendo apenas a base64
       };
 
-      reader.onerror = (error) => {
-        reject(error);
+      reader.onerror = () => {
+        reject(new Error("Falha ao ler o arquivo."));
       };
 
       reader.readAsDataURL(file);
@@ -53,6 +53,7 @@ const ImageHost = ({ user }) => {
 
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
+        setImage(null); // Limpar a imagem após o upload
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
@@ -70,7 +71,7 @@ const ImageHost = ({ user }) => {
           <div className="loading">Carregando...</div>
         ) : image ? (
           <img
-            src={`data:image/png;base64,${user.data.UserPhoto.photo}`}
+            src={image}
             alt="Imagem selecionada"
             className="uploaded-image"
           />
