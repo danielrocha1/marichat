@@ -13,10 +13,10 @@ const ImageHost = ({ user }) => {
     if (file) {
       readFileAsDataURL(file)
         .then((fileContent) => {
-          setImage(fileContent);
+          setImage(file);
           uploadImage(fileContent);
         })
-        .catch(() => {
+        .catch((error) => {
           setError("Falha ao ler o arquivo.");
         });
     }
@@ -30,8 +30,8 @@ const ImageHost = ({ user }) => {
         resolve(reader.result.split(',')[1]); // Removendo o prefixo 'data:image/png;base64,' e mantendo apenas a base64
       };
 
-      reader.onerror = () => {
-        reject(new Error("Falha ao ler o arquivo."));
+      reader.onerror = (error) => {
+        reject(error);
       };
 
       reader.readAsDataURL(file);
@@ -53,6 +53,7 @@ const ImageHost = ({ user }) => {
 
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
+        setImage()
       } else {
         throw new Error("Falha ao enviar imagem.");
       }
