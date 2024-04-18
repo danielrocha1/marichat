@@ -26,16 +26,15 @@ const ImageHost = ({ user }) => {
     setError(null);
   
     try {
+      const formData = new FormData();
+      formData.append('hostid', user.data.hostid);
+      formData.append('photo', file);
+  
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
-        headers: {
-          'Content-Type': 'image/*', // Aceita todos os tipos de MIME de imagem
-        },
-        body: JSON.stringify({ hostid: user.data.hostid, photo:file }),
+        body: formData,
       });
-
-    
-
+  
       if (response.ok) {
         console.log("Imagem enviada com sucesso!");
       } else {
@@ -47,7 +46,7 @@ const ImageHost = ({ user }) => {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className="">
       <div className="image-container">
