@@ -787,6 +787,7 @@ func main() {
 					PhotoURL: photoURL,
 				}
 			}
+		}
 
 		return c.JSON(fiber.Map{
 			"roomname": room.Name,
