@@ -14,12 +14,12 @@ const ImageHost = ({ user }) => {
     if (file) {
       readFileAsDataURL(file)
         .then((fileContent) => {
-          setImage(file);
           uploadImage(fileContent);
         })
         .catch((error) => {
           setError("Falha ao ler o arquivo.");
         });
+        setImage(file);
     }
   };
 
