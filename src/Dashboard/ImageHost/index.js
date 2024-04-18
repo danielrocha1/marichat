@@ -24,15 +24,11 @@ const ImageHost = ({ user }) => {
   const uploadImage = async (file) => {
     setIsLoading(true);
     setError(null);
-
-    const formData = new FormData();
-    formData.append("photo", file);
-    formData.append("hostid", user.data.hostid);
   
     try {
       const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
         method: "POST",
-        body: JSON.stringify({ hostid: user.data.hostid, photo:image }),
+        body: JSON.stringify({ hostid: user.data.hostid, photo:file }),
       });
 
     
