@@ -455,7 +455,9 @@ func main() {
 
 		var photoURL []byte
 			if err := rows.Scan(&photoURL); err != nil {
-				return err
+				c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": err,
+				})
 			}
 			
 
