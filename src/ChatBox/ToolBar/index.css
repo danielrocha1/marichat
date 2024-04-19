@@ -22,9 +22,7 @@ p {
   font-size: 9px;
 }
 
-.icon:last-child {
-  margin-right: 0;
-}
+
 
 /* Estilos para telas pequenas */
 @media (max-width: 768px) {
