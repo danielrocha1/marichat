@@ -119,7 +119,8 @@ function ChatRoom() {
         hostid: message.hostid,
         chatname: message.chatRoom,
         chatid: message.chatid,
-        username: message.username
+        username: message.username,
+        photo:message.photo
       }]);
     }
   };
