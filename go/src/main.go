@@ -363,20 +363,15 @@ func main() {
 			chatroom.Users = append(chatroom.Users, user)
 		}
 
+		var photoURL []byte
 		// Adiciona o usuário à sala de bate-papo existente
-		rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
+		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Failed to fetch user photos",
 			})
 		}
 		defer rows.Close()
-
-		var photoURL []byte
-			if err := rows.Scan(&photoURL); err != nil {
-				return err
-			}
-			
 
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
