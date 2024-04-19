@@ -371,7 +371,7 @@ func main() {
 				"error": "Failed to fetch user photos",
 			})
 		}
-		defer rows.Close()
+
 
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
