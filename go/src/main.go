@@ -445,13 +445,28 @@ func main() {
 		}
 	
 		// Serializa os dados do usuário para JSON
-	
+		rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = $1", requestData.HostID)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to fetch user photos",
+			})
+		}
+		defer rows.Close()
+
+		var photoURL []byte
+			if err := rows.Scan(&photoURL); err != nil {
+				return err
+			}
+			
+
+
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"username":     requestData.Name,
 			"hostid": requestData.HostID,
 			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
+			"photo": photoURL,
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
