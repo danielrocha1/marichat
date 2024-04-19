@@ -153,11 +153,13 @@ const Dashboard = () => {
       <TopHeader handleLogout={handleLogout} />
       <div className="app">
         <Sidebar user={userData} chats={chats} />
-        <div className="container">
-          <div className="createChat">
+        <div className="createChat">
               <EnterRoom />
               <CreateChat />
           </div>
+          
+        <div className="container">
+         
 
           <div className="">
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
