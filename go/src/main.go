@@ -456,21 +456,22 @@ func main() {
 			}
 			
 
+			photoBase64 := base64.StdEncoding.EncodeToString(photoURL)
 
-		userJSON, err := json.Marshal(map[string]interface{}{
-			"type":     "newUser",
-			"username":     requestData.Name,
-			"hostid": requestData.HostID,
-			"chatid":     requestData.ChatID,
-			"chatRoom": chatroom.Name,
-			"photo": photoURL,
-		})
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to serialize user data",
+			// Serializa os dados do usuário para JSON, incluindo a foto como base64
+			userJSON, err := json.Marshal(map[string]interface{}{
+				"type":     "newUser",
+				"username": requestData.Name,
+				"hostid":   requestData.HostID,
+				"chatid":   requestData.ChatID,
+				"chatRoom": chatroom.Name,
+				"photo":    photoBase64, // Foto em base64
 			})
-		}
-	
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to serialize user data",
+				})
+			}
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
