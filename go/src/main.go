@@ -365,12 +365,7 @@ func main() {
 
 		
 		// Adiciona o usuário à sala de bate-papo existente
-		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to fetch user photos",
-			})
-		}
+		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
 
 		var photoURL []byte
 		if err := rows.Scan(&photoURL); err != nil {
@@ -447,12 +442,7 @@ func main() {
 	
 		// Serializa os dados do usuário para JSON
 			// Adiciona o usuário à sala de bate-papo existente
-		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to fetch user photos",
-			})
-		}
+		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
 
 		var photoURL []byte
 		if err := rows.Scan(&photoURL); err != nil {
@@ -469,7 +459,7 @@ func main() {
 			"chatRoom": chatroom.Name,
 			"photo":    photoURL, // Enviando os bytes da foto
 		})
-		
+
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
