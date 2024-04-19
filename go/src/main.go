@@ -344,41 +344,39 @@ func main() {
 			})
 		}
 		fmt.Println(user)
+	
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[user.ChatID]
 		if !exists {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Chatroom not found",
 			})
-		} else {
-			// Verifica se o usuário já está na sala
-			for _, users := range chatroom.Users {
-				if user.HostID == users.HostID {
-					return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-						"error": "Usuário já está na sala",
-					})
-				}
-			}
-			// Se o usuário não estiver na sala, adiciona-o
-			chatroom.Users = append(chatroom.Users, user)
 		}
-
-		
-		// Adiciona o usuário à sala de bate-papo existente
-		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
-
+	
+		// Verifica se o usuário já está na sala
+		for _, existingUser := range chatroom.Users {
+			if user.HostID == existingUser.HostID {
+				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": "Usuário já está na sala",
+				})
+			}
+		}
+	
+		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
-		if err := rows.Scan(&photoURL); err != nil {
+		err := db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
+		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": err,
+				"error": err.Error(), // Retorna o erro como string
 			})
 		}
-
+	
+		// Serializa os dados do usuário para JSON
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"username": requestData.Name,
-			"hostid":   requestData.HostID,
-			"chatid":   requestData.ChatID,
+			"username": user.Name,
+			"hostid":   user.HostID,
+			"chatid":   user.ChatID,
 			"chatRoom": chatroom.Name,
 			"photo":    photoURL, // Enviando os bytes da foto
 		})
@@ -387,7 +385,7 @@ func main() {
 				"error": "Failed to serialize user data",
 			})
 		}
-
+	
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
@@ -396,7 +394,7 @@ func main() {
 				continue
 			}
 		}
-
+	
 		return nil // retorno nil para indicar sucesso na resposta
 	})
 
@@ -440,17 +438,16 @@ func main() {
 			chatroom.Users = append(chatroom.Users, Users{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID})
 		}
 	
-		// Serializa os dados do usuário para JSON
-			// Adiciona o usuário à sala de bate-papo existente
-		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
-
+		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
-		if err := rows.Scan(&photoURL); err != nil {
+		err := db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", requestData.HostID).Scan(&photoURL)
+		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": err,
+				"error": err.Error(), // Retorna o erro como string
 			})
 		}
-
+	
+		// Serializa os dados do usuário para JSON
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
 			"username": requestData.Name,
@@ -459,7 +456,12 @@ func main() {
 			"chatRoom": chatroom.Name,
 			"photo":    photoURL, // Enviando os bytes da foto
 		})
-
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to serialize user data",
+			})
+		}
+	
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
@@ -473,9 +475,7 @@ func main() {
 			"message": "Usuário adicionado com sucesso à sala de chat",
 		})
 	})
-
-
-
+	
 	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/createchat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
