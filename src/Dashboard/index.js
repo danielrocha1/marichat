@@ -35,11 +35,10 @@ const Sidebar = ({ user, chats }) => {
   );
 };
 
-const TopHeader = ({ handleLogout, setUserData }) => {
-  const navigate = useNavigate();
+const TopHeader = ({ handleLogout }) => {
   return (
     <div className="top-header">
-      <div onClick={navigate(`/`, setUserData(''))}>Logout</div>
+      <div onClick={handleLogout}>Logout</div>
     </div>
   );
 };
