@@ -6,7 +6,7 @@ import ChatContext from "../../ChatContext"
 const ImageHost = ({ user }) => {
   const { setUserData} = useContext(ChatContext);
 
-  const photo = `data:image/png;base64,${user.data.UserPhoto.photo}`;
+  const photo = `data:image/*;base64,${user.data.UserPhoto.photo}`;
   const [image, setImage] = useState(photo);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);

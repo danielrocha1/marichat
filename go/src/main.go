@@ -778,7 +778,7 @@ func main() {
 			defer rows.Close()
 
 			for rows.Next() {
-				var photoURL string
+				var photoURL []byte
 				if err := rows.Scan(&photoURL); err != nil {
 					return err
 				}
