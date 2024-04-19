@@ -363,7 +363,7 @@ func main() {
 			chatroom.Users = append(chatroom.Users, user)
 		}
 
-		var photoURL []byte
+		
 		// Adiciona o usuário à sala de bate-papo existente
 		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
 		if err != nil {
@@ -372,14 +372,20 @@ func main() {
 			})
 		}
 
+		var photoURL []byte
+		if err := rows.Scan(&photoURL); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err,
+			})
+		}
 
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"username":     user.Name,
-			"hostid": user.HostID,
-			"chatid":     user.ChatID,
+			"username": requestData.Name,
+			"hostid":   requestData.HostID,
+			"chatid":   requestData.ChatID,
 			"chatRoom": chatroom.Name,
-			"photo": photoURL,
+			"photo":    photoURL, // Enviando os bytes da foto
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -440,38 +446,30 @@ func main() {
 		}
 	
 		// Serializa os dados do usuário para JSON
-		rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = $1", requestData.HostID)
+			// Adiciona o usuário à sala de bate-papo existente
+		err = db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Failed to fetch user photos",
 			})
 		}
-		defer rows.Close()
 
 		var photoURL []byte
-			if err := rows.Scan(&photoURL); err != nil {
-				c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-					"error": err,
-				})
-			}
-			
-
-			photoBase64 := base64.StdEncoding.EncodeToString(photoURL)
-
-			// Serializa os dados do usuário para JSON, incluindo a foto como base64
-			userJSON, err := json.Marshal(map[string]interface{}{
-				"type":     "newUser",
-				"username": requestData.Name,
-				"hostid":   requestData.HostID,
-				"chatid":   requestData.ChatID,
-				"chatRoom": chatroom.Name,
-				"photo":    photoBase64, // Foto em base64
+		if err := rows.Scan(&photoURL); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err,
 			})
-			if err != nil {
-				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-					"error": "Failed to serialize user data",
-				})
-			}
+		}
+
+		userJSON, err := json.Marshal(map[string]interface{}{
+			"type":     "newUser",
+			"username": requestData.Name,
+			"hostid":   requestData.HostID,
+			"chatid":   requestData.ChatID,
+			"chatRoom": chatroom.Name,
+			"photo":    photoURL, // Enviando os bytes da foto
+		})
+		
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
