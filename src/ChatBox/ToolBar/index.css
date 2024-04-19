@@ -38,12 +38,6 @@ p {
   }
 }
 
-/* Estilos para telas grandes */
-@media (min-width: 1025px) {
-  .icon {
-    margin-right: 125px;
-  }
-}
 
 .emoji-picker-container {
   position: absolute;
