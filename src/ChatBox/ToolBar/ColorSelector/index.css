@@ -1,25 +1,30 @@
-/* styles.css */
 .modal-overlay {
-  
-    position: fixed;
-    top: 299px;
-    left: 890px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  }
-  
-  .modal-content {
-    background-color: #c6a377;
-    border: 9px double #bc5100;
-    border-radius: 5px;
-    box-shadow: 0 7px 24px #000;
-    max-height: 257px;
-    overflow-y: auto;
-    position: fixed;
-    padding: 20px;
-  }
+  position: fixed;
+  top: 299px;
+  left: 890px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-50px); /* Move o modal para cima */
+  transition: transform 0.3s ease-in-out; /* Adiciona transição suave */
+  z-index: 1000; /* Garante que o modal esteja acima de outros elementos */
+}
+
+.modal-content {
+  background-color: #c6a377;
+  border: 9px double #bc5100;
+  border-radius: 5px;
+  box-shadow: 0 7px 24px #000;
+  max-height: 257px;
+  overflow-y: auto;
+  position: relative; /* Altera a posição para relativa */
+  padding: 20px;
+}
+
+/* Hover effect para o modal-overlay */
+.modal-overlay:hover {
+  transform: translateY(-55px); /* Move um pouco mais para cima ao passar o mouse */
+}
 
   .hex-color-picker-container {
     position: absolute;
