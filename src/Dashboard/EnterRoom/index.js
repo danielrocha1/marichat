@@ -49,7 +49,7 @@ function EnterRoom() {
 
       {/* Modal */}
       {modalIsOpen && (
-        <div className="modal-overlay">
+        <div className="modal">
           <div className="modal-content">
             <form onSubmit={handleSubmit} className="form">
               <h2>Entrar na sala</h2>

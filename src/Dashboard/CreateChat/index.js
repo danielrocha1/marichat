@@ -60,7 +60,7 @@ function CreateChat() {
   
         {/* Modal */}
         {modalIsOpen && (
-          <div className="modal">
+          <div className="modal-overlay">
             <div className="modal-content">
               <form onSubmit={handleSubmit} className="form">
                 <h2>Criar Sala</h2>
