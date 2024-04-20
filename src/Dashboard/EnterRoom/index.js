@@ -45,7 +45,7 @@ function EnterRoom() {
   return (
     <div>
       {/* Botão para abrir o modal */}
-      <button onClick={() => setModalIsOpen(!modalIsOpen)} className="violet-button">Entrar na Sala</button>
+      <button onClick={() => setModalIsOpen(!modalIsOpen)} className="green-button">Entrar na Sala</button>
 
       {/* Modal */}
       {modalIsOpen && (
