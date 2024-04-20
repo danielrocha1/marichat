@@ -30,10 +30,11 @@ const Sidebar = ({ user, chats }) => {
         <p style={{marginTop:"30px"}}>Nome: {user.data.fullname}</p>
         <p>Email: {user.data.email}</p>
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
+        <div >
+          <button className="blue-button" onClick={() => {console.log('CARALHO');}} >Criar seu Avatar</button>
+        </div>
       </div>
-      <div className="user-info">
-        <button className="blue-button" onClick={() => {window.open('www.avatarmaker.com');}} >Criar seu Avatar</button>
-      </div>
+      
     </div>
   );
 };
