@@ -117,7 +117,7 @@
   }
   
   .container {
-    margin-left: 25vw;
+    width: 95vw;
     margin-top: 50px;
     display: flex;
     flex-direction: column;
