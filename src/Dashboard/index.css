@@ -120,10 +120,7 @@
   .container {
     width: 95vw;
     margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
   }
   
   .blue-button, .violet-button, .red-button {
@@ -160,13 +157,13 @@
   
   /* styles.css */
   .table-container {
-    margin-top: 25px;
-    font-family: Arial, sans-serif;
-    width: 100%;
-    display: flex;
-    justify-content: center;
     align-items: flex-start;
+    display: flex;
+    font-family: Arial,sans-serif;
+    justify-content: center;
+    margin-top: 25px;
     overflow-x: auto;
+    margin-left: 25%;
     width: 50%;
   }
   
