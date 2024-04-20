@@ -110,12 +110,13 @@
   }
   
   .createChat {
+    margin-left: auto;
     margin-top: 20px;
-    margin-left: auto;   
-    display: flex;
-    flex-direction: column;
   }
-  
+  .containerchat {
+    display: flex;
+  }
+
   .container {
     width: 95vw;
     margin-top: 50px;
@@ -166,6 +167,7 @@
     justify-content: center;
     align-items: flex-start;
     overflow-x: auto;
+    width: 50%;
   }
   
   .table-container table {
