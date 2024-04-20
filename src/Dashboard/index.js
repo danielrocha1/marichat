@@ -32,7 +32,7 @@ const Sidebar = ({ user, chats }) => {
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
       </div>
       <div className="user-info">
-        <button className="blue-button" onClick={() => {window.open('www.avatarmaker.com', '_blank');}} >Criar seu Avatar</button>
+        <button className="blue-button" onClick={() => {window.open('www.avatarmaker.com');}} >Criar seu Avatar</button>
       </div>
     </div>
   );
