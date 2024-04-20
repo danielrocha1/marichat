@@ -31,6 +31,9 @@ const Sidebar = ({ user, chats }) => {
         <p>Email: {user.data.email}</p>
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
       </div>
+      <div>
+        <button type="submit">Criar seu Avatar</button>
+      </div>
     </div>
   );
 };
