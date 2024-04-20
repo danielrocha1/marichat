@@ -27,7 +27,7 @@
   
   button {
     display: block;
-    width: 100%;
+    
     padding: 10px;
     border: none;
     border-radius: 3px;
@@ -47,8 +47,7 @@
     cursor: pointer;
   }
   
-  .top-options {
-    
+  .top-options {   
     height:40px;
     display: flex;
     align-items: center;
