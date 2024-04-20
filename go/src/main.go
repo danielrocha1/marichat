@@ -480,16 +480,26 @@ func main() {
 	app.Post("/createchat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
-			Name     string `json:"username"`
 			ChatName string `json:"chatname"`
 			HostID   string `json:"hostid"`
-			ChatID   string `json:"chatid"`
+			Private  bool   `json:"private"`
+			ChatID  string   `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Failed to parse request body",
 			})
 		}
+
+	chatID, err := uuid.NewRandom()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to generate chat ID",
+		})
+	}
+
+	// Converte o UUID para string
+	requestData.ChatID = chatID.String()
 
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.ChatID]
@@ -500,13 +510,14 @@ func main() {
 				Users: []Users{
 					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
 				},
+				Private: requestData.Private,
 				HostID: requestData.HostID,
 				ChatID: requestData.ChatID,
 			}
 			chatrooms[requestData.ChatID] = chatroom
 
-			_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active) VALUES ($1, $2, $3, $4)",
-			requestData.ChatName, requestData.ChatID, requestData.HostID, true)
+			_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
+			requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
 			if err != nil {
 				return err
 			}
@@ -523,12 +534,13 @@ func main() {
 					Users: []Users{
 						{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
 					},
+					Private: requestData.Private,
 					HostID: requestData.HostID,
 					ChatID: requestData.ChatID, // Mantendo o ChatID igual
 				}
 				chatrooms[requestData.ChatID] = newChatroom
-				_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active) VALUES ($1, $2, $3, $4)",
-			requestData.ChatName, requestData.ChatID, requestData.HostID, true)
+				_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
+			requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
 			if err != nil {
 				return err
 			}
