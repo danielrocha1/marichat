@@ -154,16 +154,16 @@ const Dashboard = () => {
       <div className="app">
         <Sidebar user={userData} chats={chats} />
         <div className="container">
-          <div className="enterchat">
+        <div className="createChat">
             <EnterRoom />
           </div>
           <div className="createChat">
-            <CreateChat />
+          <CreateChat />
           </div>
-        </div>
-          <div className="containerchat">
+          <div className="">
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
+        </div>
       </div>
     </div>
   );
