@@ -25,9 +25,9 @@
     
   }
   
-  button {
+  .loginbutton {
     display: block;
-    
+    width: 100%;
     padding: 10px;
     border: none;
     border-radius: 3px;
@@ -36,7 +36,7 @@
     cursor: pointer;
   }
   
-  button:hover {
+  .loginbutton:hover {
     background-color: #0056b3;
     color: #fff;
   }

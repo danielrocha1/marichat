@@ -28,7 +28,7 @@ const Login = ({ handleLoginSubmit, formData, handleChange }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Fazer Login</button>
+        <button className='loginbutton' type="submit">Fazer Login</button>
       </form>
     </div>
   );
@@ -84,7 +84,7 @@ const SignUp = ({ handleRegisterSubmit, formData, handleChange }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Registrar</button>
+        <button className='loginbutton' type="submit">Registrar</button>
       </form>
     </div>
   );
