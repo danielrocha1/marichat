@@ -21,13 +21,6 @@
     margin-bottom: 5px;
   }
   
-  input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
   .modal-overlay {
     position: fixed;
     top: 230px;

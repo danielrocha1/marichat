@@ -56,6 +56,7 @@ function EnterRoom() {
               <div className="form-group">
                 <label htmlFor="user">ID da Sala:</label>
                 <input
+                  
                   type="text"
                   id="chatroomName"
                   value={chatRoom}
