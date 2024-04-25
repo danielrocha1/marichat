@@ -23,6 +23,8 @@ function ReceiverMessage(props) {
   );
 }
 
+
+
 function SenderMessage(props) {
   const timestamp = new Date();
   const hora = format(timestamp, 'HH:mm');
@@ -200,7 +202,6 @@ function ChatRoom() {
           <chatroom style={{ marginLeft: "710px" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
-        <Sidebar/>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
           <div className="flexBox">
             <div className="columnFlexBox">

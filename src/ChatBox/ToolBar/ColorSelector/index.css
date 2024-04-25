@@ -11,6 +11,12 @@
     width: 280px;
     z-index: 1000;
 }
+
+.sidebarChat.open {
+  background-color: #1a5fb4;
+  transform: translateX(0);
+}
+
   .hex-color-picker-container {
     position: absolute;
     top: 50%;
