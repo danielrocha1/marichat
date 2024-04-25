@@ -13,6 +13,11 @@
     border-radius: 10px 0px 0px 10px;
 }
 
+.selectBoard{
+  background-color: #509cd1;
+  border-radius: 7px;
+}
+
 .sidebarChat.open {
   background-color: #1a5fb4;
   transform: translateX(0);
