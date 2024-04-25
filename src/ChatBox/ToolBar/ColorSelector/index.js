@@ -55,7 +55,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  
   const background = [
     'linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)',
     'linear-gradient(#f0a1a0,#b30f15,#96090f,#850606,#63080c)',
@@ -73,12 +73,14 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 
   if (!isOpen) return null;
 
-
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className="sidebarChat">
       <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
-        <button className="sidebar-toggle" onClick={''}>
+        <button className="sidebar-toggle" onClick={toggleSidebar}>
           Select Colors
         </button>
         <div>
