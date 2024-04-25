@@ -58,3 +58,43 @@
     border: 3px groove rgb(112, 181, 221);
   }
   
+
+
+
+
+
+  .color-selector-wrapper {
+    position: relative;
+  }
+  
+  .color-selector {
+    position: absolute;
+    right: -300px; /* Fora da tela por padrão */
+    top: 0;
+    width: 250px; /* Largura do sidebar */
+    height: 100%;
+    background: white;
+    transition: right 0.3s ease;
+  }
+  
+  .color-selector.open {
+    right: 0; /* Mostrar o sidebar quando estiver aberto */
+  }
+  
+  .sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -40px; /* Posição do botão */
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: right 0.3s ease;
+  }
+  
+  .sidebar-toggle:hover {
+    right: 0; /* Ajuste de posição ao passar o mouse */
+  }
+  
