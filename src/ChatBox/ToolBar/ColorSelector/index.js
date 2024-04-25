@@ -78,9 +78,9 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   };
 
   return (
-    <div className="sidebarChat">
+    <div className="">
       <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
+        <button className="sidebar" onClick={toggleSidebar}>
           Select Colors
         </button>
         <div>
