@@ -1,15 +1,16 @@
-/* .sidebarChat {
-  background-color: #1c71d8;
-  border: 2px solid #1a5fb4;
-  color: #fff;
-  height: 100vh;
-  margin-top: -659px;
+
+.sidebarChat {
   position: fixed;
+  margin-top: -659px;
+  width: 280px;
+  height: 100vh;
+  background-color: #1c71d8;
+  color: #fff;
   transform: translateX(978px);
   transition: transform .3s ease-in-out;
   z-index: 1000;
-} */
-
+  border: 2px solid #1a5fb4;
+}
   .hex-color-picker-container {
     position: absolute;
     top: 50%;
