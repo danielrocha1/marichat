@@ -23,7 +23,7 @@ function ReceiverMessage(props) {
   );
 }
 
-const Sidebar = ( }) => {
+const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
