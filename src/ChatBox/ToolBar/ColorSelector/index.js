@@ -8,6 +8,11 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [hexColor, setHexColor] = useState('black');
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
   const toggleHexColor = () => {
     setHexColorVisible(!hexColorVisible);
     setSelectedOptionIndex(null)
