@@ -5,6 +5,9 @@ import UploadFile from './UploadFile';
 import ColorSelector from './ColorSelector';
 import './index.css';
 
+const toggleSidebar = () => {
+  setIsSidebarOpen(!isSidebarOpen);
+};
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
