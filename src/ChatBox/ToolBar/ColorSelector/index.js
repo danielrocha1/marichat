@@ -80,9 +80,6 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   return (
     <div className="">
       <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
-        <button className="sidebar" onClick={toggleSidebar}>
-          Select Colors
-        </button>
         <div>
           <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor do fundo:</p>
           <ColorOptions onSelectColor={onSelectColor} colors={background} type="fundo" />
