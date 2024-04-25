@@ -23,6 +23,29 @@ function ReceiverMessage(props) {
   );
 }
 
+const Sidebar = ( }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  return (
+    <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
+      <div>
+        <div onClick={toggleSidebar} className="toggle-btn">
+          <div className="bar1"></div>
+          <div className="bar2"></div>
+          <div className="bar3"></div>
+        </div>
+      </div>
+      <div className="user-info">
+        <p>Email: </p>
+      </div>
+      
+    </div>
+  );
+};
 
 
 function SenderMessage(props) {
@@ -202,6 +225,7 @@ function ChatRoom() {
           <chatroom style={{ marginLeft: "710px" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
+        <Sidebar/>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
           <div className="flexBox">
             <div className="columnFlexBox">
