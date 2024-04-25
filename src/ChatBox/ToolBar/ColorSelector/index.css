@@ -6,7 +6,7 @@
     height: 100vh;
     margin-top: -519px;
     position: fixed;
-    transform: translateX(41);
+    transform: translateX(593px);
     transition: transform .3s ease-in-out;
     width: 280px;
     z-index: 1000;

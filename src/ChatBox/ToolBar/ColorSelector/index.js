@@ -67,9 +67,6 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 
   const chatBorderColor = ['black', 'white'];
 
-  const receiverColor = ['black', 'white'];
-
-  const senderColor = ['black', 'white'];
 
   if (!isOpen) return null;
 
