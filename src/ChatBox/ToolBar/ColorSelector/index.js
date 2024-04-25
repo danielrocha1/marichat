@@ -77,15 +77,21 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
       <div className="">
-        <div>
-          <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor do fundo:</p>
-          <ColorOptions onSelectColor={onSelectColor} colors={background} type="fundo" />
-
-          <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor do chat:</p>
-          <ColorOptions onSelectColor={onSelectColor} colors={chatBoxColor} type="chat" />
-
-          <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor das bordas:</p>
-          <ColorOptions onSelectColor={onSelectColor} colors={chatBorderColor} type="bordas" />
+      <div>
+          <div className="selectBoard">
+            <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor do fundo:</p>
+            <ColorOptions onSelectColor={onSelectColor} colors={background} type="fundo" />
+          </div>
+          
+          <div className="selectBoard">
+            <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor do chat:</p>
+            <ColorOptions onSelectColor={onSelectColor} colors={chatBoxColor} type="chat" />
+          </div>
+          
+          <div className="selectBoard">
+            <p style={{ color: 'black', fontSize: '12px' }}>Selecione a cor das bordas:</p>
+            <ColorOptions onSelectColor={onSelectColor} colors={chatBorderColor} type="bordas" />
+          </div>
         </div>
       </div>
     </div>
