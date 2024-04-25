@@ -4,9 +4,9 @@
     border: 2px solid #1a5fb4;
     color: #fff;
     height: 100vh;
-    margin-top: 519px;
+    margin-top: -519px;
     position: fixed;
-    transform: translateX(799px);
+    transform: translateX(41);
     transition: transform .3s ease-in-out;
     width: 280px;
     z-index: 1000;
