@@ -6,9 +6,9 @@
     height: 100vh;
     margin-top: -519px;
     position: fixed;
-    transform: translateX(593px);
-    transition: transform .3s ease-in-out;
-    width: 280px;
+    transform: translateX(629px);
+    transition: transform .6s ease-in-out;
+    width: 245px;
     z-index: 1000;
 }
 
