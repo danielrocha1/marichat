@@ -8,7 +8,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [hexColor, setHexColor] = useState('black');
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -64,6 +64,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 }
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const background = [
     "linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)",
     "linear-gradient(#f0a1a0,#b30f15,#96090f,#850606,#63080c)",
