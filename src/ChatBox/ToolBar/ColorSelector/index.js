@@ -91,8 +91,8 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+      <div >
 
         <p style={{ color: "black", fontSize: "12px" }}>Selecione a cor do fundo:</p>
           <ColorOptions

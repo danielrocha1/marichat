@@ -23,6 +23,31 @@ function ReceiverMessage(props) {
   );
 }
 
+const Sidebar = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  return (
+    <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+      <div>
+        <div onClick={toggleSidebar} className="toggle-btn">
+          <div className="bar1"></div>
+          <div className="bar2"></div>
+          <div className="bar3"></div>
+        </div>
+      </div>
+      <div className="user-info">
+        <p>Email: </p>
+      </div>
+      
+    </div>
+  );
+};
+
+
 function SenderMessage(props) {
   const timestamp = new Date();
   const hora = format(timestamp, 'HH:mm');
@@ -225,6 +250,7 @@ function ChatRoom() {
             </div>
             <ChatBox chat={chat} messages={messages} chat={chat} roomname={roomname} theme={colors} setColors={setColors} />
           </div>
+          <Sidebar/>
         </div>
       </header>
     </div>
