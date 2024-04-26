@@ -10,8 +10,8 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
-    onSelectColor(color, type); // Correção: Passando type para onSelectColor
-    setHexColorVisible(false);
+    onSelectColor(color, type);
+    // Não feche o modal aqui, apenas atualize a cor selecionada
   };
 
   const toggleHexColor = () => {
@@ -43,7 +43,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
               color={selectedColor}
               onChange={(color) => {
                 setSelectedColor(color);
-                handleSelectColor(color); // Correção: Passando color para handleSelectColor
+                // Remova a chamada de handleSelectColor aqui
               }}
             />
           </div>
