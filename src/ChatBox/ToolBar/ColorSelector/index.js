@@ -10,8 +10,8 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
-    onSelectColor(color);
-    // Não feche o modal aqui, apenas atualize a cor selecionada
+    onSelectColor(color, type);
+    setHexColorVisible(false);
   };
 
   const toggleHexColor = () => {
@@ -43,7 +43,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
               color={selectedColor}
               onChange={(color) => {
                 setSelectedColor(color);
-                // Remova a chamada de handleSelectColor aqui
+                handleSelectColor(color);
               }}
             />
           </div>
@@ -66,6 +66,7 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
 
   const chatBorderColor = ['black', 'white'];
+
 
   if (!isOpen) return null;
 
@@ -90,7 +91,7 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
           </div>
           
           <div className="selectBoard">
-          <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58",
+          <p style={{ color: 'black', fontSize: '12px', backgroundColor: "#0c2e58",
     borderRadius: "4px" }}>Selecione a cor das bordas:</p>
             <ColorOptions onSelectColor={onSelectColor} colors={chatBorderColor} type="bordas" />
           </div>
