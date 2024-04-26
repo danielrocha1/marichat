@@ -10,7 +10,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
-    onSelectColor(color, type);
+    onSelectColor(color);
     // Não feche o modal aqui, apenas atualize a cor selecionada
   };
 
