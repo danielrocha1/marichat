@@ -10,7 +10,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
-    onSelectColor(color, type);
+    onSelectColor(color, type); // Correção: Passando type para onSelectColor
     setHexColorVisible(false);
   };
 
@@ -43,7 +43,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
               color={selectedColor}
               onChange={(color) => {
                 setSelectedColor(color);
-                handleSelectColor(color);
+                handleSelectColor(color); // Correção: Passando color para handleSelectColor
               }}
             />
           </div>
@@ -66,7 +66,6 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
 
   const chatBorderColor = ['black', 'white'];
-
 
   if (!isOpen) return null;
 
