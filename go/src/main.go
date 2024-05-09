@@ -485,7 +485,7 @@ func main() {
 			ChatName string `json:"chatname"`
 			HostID   string `json:"hostid"`
 			Private  bool   `json:"private"`
-			ChatID  string   `json:"chatid"`
+			
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
