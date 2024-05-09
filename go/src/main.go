@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
-	"uuid"
+	"github.com/google/uuid"
 
 	"database/sql"
 	_ "github.com/lib/pq"
