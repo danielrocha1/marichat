@@ -557,7 +557,7 @@ func main() {
 	
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"username":     requestData.Name,
+			"username":     requestData.ChatName,
 			"guestid": requestData.HostID,
 			"chatid":     requestData.ChatID,
 			"chatRoom": chatroom.Name,
