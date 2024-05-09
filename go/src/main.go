@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"uuid"
 
 	"database/sql"
 	_ "github.com/lib/pq"
@@ -508,7 +509,7 @@ func main() {
 			chatroom = &Chatroom{
 				Name: requestData.ChatName,
 				Users: []Users{
-					{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+					{Name: requestData.ChatName, ChatID: requestData.ChatID, HostID: requestData.HostID},
 				},
 				Private: requestData.Private,
 				HostID: requestData.HostID,
@@ -532,7 +533,7 @@ func main() {
 				newChatroom := &Chatroom{
 					Name: requestData.ChatName,
 					Users: []Users{
-						{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID},
+						{Name: requestData.ChatName, ChatID: requestData.ChatID, HostID: requestData.HostID},
 					},
 					Private: requestData.Private,
 					HostID: requestData.HostID,
