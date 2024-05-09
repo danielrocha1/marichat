@@ -32,7 +32,7 @@ type Chatroom struct {
 	Users  []Users
 	HostID string
 	ChatID string
-	Private string
+	Private bool
 }
 
 type MessageTyping struct {
