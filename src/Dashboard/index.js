@@ -75,7 +75,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
     };
 
     fetchChats();
-  }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  }, []); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
     const queryString = new URLSearchParams(chat).toString();  
