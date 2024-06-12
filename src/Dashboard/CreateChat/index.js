@@ -37,11 +37,11 @@ function CreateChat() {
           throw new Error('Erro ao enviar os dados');
         }
 
-        navigate(`/chatroom`);
+        setModalIsOpen(false);
       } catch (error) {
         console.error('Erro:', error.message);
       }
-      setModalIsOpen(false);
+      
   };
 
   
