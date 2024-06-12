@@ -482,6 +482,7 @@ func main() {
 	app.Post("/createchat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
+			UserName string `json:"username"`
 			ChatName string `json:"chatname"`
 			HostID   string `json:"hostid"`
 			Private  bool   `json:"private"`
@@ -502,7 +503,7 @@ func main() {
 
 	// Converte o UUID para string
 	requestData.ChatID = chatID.String()
-
+	fmt.Println(requestData.ChatID)
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {

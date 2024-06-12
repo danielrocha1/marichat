@@ -24,31 +24,33 @@ function CreateChat() {
     setModalIsOpen(false);
   };
   
-  // const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
 
-  //   e.preventDefault();
-  //     try {
-  //       const response = await fetch('https://marichat-go.onrender.com/createchat', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ 
-  //           username: userData.data.username,
-  //           hostid: userData.data.hostid,
+    e.preventDefault();
+      try {
+        const response = await fetch('https://marichat-go.onrender.com/createchat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            username: userData.data.username,
+            hostid: userData.data.hostid,
+            chatname: chatRoom,
+            private: isPrivate, 
             
-  //         }),
-  //       });
+          }),
+        });
 
-  //       if (!response.ok) {
-  //         throw new Error('Erro ao enviar os dados');
-  //       }
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
 
-  //       navigate(`/chatroom`);
-  //     } catch (error) {
-  //       console.error('Erro:', error.message);
-  //     }
-  // };
+        navigate(`/chatroom`);
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+  };
 
   
     return (
