@@ -14,15 +14,6 @@ function CreateChat() {
   const navigate = useNavigate();
   
  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar os dados do formulário
-    console.log("Nome do chat", chatRoom)
-    console.log("Tipo de chat", isPrivate)
-    
-    // Fechar o modal após enviar o formulário
-    setModalIsOpen(false);
-  };
   
   const handleSubmit = async (e) => {
 
@@ -50,6 +41,7 @@ function CreateChat() {
       } catch (error) {
         console.error('Erro:', error.message);
       }
+      setModalIsOpen(false);
   };
 
   
