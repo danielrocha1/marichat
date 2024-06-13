@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ChatContext from '../../ChatContext';
 
 function CreateChat() {
-  const { userData, setUserData} = useContext(ChatContext);
+  const { userData, setUserData, setChats = useContext(ChatContext);
   
   const [chatRoom, setChatroomName] = useState('');
   const [chatid, setChatID] = useState('');
@@ -36,7 +36,16 @@ function CreateChat() {
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
-
+        setChats([
+          ...previous,
+          {
+            username: userData.data.username,
+            hostid: userData.data.hostid,
+            chatname: chatRoom,
+            private: isPrivate
+          }
+        ]);
+        
         setModalIsOpen(false);
       } catch (error) {
         console.error('Erro:', error.message);

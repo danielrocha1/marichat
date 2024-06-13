@@ -48,8 +48,6 @@ const TopHeader = ({ handleLogout }) => {
 };
 
 const ChatTable = ({ userData, setUserData, setChats, chats }) => {
-  const navigate = useNavigate();
-  
 
   useEffect(() => {
     console.log(userData)
@@ -75,7 +73,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
     };
 
     fetchChats();
-  }, []); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  }, [chats]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
     const queryString = new URLSearchParams(chat).toString();  
@@ -129,6 +127,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
       } catch (error) {
         console.error('Erro:', error.message);
       }
+      fetchChats();
   };
 
   return (
@@ -181,7 +180,8 @@ const Dashboard = () => {
             <EnterRoom />
           </div>
           <div className="createChat">
-            <CreateChat />
+            <CreateChat setChats={setChats} />
+            
           </div>
         </div>
           <div className="">
