@@ -490,12 +490,12 @@ func main() {
 				"error": "Failed to parse request body",
 			})
 		}
-			_, err := db.Exec("UPDATE Chatrooms SET active = false WHERE chatid = $1 && hostid = $2;",
-			requestData.ChatID, requestData.HostID,)
-			if err != nil {
-				return err
-			}
-			return c.SendStatus(fiber.StatusOK)
+		_, err := db.Exec("UPDATE Chatrooms SET active = false WHERE chatid = $1 AND hostid = $2;",
+		requestData.ChatID, requestData.HostID,)
+		if err != nil {
+			return err
+		}
+		return c.SendStatus(fiber.StatusOK)
 	}
 
 
