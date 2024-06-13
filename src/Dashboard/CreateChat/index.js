@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ChatContext from '../../ChatContext';
 
 function CreateChat() {
-  const { userData, setUserData, setChats = useContext(ChatContext);
+  const { userData, setUserData, setChats} = useContext(ChatContext);
   
   const [chatRoom, setChatroomName] = useState('');
   const [chatid, setChatID] = useState('');
@@ -45,7 +45,7 @@ function CreateChat() {
             private: isPrivate
           }
         ]);
-        
+
         setModalIsOpen(false);
       } catch (error) {
         console.error('Erro:', error.message);
