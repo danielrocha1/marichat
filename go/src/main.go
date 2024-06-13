@@ -496,7 +496,7 @@ func main() {
 			return err
 		}
 		return c.SendStatus(fiber.StatusOK)
-	}
+	})
 
 
 	// Rota para adicionar usuário a uma sala de bate-papo
