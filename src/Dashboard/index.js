@@ -109,8 +109,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
     addUserToChat();
   };
 
-  const removeChat = async (chat, userData) => {
-    const queryString = new URLSearchParams(chat).toString();  
+  const removeChat = async (chat, userData) => { 
       try {
         const response = await fetch('https://marichat-go.onrender.com/deletechat', {
           method: 'POST',
@@ -123,7 +122,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
           }),
           
         });
-
+        console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid )
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }  
