@@ -37,7 +37,7 @@ function CreateChat() {
           throw new Error('Erro ao enviar os dados');
         }
         setChats([
-          ...previous,
+          ...chats, // Usando o estado atual de `chats`
           {
             username: userData.data.username,
             hostid: userData.data.hostid,
@@ -45,6 +45,7 @@ function CreateChat() {
             private: isPrivate
           }
         ]);
+      
 
         setModalIsOpen(false);
       } catch (error) {
