@@ -110,7 +110,32 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
   };
 
   const removeChat = () => {
-    console.log("Remover chat");
+    const queryString = new URLSearchParams(chat).toString();  
+    const addUserToChat = async () => {
+      try {
+        const response = await fetch('https://marichat-go.onrender.com/enterroom', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            chatname: chat.chatname,
+            username: userData.data.username,
+            hostid: userData.data.hostid,
+            chatid: chat.chatid 
+          }),
+          
+        });
+
+        if (!response.ok) {
+         
+          throw new Error('Erro ao enviar os dados');
+        }
+            
+        navigate(`/chatroom?${queryString}`);
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
   };
 
   return (
@@ -131,7 +156,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
                 <td>{chat.chatid}</td>
                 <td>
                   <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
-                  <button onClick={removeChat} className="red-button">Remover</button>
+                  <button onClick={() => removeChat()} className="red-button">Remover</button>
                 </td>
               </tr>
             ))}

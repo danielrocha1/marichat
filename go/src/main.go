@@ -479,6 +479,27 @@ func main() {
 	})
 	
 	// Rota para adicionar usuário a uma sala de bate-papo
+	app.Post("/deletechat", func(c *fiber.Ctx) error {
+		// Parse dos dados do corpo da requisição
+		var requestData struct {
+			HostID   string `json:"hostid"`
+			ChatID  string   `json:"chatid"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
+			_, err := db.Exec("UPDATE Chatrooms SET active = false WHERE chatid = $1 && hostid = $2;",
+			requestData.ChatID, requestData.HostID,)
+			if err != nil {
+				return err
+			}
+			return c.SendStatus(fiber.StatusOK)
+	}
+
+
+	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/createchat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
