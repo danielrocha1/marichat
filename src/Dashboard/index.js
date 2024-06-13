@@ -109,7 +109,7 @@ const ChatTable = ({ userData, setUserData, setChats, chats }) => {
     addUserToChat();
   };
 
-  const removeChat = (chat, userData) => {
+  const removeChat = async (chat, userData) => {
     const queryString = new URLSearchParams(chat).toString();  
       try {
         const response = await fetch('https://marichat-go.onrender.com/deletechat', {
