@@ -853,5 +853,5 @@ func main() {
 	chatrooms = make(map[string]*Chatroom)
 
 	// Inicia o servidor na porta 8080
-	app.Listen(":10000")
+	app.Listen(":8080")
 }
