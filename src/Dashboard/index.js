@@ -53,7 +53,7 @@ const navigate = useNavigate();
     console.log(userData)
     const fetchChats = async () => {
       try {
-        const response = await fetch('https://marichat-go.onrender.com/chatrooms', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/chatrooms', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ const navigate = useNavigate();
     const queryString = new URLSearchParams(chat).toString();  
     const addUserToChat = async () => {
       try {
-        const response = await fetch('https://marichat-go.onrender.com/enterroom', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/enterroom', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const navigate = useNavigate();
 
   const removeChat = async (chat, userData) => { 
       try {
-        const response = await fetch('https://marichat-go.onrender.com/deletechat', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/deletechat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
