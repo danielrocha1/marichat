@@ -19,7 +19,7 @@ function CreateChat() {
 
     e.preventDefault();
       try {
-        const response = await fetch('https://marichat-go.onrender.com/createchat', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/createchat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
