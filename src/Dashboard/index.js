@@ -127,7 +127,7 @@ const navigate = useNavigate();
       } catch (error) {
         console.error('Erro:', error.message);
       }
-      fetchChats();
+      
   };
 
   return (
