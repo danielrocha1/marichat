@@ -45,7 +45,7 @@ const ImageHost = ({ user }) => {
     setError(null);
 
     try {
-      const response = await fetch("https://marichat-go.onrender.com/upload-photo", {
+      const response = await fetch("https://marichat-go-xtcz.onrender.com/upload-photo", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
