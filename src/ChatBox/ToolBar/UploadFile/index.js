@@ -12,7 +12,7 @@ function UploadFile({ chat, roomname, id }) {
     if (file) {
       try {
         const fileContent = await readFileAsDataURL(file);
-        const response = await fetch('https://marichat-go.onrender.com/upload', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/upload', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
