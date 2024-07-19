@@ -57,7 +57,7 @@ function ChatRoom() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('https://marichat-go.onrender.com/listusers', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/listusers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ function ChatRoom() {
     fetchUsers();
     
 
-    const socket = new WebSocket('wss://marichat-go.onrender.com/websocket');
+    const socket = new WebSocket('wss://marichat-go-xtcz.onrender.com/websocket');
     socket.onmessage = handleWebSocketMessage;
 
     return () => {
@@ -174,7 +174,7 @@ function ChatRoom() {
 
   const kickUser = async () => {
     try {
-      const response = await fetch('https://marichat-go.onrender.com/kickuser', {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/kickuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
