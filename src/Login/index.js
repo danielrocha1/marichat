@@ -115,7 +115,7 @@ function LoginSign() {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('https://marichat-go.onrender.com/register', {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ function LoginSign() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('https://marichat-go.onrender.com/login', {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
