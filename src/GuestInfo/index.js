@@ -13,7 +13,7 @@ const GuestInfo = (props) => {
 
   const kickUser = async () => {
     try {
-      const response = await fetch('https://marichat-go.onrender.com/kickuser', {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/kickuser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
