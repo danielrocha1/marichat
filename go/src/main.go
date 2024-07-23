@@ -130,61 +130,17 @@ func main() {
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
 	alterTableQuery := `
-				ALTER TABLE chatrooms
-				ADD COLUMN private BOOLEAN DEFAULT FALSE
-			`
+	ALTER TABLE chatrooms
+	ADD COLUMN private BOOLEAN DEFAULT FALSE
+`
 
-			// Executar a consulta SQL para adicionar a coluna "private"
-			_, err = db.Exec(alterTableQuery)
-			if err != nil {
-				log.Fatalf("Erro ao adicionar coluna 'private': %v", err)
-			}
+// Executar a consulta SQL para adicionar a coluna "private"
+_, err = db.Exec(alterTableQuery)
+if err != nil {
+	log.Fatalf("Erro ao adicionar coluna 'private': %v", err)
+}
 
-			log.Println("Coluna 'private' adicionada com sucesso.")
-		} else {
-			log.Println("Coluna 'private' já existe na tabela 'chatrooms'.")
-		}
-
-		// Consulta SQL para obter as informações das colunas da tabela chatrooms
-		getColumnsQuery := `
-			SELECT column_name, data_type
-			FROM information_schema.columns
-			WHERE table_name = 'chatrooms'
-		`
-
-		// Executar a consulta SQL para obter as informações das colunas
-		rows, err := db.Query(getColumnsQuery)
-		if err != nil {
-			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
-		}
-		defer rows.Close()
-
-		// Estrutura para armazenar as informações das colunas
-		type ColumnInfo struct {
-			ColumnName string `json:"column_name"`
-			DataType   string `json:"data_type"`
-		}
-
-		var columns []ColumnInfo
-
-		// Iterar sobre os resultados da consulta
-		for rows.Next() {
-			var column ColumnInfo
-			err := rows.Scan(&column.ColumnName, &column.DataType)
-			if err != nil {
-				log.Fatalf("Erro ao escanear linha: %v", err)
-			}
-			columns = append(columns, column)
-		}
-
-		// Verificar por erros que podem ter ocorrido durante o percurso
-		err = rows.Err()
-		if err != nil {
-			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
-		}
-
-		// Retornar as informações das colunas como resposta
-		return c.JSON(columns)
+log.Println("Coluna 'private' adicionada com sucesso.")
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
