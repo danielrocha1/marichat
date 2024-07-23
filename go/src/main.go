@@ -127,30 +127,37 @@ func main() {
 		return c.Next()
 	})
 
-app.Get("/userinfo", func(c *fiber.Ctx) error {
-
-    row := db.QueryRow("SELECT * FROM userinfo")
-
-    // Estrutura para armazenar os dados recuperados da consulta
-    var userInfo struct {
-        HostID    string `json:"hostid"`
-        FullName  string `json:"fullname"`
-        Username  string `json:"username"`
-        Email     string `json:"email"`
-        Birthdate string `json:"birthdate"`
-    }
-
-    // Extrair os dados do resultado da consulta para a estrutura userInfo
-    err := row.Scan(&userInfo.HostID, &userInfo.FullName, &userInfo.Username, &userInfo.Email, &userInfo.Birthdate)
+app.Get("/list-tables", func(c *fiber.Ctx) error {
+    // Consulta SQL para listar todas as tabelas
+    rows, err := db.Query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'")
     if err != nil {
-        // Tratar o erro, por exemplo, usuário não encontrado
-        return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-            "error": "Usuário não encontrado",
+        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+            "error": "Erro ao listar as tabelas",
         })
     }
+    defer rows.Close()
 
-    // Retornar os dados do usuário como resposta
-    return c.JSON(userInfo)
+    // Estrutura para armazenar os nomes das tabelas
+    var tables []string
+
+    // Iterar sobre as linhas retornadas pela consulta
+    for rows.Next() {
+        var tableName string
+        if err := rows.Scan(&tableName); err != nil {
+            return err
+        }
+        tables = append(tables, tableName)
+    }
+
+    // Verificar por erros durante o percurso das linhas
+    if err := rows.Err(); err != nil {
+        return err
+    }
+
+    // Retornar os nomes das tabelas como resposta
+    return c.JSON(fiber.Map{
+        "tables": tables,
+    })
 })
 
 	app.Post("/register", func(c *fiber.Ctx) error {
