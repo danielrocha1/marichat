@@ -136,10 +136,12 @@ app.Get("/create-table", func(c *fiber.Ctx) error {
 		defer db.Close()
 
 		// Comando SQL para criar a tabela
-		createTableSQL := `CREATE TABLE user_photos (
-		    id SERIAL PRIMARY KEY,
-		    photo BYTEA,
-		    hostid VARCHAR(255)
+		createTableSQL := `CREATE TABLE chatrooms (
+    id SERIAL PRIMARY KEY,
+    chatname VARCHAR(255) NOT NULL,
+    chatid VARCHAR(255) NOT NULL,
+    hostid VARCHAR(255) NOT NULL,
+    active BOOLEAN NOT NULL
 		);`
 
 		// Executar o comando SQL para criar a tabela
