@@ -129,32 +129,35 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	query := `SELECT id, username, email FROM userinfo`
+	query := `
+			SELECT column_name, data_type
+			FROM information_schema.columns
+			WHERE table_name = 'chatrooms'
+		`
 
-		// Executar o comando SQL para criar a tabela
+		// Executar a consulta SQL
 		rows, err := db.Query(query)
 		if err != nil {
 			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
 		}
 		defer rows.Close()
 
-		// Estrutura para armazenar os usuários
-		type User struct {
-			ID       int    `json:"id"`
-			Username string `json:"username"`
-			Email    string `json:"email"`
+		// Estrutura para armazenar as informações das colunas
+		type ColumnInfo struct {
+			ColumnName string `json:"column_name"`
+			DataType   string `json:"data_type"`
 		}
 
-		var users []User
+		var columns []ColumnInfo
 
 		// Iterar sobre os resultados da consulta
 		for rows.Next() {
-			var user User
-			err := rows.Scan(&user.ID, &user.Username, &user.Email)
+			var column ColumnInfo
+			err := rows.Scan(&column.ColumnName, &column.DataType)
 			if err != nil {
 				log.Fatalf("Erro ao escanear linha: %v", err)
 			}
-			users = append(users, user)
+			columns = append(columns, column)
 		}
 
 		// Verificar por erros que podem ter ocorrido durante o percurso
@@ -163,9 +166,8 @@ app.Get("/select-user", func(c *fiber.Ctx) error {
 			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
 		}
 
-		// Retornar os usuários como resposta
-		return c.JSON(users)
-	
+		// Retornar as informações das colunas como resposta
+		return c.JSON(columns)
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
