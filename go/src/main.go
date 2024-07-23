@@ -127,38 +127,34 @@ func main() {
 		return c.Next()
 	})
 
-app.Get("/list-tables", func(c *fiber.Ctx) error {
-    // Consulta SQL para listar todas as tabelas
-    rows, err := db.Query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'")
-    if err != nil {
-        return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-            "error": "Erro ao listar as tabelas",
-        })
-    }
-    defer rows.Close()
+app.Get("/create-table", func(c *fiber.Ctx) error {
+		// DSN (Data Source Name) de conexão com o banco de dados
+		dsn := "postgres://user:password@localhost/dbname?sslmode=disable"
+		db, err := sql.Open("postgres", dsn)
+		if err != nil {
+			log.Fatalf("Error opening database: %v", err)
+		}
+		defer db.Close()
 
-    // Estrutura para armazenar os nomes das tabelas
-    var tables []string
+		// Comando SQL para criar a tabela
+		createTableSQL := `CREATE TABLE IF NOT EXISTS userinfo (
+			id SERIAL PRIMARY KEY,
+			fullname VARCHAR(255) NOT NULL,
+			username VARCHAR(50) NOT NULL,
+			email VARCHAR(255) NOT NULL,
+			password VARCHAR(255) NOT NULL,
+			birthdate DATE NOT NULL,
+			hostid VARCHAR(250) NOT NULL
+		);`
 
-    // Iterar sobre as linhas retornadas pela consulta
-    for rows.Next() {
-        var tableName string
-        if err := rows.Scan(&tableName); err != nil {
-            return err
-        }
-        tables = append(tables, tableName)
-    }
+		// Executar o comando SQL
+		_, err = db.Exec(createTableSQL)
+		if err != nil {
+			log.Fatalf("Error creating table: %v", err)
+		}
 
-    // Verificar por erros durante o percurso das linhas
-    if err := rows.Err(); err != nil {
-        return err
-    }
-
-    // Retornar os nomes das tabelas como resposta
-    return c.JSON(fiber.Map{
-        "tables": tables,
-    })
-})
+		return c.SendString("Table userinfo created successfully!")
+	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
