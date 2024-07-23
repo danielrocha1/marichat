@@ -127,6 +127,32 @@ func main() {
 		return c.Next()
 	})
 
+	app.Get("/userinfo", func(c *fiber.Ctx) error {
+        rows, err := db.Query(context.Background(), "SELECT * FROM userinfo")
+        if err != nil {
+            log.Printf("Error querying database: %v\n", err)
+            return c.Status(fiber.StatusInternalServerError).SendString("Error querying database")
+        }
+        defer rows.Close()
+
+        var (
+            id   int
+            name string
+            // Add more fields as needed
+        )
+
+        for rows.Next() {
+            if err := rows.Scan(&id, &name); err != nil {
+                log.Printf("Error scanning row: %v\n", err)
+                return c.Status(fiber.StatusInternalServerError).SendString("Error scanning row")
+            }
+            // Process each row data as needed
+            fmt.Printf("ID: %d, Name: %s\n", id, name)
+        }
+
+        return c.SendString("Query successful")
+    })
+
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
 		type RegisterRequest struct {
