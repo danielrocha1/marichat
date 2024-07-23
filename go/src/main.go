@@ -175,7 +175,7 @@ func main() {
 
 		// Executar a consulta SQL para verificar o login
 		var count int
-		err := db.QueryRow("SELECT COUNT(*) FROM Userinfo WHERE email = $1 AND password = $2", loginReq.Email, loginReq.Password).Scan(&count)
+		err := db.QueryRow("SELECT COUNT(*) FROM userinfo WHERE email = $1 AND password = $2", loginReq.Email, loginReq.Password).Scan(&count)
 		if err != nil {
 			return err
 		}
@@ -184,7 +184,7 @@ func main() {
 		if count == 1 {
 			// Credenciais válidas, retornar uma resposta de sucesso
 			var userInfo UserInfo
-			err := db.QueryRow("SELECT * FROM Userinfo WHERE email = $1", loginReq.Email).Scan(
+			err := db.QueryRow("SELECT * FROM userinfo WHERE email = $1", loginReq.Email).Scan(
 				&userInfo.ID,
 				&userInfo.FullName,				
 				&userInfo.Username,
