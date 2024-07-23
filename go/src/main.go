@@ -149,7 +149,9 @@ func main() {
 		_, err := db.Exec("INSERT INTO userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
 			registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
 		if err != nil {
-			return err
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Não foi possivel criar o cadastro",
+			})
 		}
 		// Inserir uma nova foto para o hostid
 		_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", registerReq.HostID, " ")
