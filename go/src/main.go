@@ -127,12 +127,9 @@ func main() {
 		return c.Next()
 	})
 
-	app.Get("/userinfo/", func(c *fiber.Ctx) error {
-    // Capturar o hostid a partir dos parâmetros da URL
+app.Get("/userinfo", func(c *fiber.Ctx) error {
 
-
-    // Executar a consulta SQL para buscar os dados na tabela userinfo
-    row := db.QueryRow("SELECT * FROM userinfo")
+    row := db.QueryRow("SELECT * FROM userinfo", hostID)
 
     // Estrutura para armazenar os dados recuperados da consulta
     var userInfo struct {
