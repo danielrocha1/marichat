@@ -129,7 +129,7 @@ func main() {
 
 app.Get("/userinfo", func(c *fiber.Ctx) error {
 
-    row := db.QueryRow("SELECT * FROM userinfo", hostID)
+    row := db.QueryRow("SELECT * FROM userinfo")
 
     // Estrutura para armazenar os dados recuperados da consulta
     var userInfo struct {
