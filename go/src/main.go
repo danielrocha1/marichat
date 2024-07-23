@@ -127,31 +127,34 @@ func main() {
 		return c.Next()
 	})
 
-	app.Get("/userinfo", func(c *fiber.Ctx) error {
-        rows, err := db.Query(context.Background(), "SELECT * FROM userinfo")
-        if err != nil {
-            log.Printf("Error querying database: %v\n", err)
-            return c.Status(fiber.StatusInternalServerError).SendString("Error querying database")
-        }
-        defer rows.Close()
+	app.Get("/userinfo/", func(c *fiber.Ctx) error {
+    // Capturar o hostid a partir dos parâmetros da URL
 
-        var (
-            id   int
-            name string
-            // Add more fields as needed
-        )
 
-        for rows.Next() {
-            if err := rows.Scan(&id, &name); err != nil {
-                log.Printf("Error scanning row: %v\n", err)
-                return c.Status(fiber.StatusInternalServerError).SendString("Error scanning row")
-            }
-            // Process each row data as needed
-            fmt.Printf("ID: %d, Name: %s\n", id, name)
-        }
+    // Executar a consulta SQL para buscar os dados na tabela userinfo
+    row := db.QueryRow("SELECT * FROM userinfo")
 
-        return c.SendString("Query successful")
-    })
+    // Estrutura para armazenar os dados recuperados da consulta
+    var userInfo struct {
+        HostID    string `json:"hostid"`
+        FullName  string `json:"fullname"`
+        Username  string `json:"username"`
+        Email     string `json:"email"`
+        Birthdate string `json:"birthdate"`
+    }
+
+    // Extrair os dados do resultado da consulta para a estrutura userInfo
+    err := row.Scan(&userInfo.HostID, &userInfo.FullName, &userInfo.Username, &userInfo.Email, &userInfo.Birthdate)
+    if err != nil {
+        // Tratar o erro, por exemplo, usuário não encontrado
+        return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+            "error": "Usuário não encontrado",
+        })
+    }
+
+    // Retornar os dados do usuário como resposta
+    return c.JSON(userInfo)
+})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
