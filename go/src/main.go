@@ -129,24 +129,44 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	deleteSQL := `DELETE FROM userinfo WHERE id BETWEEN 1 AND 12`
+	query := `SELECT id, username, email FROM userinfo`
 
-	// Executar o comando SQL para deletar os registros
-	result, err := db.Exec(deleteSQL)
-	if err != nil {
-		log.Fatalf("Erro ao deletar usuários: %v", err)
-	}
+		// Executar o comando SQL para criar a tabela
+		rows, err := db.Query(query)
+		if err != nil {
+			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
+		}
+		defer rows.Close()
 
-	// Verificar quantos registros foram afetados
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		log.Fatalf("Erro ao verificar número de registros afetados: %v", err)
-	}
+		// Estrutura para armazenar os usuários
+		type User struct {
+			ID       int    `json:"id"`
+			Username string `json:"username"`
+			Email    string `json:"email"`
+		}
 
-	// Retornar uma mensagem com o número de registros deletados
-	return c.SendString(fmt.Sprintf("%d usuários deletados com sucesso.", rowsAffected))
-})
+		var users []User
 
+		// Iterar sobre os resultados da consulta
+		for rows.Next() {
+			var user User
+			err := rows.Scan(&user.ID, &user.Username, &user.Email)
+			if err != nil {
+				log.Fatalf("Erro ao escanear linha: %v", err)
+			}
+			users = append(users, user)
+		}
+
+		// Verificar por erros que podem ter ocorrido durante o percurso
+		err = rows.Err()
+		if err != nil {
+			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
+		}
+
+		// Retornar os usuários como resposta
+		return c.JSON(users)
+	
+	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
