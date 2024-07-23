@@ -140,7 +140,7 @@ if err != nil {
 	log.Fatalf("Erro ao adicionar coluna 'private': %v", err)
 }
 
-log.Println("Coluna 'private' adicionada com sucesso.")
+return c.SendString("Coluna 'private' adicionada com sucesso.")
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
