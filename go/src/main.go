@@ -129,14 +129,31 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	query := `
+	alterTableQuery := `
+				ALTER TABLE chatrooms
+				ADD COLUMN private BOOLEAN DEFAULT FALSE
+			`
+
+			// Executar a consulta SQL para adicionar a coluna "private"
+			_, err = db.Exec(alterTableQuery)
+			if err != nil {
+				log.Fatalf("Erro ao adicionar coluna 'private': %v", err)
+			}
+
+			log.Println("Coluna 'private' adicionada com sucesso.")
+		} else {
+			log.Println("Coluna 'private' já existe na tabela 'chatrooms'.")
+		}
+
+		// Consulta SQL para obter as informações das colunas da tabela chatrooms
+		getColumnsQuery := `
 			SELECT column_name, data_type
 			FROM information_schema.columns
 			WHERE table_name = 'chatrooms'
 		`
 
-		// Executar a consulta SQL
-		rows, err := db.Query(query)
+		// Executar a consulta SQL para obter as informações das colunas
+		rows, err := db.Query(getColumnsQuery)
 		if err != nil {
 			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
 		}
