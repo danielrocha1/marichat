@@ -146,7 +146,7 @@ func main() {
 		}
 
 		// Executar a consulta SQL para inserir os dados do usuário na tabela UserInfo
-		_, err := db.Exec("INSERT INTO Userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
+		_, err := db.Exec("INSERT INTO userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
 			registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
 		if err != nil {
 			return err
