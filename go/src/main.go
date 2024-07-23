@@ -583,7 +583,7 @@ app.Get("/select-user", func(c *fiber.Ctx) error {
 			}
 			chatrooms[requestData.ChatID] = chatroom
 
-			_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
+			_, err := db.Exec("INSERT INTO chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
 			requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
 			if err != nil {
 				return err
@@ -606,7 +606,7 @@ app.Get("/select-user", func(c *fiber.Ctx) error {
 					ChatID: requestData.ChatID, // Mantendo o ChatID igual
 				}
 				chatrooms[requestData.ChatID] = newChatroom
-				_, err := db.Exec("INSERT INTO Chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
+				_, err := db.Exec("INSERT INTO chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
 			requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
 			if err != nil {
 				return err
