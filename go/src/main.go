@@ -127,30 +127,45 @@ func main() {
 		return c.Next()
 	})
 
-app.Get("/create-table", func(c *fiber.Ctx) error {
-		// DSN (Data Source Name) de conexão com o banco de dados
-		db, err := sql.Open("postgres", connectionString)
-		if err != nil {
-			log.Fatalf("Erro ao abrir a conexão com o banco de dados: %v", err)
-		}
-		defer db.Close()
+app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		// Comando SQL para criar a tabela
-		createTableSQL := `CREATE TABLE chatrooms (
-    id SERIAL PRIMARY KEY,
-    chatname VARCHAR(255) NOT NULL,
-    chatid VARCHAR(255) NOT NULL,
-    hostid VARCHAR(255) NOT NULL,
-    active BOOLEAN NOT NULL
-		);`
+	query := `SELECT id, username, email FROM userinfo`
 
 		// Executar o comando SQL para criar a tabela
-		_, err = db.Exec(createTableSQL)
+		rows, err := db.Query(query)
 		if err != nil {
-			log.Fatalf("Erro ao criar a tabela: %v", err)
+			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
+		}
+		defer rows.Close()
+
+		// Estrutura para armazenar os usuários
+		type User struct {
+			ID       int    `json:"id"`
+			Username string `json:"username"`
+			Email    string `json:"email"`
 		}
 
-		return c.SendString("Tabela userinfo criada com sucesso!")
+		var users []User
+
+		// Iterar sobre os resultados da consulta
+		for rows.Next() {
+			var user User
+			err := rows.Scan(&user.ID, &user.Username, &user.Email)
+			if err != nil {
+				log.Fatalf("Erro ao escanear linha: %v", err)
+			}
+			users = append(users, user)
+		}
+
+		// Verificar por erros que podem ter ocorrido durante o percurso
+		err = rows.Err()
+		if err != nil {
+			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
+		}
+
+		// Retornar os usuários como resposta
+		return c.JSON(users)
+	
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {

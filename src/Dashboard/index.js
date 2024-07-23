@@ -50,7 +50,7 @@ const TopHeader = ({ handleLogout }) => {
 const ChatTable = ({ userData, setUserData, setChats, chats }) => {
 const navigate = useNavigate();
   useEffect(() => {
-    console.log(userData)
+    
     const fetchChats = async () => {
       try {
         const response = await fetch('https://marichat-go-xtcz.onrender.com/chatrooms', {
