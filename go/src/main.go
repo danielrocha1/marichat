@@ -129,10 +129,9 @@ func main() {
 
 app.Get("/create-table", func(c *fiber.Ctx) error {
 		// DSN (Data Source Name) de conexão com o banco de dados
-		dsn := "postgres://user:password@localhost/dbname?sslmode=disable"
-		db, err := sql.Open("postgres", dsn)
+		db, err := sql.Open("postgres", connectionString)
 		if err != nil {
-			log.Fatalf("Error opening database: %v", err)
+			log.Fatalf("Erro ao abrir a conexão com o banco de dados: %v", err)
 		}
 		defer db.Close()
 
@@ -147,13 +146,13 @@ app.Get("/create-table", func(c *fiber.Ctx) error {
 			hostid VARCHAR(250) NOT NULL
 		);`
 
-		// Executar o comando SQL
+		// Executar o comando SQL para criar a tabela
 		_, err = db.Exec(createTableSQL)
 		if err != nil {
-			log.Fatalf("Error creating table: %v", err)
+			log.Fatalf("Erro ao criar a tabela: %v", err)
 		}
 
-		return c.SendString("Table userinfo created successfully!")
+		return c.SendString("Tabela userinfo criada com sucesso!")
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
