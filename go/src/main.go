@@ -129,7 +129,7 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		query := `SELECT * FROM userinfo`
+		query := `SELECT * FROM userphotos`
 
 		// Executar o comando SQL para selecionar os usuários
 		rows, err := db.Query(query)
@@ -142,11 +142,8 @@ func main() {
 		type User struct {
 			ID       int    `json:"id"`
 			HostID   string `json:"hostid"`
-			Fullname string `json:"fullname"`
-			Username string `json:"username"`
-			Email    string `json:"email"`
-			Password string `json:"password"`
-			Birthdate string `json:"birthdate"`
+			Photo []byte `json:"photo"`
+			
 		}
 
 		var users []User
