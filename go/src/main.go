@@ -129,7 +129,7 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		query := `CREATE TABLE IF NOT EXISTS userinfo (
+		 := `CREATE TABLE IF NOT EXISTS userinfo (
 				id SERIAL PRIMARY KEY,
 				hostid VARCHAR(255) NOT NULL,
 				fullname VARCHAR(255) NOT NULL,
@@ -141,7 +141,7 @@ func main() {
 		`
 
 		// Executar o comando SQL para criar a tabela userinfo
-		_, err = db.Exec(createTableSQL)
+		_, err = db.Exec(query)
 		if err != nil {
 			log.Fatalf("Erro ao criar a tabela userinfo: %v", err)
 		}
