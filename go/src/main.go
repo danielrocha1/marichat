@@ -131,7 +131,7 @@ func main() {
 
 		query := `SELECT * FROM userinfo`
 
-		// Executar o comando SQL para criar a tabela
+		// Executar o comando SQL para selecionar os usuários
 		rows, err := db.Query(query)
 		if err != nil {
 			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
@@ -141,8 +141,12 @@ func main() {
 		// Estrutura para armazenar os usuários
 		type User struct {
 			ID       int    `json:"id"`
+			HostID   string `json:"hostid"`
+			Fullname string `json:"fullname"`
 			Username string `json:"username"`
 			Email    string `json:"email"`
+			Password string `json:"password"`
+			Birthdate string `json:"birthdate"`
 		}
 
 		var users []User
@@ -150,7 +154,7 @@ func main() {
 		// Iterar sobre os resultados da consulta
 		for rows.Next() {
 			var user User
-			err := rows.Scan(&user.ID, &user.Username, &user.Email)
+			err := rows.Scan(&user.ID, &user.HostID, &user.Fullname, &user.Username, &user.Email, &user.Password, &user.Birthdate)
 			if err != nil {
 				log.Fatalf("Erro ao escanear linha: %v", err)
 			}
