@@ -180,8 +180,8 @@ func main() {
 		}
 
 		// Executar a consulta SQL para inserir os dados do usuário na tabela UserInfo
-		_, err := db.Exec("INSERT INTO userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
-			registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
+		_, err := db.Exec("INSERT INTO userinfo (birthdate, fullname, email, password, username, hostid, ) VALUES ($1, $2, $3, $4, $5, $6)",
+		registerReq.Birthdate, registerReq.FullName, registerReq.Email, registerReq.Password, registerReq.Username, registerReq.HostID )
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Não foi possivel criar o cadastro",
