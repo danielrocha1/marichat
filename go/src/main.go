@@ -179,16 +179,9 @@ func main() {
 			return err
 		}
 	
-		registerReqJSON, err := json.Marshal(registerReq)
-		if err != nil {
-			log.Fatalf("Erro ao converter para JSON: %v", err)
-		}
-
-		// Imprimir as informações como JSON
-		fmt.Println(string(registerReqJSON))
-		
+	
 		// Executar a consulta SQL para inserir os dados do usuário na tabela UserInfo
-		_, err = db.Exec("INSERT INTO userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
+		_, err := db.Exec("INSERT INTO userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
 			registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -230,12 +223,12 @@ func main() {
 			var userInfo UserInfo
 			err := db.QueryRow("SELECT * FROM userinfo WHERE email = $1", loginReq.Email).Scan(
 				&userInfo.ID,
-				&userInfo.FullName,				
+				&userInfo.HostID,				
+				&userInfo.FullName,
 				&userInfo.Username,
 				&userInfo.Email,
 				&userInfo.Password,
-				&userInfo.Birthdate,
-				&userInfo.HostID)
+				&userInfo.Birthdate)
 
 			if err != nil {
 				c.SendString("Usuário nao encontrado 2")
