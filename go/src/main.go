@@ -199,7 +199,7 @@ func main() {
 			})
 		}
 		// Inserir uma nova foto para o hostid
-		_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", registerReq.HostID, " ")
+		_, err = db.Exec("INSERT INTO userphotos (hostid, photo) VALUES ($1, $2)", registerReq.HostID, " ")
 		if err != nil {
 			return err
 		}
@@ -244,7 +244,7 @@ func main() {
 				return err // Trate o erro adequadamente
 			}
 
-			err = db.QueryRow("SELECT id, photo FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.UserPhoto.ID, &userInfo.UserPhoto.Photo)
+			err = db.QueryRow("SELECT id, photo FROM userphotos WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.UserPhoto.ID, &userInfo.UserPhoto.Photo)
 			if err != nil {
 				log.Fatalf("Failed to execute query: %v", err)
 			}
@@ -867,7 +867,7 @@ func main() {
 
 		for i, user := range room.Users {
 			
-			rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
+			rows, err := db.Query("SELECT photo FROM userphotos WHERE hostid = $1", user.HostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user photos",
