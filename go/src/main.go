@@ -144,7 +144,7 @@ app.Get("/select-user", func(c *fiber.Ctx) error {
 	
 	
 		// Executar o comando SQL para drop da tabela
-		_, err = db.Exec(dropTableSQL)
+		_, err = db.Exec(createTableSQL)
 		if err != nil {
 			log.Fatalf("Erro ao dropar a tabela user_photos: %v", err)
 		}
