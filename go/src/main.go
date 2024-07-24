@@ -129,7 +129,7 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		 := `CREATE TABLE IF NOT EXISTS userinfo (
+		query := `CREATE TABLE IF NOT EXISTS userinfo (
 				id SERIAL PRIMARY KEY,
 				hostid VARCHAR(255) NOT NULL,
 				fullname VARCHAR(255) NOT NULL,
