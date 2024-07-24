@@ -129,8 +129,20 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	dropTableSQL := `DROP TABLE IF EXISTS userinfo`
+	createTableSQL := `
+			CREATE TABLE IF NOT EXISTS userinfo (
+				id SERIAL PRIMARY KEY,
+				hostid VARCHAR(255) NOT NULL,
+				fullname VARCHAR(255) NOT NULL,
+				username VARCHAR(255) NOT NULL,
+				email VARCHAR(255) NOT NULL,
+				password VARCHAR(255) NOT NULL,
+				birthdate DATE
+			)
+		`
 
+	
+	
 		// Executar o comando SQL para drop da tabela
 		_, err = db.Exec(dropTableSQL)
 		if err != nil {
