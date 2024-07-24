@@ -221,7 +221,7 @@ func main() {
 		var count int
 		err := db.QueryRow("SELECT COUNT(*) FROM userinfo WHERE email = $1 AND password = $2", loginReq.Email, loginReq.Password).Scan(&count)
 		if err != nil {
-			return err
+			c.SendString("Usuário nao encontrado")
 		}
 
 		// Verificar se as credenciais estão corretas
@@ -238,12 +238,12 @@ func main() {
 				&userInfo.HostID)
 
 			if err != nil {
-				return err // Trate o erro adequadamente
+				c.SendString("Usuário nao encontrado 2")
 			}
 
 			err = db.QueryRow("SELECT id, photo FROM userphotos WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.UserPhoto.ID, &userInfo.UserPhoto.Photo)
 			if err != nil {
-				log.Fatalf("Failed to execute query: %v", err)
+				c.SendString("Usuário nao encontrado 3")
 			}
 			fmt.Println(userInfo.UserPhoto)
 
