@@ -129,18 +129,24 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	dropTableSQL := `DROP TABLE IF EXISTS user_photos`
+	createTableSQL := `
+			CREATE TABLE IF NOT EXISTS userphotos (
+				id SERIAL PRIMARY KEY,
+				hostid VARCHAR(255) NOT NULL,
+				photo BYTEA
+			)
+		`
 
-		// Executar o comando SQL para drop da tabela
-		_, err = db.Exec(dropTableSQL)
+		// Executar o comando SQL para criar a tabela
+		_, err = db.Exec(createTableSQL)
 		if err != nil {
-			log.Fatalf("Erro ao dropar a tabela user_photos: %v", err)
+			log.Fatalf("Erro ao criar a tabela userphotos: %v", err)
 		}
 
-		log.Println("Tabela user_photos dropada com sucesso.")
+		log.Println("Tabela userphotos criada com sucesso.")
 
 		// Retornar uma mensagem de sucesso
-		return c.SendString("Tabela user_photos dropada com sucesso!")
+		return c.SendString("Tabela userphotos criada com sucesso!")
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
