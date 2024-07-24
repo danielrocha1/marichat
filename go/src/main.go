@@ -129,26 +129,44 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		query := `CREATE TABLE IF NOT EXISTS userphotos (
-				id SERIAL PRIMARY KEY,
-				hostid VARCHAR(255) NOT NULL,
-				photo BYTEA
-			)
-		`
+		query := `SELECT * FROM userinfo`
 
 		// Executar o comando SQL para criar a tabela
-		_, err = db.Exec(query)
+		rows, err := db.Query(query)
 		if err != nil {
-			log.Fatalf("Erro ao criar a tabela userphotos: %v", err)
+			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
+		}
+		defer rows.Close()
+
+		// Estrutura para armazenar os usuários
+		type User struct {
+			ID       int    `json:"id"`
+			Username string `json:"username"`
+			Email    string `json:"email"`
 		}
 
-		log.Println("Tabela userphotos criada com sucesso.")
+		var users []User
 
-		// Retornar uma mensagem de sucesso
-		return c.SendString("Tabela userphotos criada com sucesso!")
-	})
+		// Iterar sobre os resultados da consulta
+		for rows.Next() {
+			var user User
+			err := rows.Scan(&user.ID, &user.Username, &user.Email)
+			if err != nil {
+				log.Fatalf("Erro ao escanear linha: %v", err)
+			}
+			users = append(users, user)
+		}
+
+		// Verificar por erros que podem ter ocorrido durante o percurso
+		err = rows.Err()
+		if err != nil {
+			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
+		}
+
+		// Retornar os usuários como resposta
+		return c.JSON(users)
 	
-
+	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
@@ -177,7 +195,7 @@ func main() {
 			})
 		}
 		// Inserir uma nova foto para o hostid
-		_, err = db.Exec("INSERT INTO userphotos (hostid, photo) VALUES ($1, $2)", registerReq.HostID, " ")
+		_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", registerReq.HostID, " ")
 		if err != nil {
 			return err
 		}
@@ -222,7 +240,7 @@ func main() {
 				return err // Trate o erro adequadamente
 			}
 
-			err = db.QueryRow("SELECT id, photo FROM userphotos WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.UserPhoto.ID, &userInfo.UserPhoto.Photo)
+			err = db.QueryRow("SELECT id, photo FROM user_photos WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.UserPhoto.ID, &userInfo.UserPhoto.Photo)
 			if err != nil {
 				log.Fatalf("Failed to execute query: %v", err)
 			}
@@ -250,20 +268,20 @@ func main() {
 
 		// Verificar se já existe uma foto para o hostid
 		var count int
-		err := db.QueryRow("SELECT COUNT(*) FROM userphotos WHERE hostid = $1", photoReq.HostID).Scan(&count)
+		err := db.QueryRow("SELECT COUNT(*) FROM user_photos WHERE hostid = $1", photoReq.HostID).Scan(&count)
 		if err != nil {
 			return err
 		}
 
 		if count == 1 {
 			// Atualizar a foto para o hostid existente
-			_, err = db.Exec("UPDATE userphotos SET photo = $1 WHERE hostid = $2", photoReq.Photo, photoReq.HostID)
+			_, err = db.Exec("UPDATE user_photos SET photo = $1 WHERE hostid = $2", photoReq.Photo, photoReq.HostID)
 			if err != nil {
 				return err
 			}
 		} else {
 			// Inserir uma nova foto para o hostid
-			_, err = db.Exec("INSERT INTO userphotos (hostid, photo) VALUES ($1, $2)", photoReq.HostID, photoReq.Photo)
+			_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", photoReq.HostID, photoReq.Photo)
 			if err != nil {
 				return err
 			}
@@ -391,7 +409,7 @@ func main() {
 	
 		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
-		err := db.QueryRow("SELECT photo FROM userphotos WHERE hostid = $1", user.HostID).Scan(&photoURL)
+		err := db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(), // Retorna o erro como string
@@ -467,7 +485,7 @@ func main() {
 	
 		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
-		err := db.QueryRow("SELECT photo FROM userphotos WHERE hostid = $1", requestData.HostID).Scan(&photoURL)
+		err := db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", requestData.HostID).Scan(&photoURL)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(), // Retorna o erro como string
@@ -845,7 +863,7 @@ func main() {
 
 		for i, user := range room.Users {
 			
-			rows, err := db.Query("SELECT photo FROM userphotos WHERE hostid = $1", user.HostID)
+			rows, err := db.Query("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user photos",
