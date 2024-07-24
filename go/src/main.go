@@ -129,7 +129,7 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		query := `SELECT * FROM user_photos`
+		query := `DROP TABLE IF EXISTS user_photos`
 
 		// Executar o comando SQL para criar a tabela
 		rows, err := db.Query(query)
