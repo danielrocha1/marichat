@@ -130,7 +130,7 @@ func main() {
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
 	createTableSQL := `
-			CREATE TABLE IF NOT EXISTS userphotos (
+			CREATE TABLE IF NOT EXISTS user_photos (
 				id SERIAL PRIMARY KEY,
 				hostid VARCHAR(255) NOT NULL,
 				photo BYTEA
