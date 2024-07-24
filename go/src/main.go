@@ -129,7 +129,7 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	query := `SELECT * FROM chatrooms`
+	query := `SELECT * FROM user_photos`
 
 		// Executar o comando SQL para criar a tabela
 		rows, err := db.Query(query)
