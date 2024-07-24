@@ -127,9 +127,9 @@ func main() {
 		return c.Next()
 	})
 
-app.Get("/select-user", func(c *fiber.Ctx) error {
+	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	query := `SELECT * FROM user_photos`
+		query := `SELECT * FROM user_photos`
 
 		// Executar o comando SQL para criar a tabela
 		rows, err := db.Query(query)
