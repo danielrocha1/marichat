@@ -129,23 +129,24 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 
-		query := `CREATE TABLE IF NOT EXISTS userphotos (
+		query := `CREATE TABLE IF NOT EXISTS userinfo (
 				id SERIAL PRIMARY KEY,
 				hostid VARCHAR(255) NOT NULL,
-				photo BYTEA
+				fullname VARCHAR(255) NOT NULL,
+				username VARCHAR(255) NOT NULL,
+				email VARCHAR(255) NOT NULL,
+				password VARCHAR(255) NOT NULL,
+				birthdate DATE
 			)
 		`
 
-		// Executar o comando SQL para criar a tabela
-		_, err = db.Exec(query)
+		// Executar o comando SQL para criar a tabela userinfo
+		_, err = db.Exec(createTableSQL)
 		if err != nil {
-			log.Fatalf("Erro ao criar a tabela userphotos: %v", err)
+			log.Fatalf("Erro ao criar a tabela userinfo: %v", err)
 		}
 
-		log.Println("Tabela userphotos criada com sucesso.")
-
-		// Retornar uma mensagem de sucesso
-		return c.SendString("Tabela userphotos criada com sucesso!")
+		return c.SendString("Tabela userinfo criada com sucesso!")
 	
 	})
 
