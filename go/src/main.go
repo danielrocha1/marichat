@@ -148,7 +148,7 @@ func main() {
 		return c.SendString("Tabela userphotos criada com sucesso!")
 	})
 	
-	})
+
 
 	app.Post("/register", func(c *fiber.Ctx) error {
 		// Estrutura para receber os dados do corpo da solicitação
