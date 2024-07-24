@@ -129,36 +129,58 @@ func main() {
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 		// Consulta SQL para obter os nomes das colunas da tabela userinfo
-		query := `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'userinfo'`
-	
-		// Executar o comando SQL para obter os nomes das colunas
+		query := "SELECT * FROM userinfo"
+
+		// Executar o comando SQL para obter os dados
 		rows, err := db.Query(query)
 		if err != nil {
 			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
 		}
 		defer rows.Close()
-	
-		// Estrutura para armazenar os nomes das colunas
-		var columns []string
-	
+
+		// Descobrir os nomes das colunas retornados pela consulta
+		columns, err := rows.Columns()
+		if err != nil {
+			log.Fatalf("Erro ao obter os nomes das colunas: %v", err)
+		}
+
+		// Estrutura para armazenar os resultados
+		var results []map[string]interface{}
+
 		// Iterar sobre os resultados da consulta
 		for rows.Next() {
-			var columnName string
-			err := rows.Scan(&columnName)
+			// Criar um slice de interface para armazenar os valores das colunas
+			columnValues := make([]interface{}, len(columns))
+			columnPointers := make([]interface{}, len(columns))
+			for i := range columnValues {
+				columnPointers[i] = &columnValues[i]
+			}
+
+			// Escanear as colunas na estrutura de interface
+			err := rows.Scan(columnPointers...)
 			if err != nil {
 				log.Fatalf("Erro ao escanear linha: %v", err)
 			}
-			columns = append(columns, columnName)
+
+			// Criar um mapa para armazenar os pares chave-valor (nome da coluna e valor)
+			rowData := make(map[string]interface{})
+			for i, col := range columns {
+				val := columnPointers[i].(*interface{})
+				rowData[col] = *val
+			}
+
+			// Adicionar os dados da linha ao slice de resultados
+			results = append(results, rowData)
 		}
-	
+
 		// Verificar por erros que podem ter ocorrido durante o percurso
 		err = rows.Err()
 		if err != nil {
 			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
 		}
-	
-		// Retornar os nomes das colunas como resposta
-		return c.JSON(columns)
+
+		// Retornar os resultados como resposta JSON
+		return c.JSON(results)
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
