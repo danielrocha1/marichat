@@ -262,20 +262,20 @@ func main() {
 
 		// Verificar se já existe uma foto para o hostid
 		var count int
-		err := db.QueryRow("SELECT COUNT(*) FROM user_photos WHERE hostid = $1", photoReq.HostID).Scan(&count)
+		err := db.QueryRow("SELECT COUNT(*) FROM userphotos WHERE hostid = $1", photoReq.HostID).Scan(&count)
 		if err != nil {
 			return err
 		}
 
 		if count == 1 {
 			// Atualizar a foto para o hostid existente
-			_, err = db.Exec("UPDATE user_photos SET photo = $1 WHERE hostid = $2", photoReq.Photo, photoReq.HostID)
+			_, err = db.Exec("UPDATE userphotos SET photo = $1 WHERE hostid = $2", photoReq.Photo, photoReq.HostID)
 			if err != nil {
 				return err
 			}
 		} else {
 			// Inserir uma nova foto para o hostid
-			_, err = db.Exec("INSERT INTO user_photos (hostid, photo) VALUES ($1, $2)", photoReq.HostID, photoReq.Photo)
+			_, err = db.Exec("INSERT INTO userphotos (hostid, photo) VALUES ($1, $2)", photoReq.HostID, photoReq.Photo)
 			if err != nil {
 				return err
 			}
@@ -403,7 +403,7 @@ func main() {
 	
 		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
-		err := db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", user.HostID).Scan(&photoURL)
+		err := db.QueryRow("SELECT photo FROM userphotos WHERE hostid = $1", user.HostID).Scan(&photoURL)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(), // Retorna o erro como string
@@ -479,7 +479,7 @@ func main() {
 	
 		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
-		err := db.QueryRow("SELECT photo FROM user_photos WHERE hostid = $1", requestData.HostID).Scan(&photoURL)
+		err := db.QueryRow("SELECT photo FROM userphotos WHERE hostid = $1", requestData.HostID).Scan(&photoURL)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(), // Retorna o erro como string
