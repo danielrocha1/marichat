@@ -151,7 +151,7 @@ func main() {
 		// Iterar sobre os resultados da consulta
 		for rows.Next() {
 			var user User
-			err := rows.Scan(&user.ID, &user.HostID, &user.Fullname, &user.Username, &user.Email, &user.Password, &user.Birthdate)
+			err := rows.Scan(&user.ID, &user.HostID, &user.Photo)
 			if err != nil {
 				log.Fatalf("Erro ao escanear linha: %v", err)
 			}
