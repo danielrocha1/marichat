@@ -129,30 +129,43 @@ func main() {
 
 app.Get("/select-user", func(c *fiber.Ctx) error {
 
-	createTableSQL := `
-			CREATE TABLE IF NOT EXISTS userinfo (
-				id SERIAL PRIMARY KEY,
-				hostid VARCHAR(255) NOT NULL,
-				fullname VARCHAR(255) NOT NULL,
-				username VARCHAR(255) NOT NULL,
-				email VARCHAR(255) NOT NULL,
-				password VARCHAR(255) NOT NULL,
-				birthdate DATE
-			)
-		`
+	query := `SELECT * FROM user_photos`
 
-	
-	
-		// Executar o comando SQL para drop da tabela
-		_, err = db.Exec(createTableSQL)
+		// Executar o comando SQL para criar a tabela
+		rows, err := db.Query(query)
 		if err != nil {
-			log.Fatalf("Erro ao dropar a tabela user_photos: %v", err)
+			log.Fatalf("Erro ao executar a consulta SQL: %v", err)
+		}
+		defer rows.Close()
+
+		// Estrutura para armazenar os usuários
+		type User struct {
+			ID       int    `json:"id"`
+			Username string `json:"username"`
+			Email    string `json:"email"`
 		}
 
-		log.Println("Tabela user_photos dropada com sucesso.")
+		var users []User
 
-		// Retornar uma mensagem de sucesso
-		return c.SendString("Tabela user_photos dropada com sucesso!")
+		// Iterar sobre os resultados da consulta
+		for rows.Next() {
+			var user User
+			err := rows.Scan(&user.ID, &user.Username, &user.Email)
+			if err != nil {
+				log.Fatalf("Erro ao escanear linha: %v", err)
+			}
+			users = append(users, user)
+		}
+
+		// Verificar por erros que podem ter ocorrido durante o percurso
+		err = rows.Err()
+		if err != nil {
+			log.Fatalf("Erro ao percorrer linhas do resultado: %v", err)
+		}
+
+		// Retornar os usuários como resposta
+		return c.JSON(users)
+	
 	})
 
 	app.Post("/register", func(c *fiber.Ctx) error {
