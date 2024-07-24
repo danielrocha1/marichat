@@ -137,7 +137,7 @@ func main() {
 		`
 
 		// Executar o comando SQL para criar a tabela
-		_, err = db.Exec(createTableSQL)
+		_, err = db.Exec(query)
 		if err != nil {
 			log.Fatalf("Erro ao criar a tabela userphotos: %v", err)
 		}
