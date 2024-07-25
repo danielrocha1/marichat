@@ -992,63 +992,100 @@ func main() {
 	})
 
 	app.Post("/create-tables", func(c *fiber.Ctx) error {
-		// Decodificar o corpo da solicitação JSON para um slice de mapas
-		var tables []map[string]interface{}
-		if err := c.BodyParser(&tables); err != nil {
-			return err
+		// Definição das tabelas e colunas diretamente no código
+		tables := []struct {
+			name    string
+			columns []struct {
+				name       string
+				dataType   string
+				isAutoInc  bool
+				isNullable bool
+			}
+		}{
+			{
+				name: "chatrooms",
+				columns: []struct {
+					name       string
+					dataType   string
+					isAutoInc  bool
+					isNullable bool
+				}{
+					{name: "id", dataType: "SERIAL", isAutoInc: true, isNullable: false},
+					{name: "chatname", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "chatid", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "hostid", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "active", dataType: "BOOLEAN", isAutoInc: false, isNullable: false},
+					{name: "private", dataType: "BOOLEAN", isAutoInc: false, isNullable: true},
+				},
+			},
+			{
+				name: "userinfo",
+				columns: []struct {
+					name       string
+					dataType   string
+					isAutoInc  bool
+					isNullable bool
+				}{
+					{name: "id", dataType: "SERIAL", isAutoInc: true, isNullable: false},
+					{name: "hostid", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "fullname", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "username", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "email", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "password", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "birthdate", dataType: "DATE", isAutoInc: false, isNullable: false},
+				},
+			},
+			{
+				name: "userphotos",
+				columns: []struct {
+					name       string
+					dataType   string
+					isAutoInc  bool
+					isNullable bool
+				}{
+					{name: "id", dataType: "SERIAL", isAutoInc: true, isNullable: false},
+					{name: "hostid", dataType: "VARCHAR", isAutoInc: false, isNullable: false},
+					{name: "photo", dataType: "BYTEA", isAutoInc: false, isNullable: false},
+				},
+			},
 		}
 
-		// Iterar sobre as tabelas no dump JSON
+		// Iterar sobre as definições de tabela e criar cada uma no banco de dados
 		for _, table := range tables {
-			tableName := table["table"].(string)
-			columns := table["columns"].([]interface{})
-
 			// Construir a declaração CREATE TABLE
 			var createTableStmt strings.Builder
 			createTableStmt.WriteString("CREATE TABLE IF NOT EXISTS ")
-			createTableStmt.WriteString(tableName)
+			createTableStmt.WriteString(table.name)
 			createTableStmt.WriteString(" (")
 
 			// Iterar sobre as colunas da tabela
-			for i, col := range columns {
-				column := col.(map[string]interface{})
-				colName := column["name"].(string)
-				colType := column["type"].(string)
-				isAutoInc := column["is_auto_inc"].(bool)
-				isNullable := column["is_nullable"].(bool)
-
-				// Adicionar coluna à declaração CREATE TABLE
-				createTableStmt.WriteString(colName)
+			for i, col := range table.columns {
+				createTableStmt.WriteString(col.name)
 				createTableStmt.WriteString(" ")
-				createTableStmt.WriteString(colType)
+				createTableStmt.WriteString(col.dataType)
 
 				// Definir auto incremento se necessário
-				if isAutoInc {
+				if col.isAutoInc {
 					createTableStmt.WriteString(" SERIAL")
 				}
 
 				// Definir NOT NULL se a coluna não permitir nulos
-				if !isNullable {
+				if !col.isNullable {
 					createTableStmt.WriteString(" NOT NULL")
 				}
 
 				// Adicionar vírgula para separar as colunas
-				if i < len(columns)-1 {
+				if i < len(table.columns)-1 {
 					createTableStmt.WriteString(", ")
 				}
 			}
 
 			// Adicionar chave primária se a tabela tiver coluna 'id'
-			hasID := false
-			for _, col := range columns {
-				column := col.(map[string]interface{})
-				if columnName := column["name"].(string); strings.ToLower(columnName) == "id" {
-					hasID = true
+			for _, col := range table.columns {
+				if col.name == "id" {
+					createTableStmt.WriteString(", PRIMARY KEY (id)")
 					break
 				}
-			}
-			if hasID {
-				createTableStmt.WriteString(", PRIMARY KEY (id)")
 			}
 
 			// Fechar a declaração CREATE TABLE
