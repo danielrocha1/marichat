@@ -907,6 +907,9 @@ func main() {
 			"users":    room.Users,
 		})
 	})
+
+
+	//ENDPOINTS PARA DUMP E CRIAÇÃO DO DBA
 	
 	app.Get("/dump", func(c *fiber.Ctx) error {
 		// Consulta para obter o nome de todas as tabelas no banco de dados
@@ -986,6 +989,80 @@ func main() {
 
 		// Retornar as informações das tabelas como resposta JSON
 		return c.JSON(tables)
+	})
+
+	app.Post("/create-tables", func(c *fiber.Ctx) error {
+		// Decodificar o corpo da solicitação JSON para um slice de mapas
+		var tables []map[string]interface{}
+		if err := c.BodyParser(&tables); err != nil {
+			return err
+		}
+
+		// Iterar sobre as tabelas no dump JSON
+		for _, table := range tables {
+			tableName := table["table"].(string)
+			columns := table["columns"].([]interface{})
+
+			// Construir a declaração CREATE TABLE
+			var createTableStmt strings.Builder
+			createTableStmt.WriteString("CREATE TABLE IF NOT EXISTS ")
+			createTableStmt.WriteString(tableName)
+			createTableStmt.WriteString(" (")
+
+			// Iterar sobre as colunas da tabela
+			for i, col := range columns {
+				column := col.(map[string]interface{})
+				colName := column["name"].(string)
+				colType := column["type"].(string)
+				isAutoInc := column["is_auto_inc"].(bool)
+				isNullable := column["is_nullable"].(bool)
+
+				// Adicionar coluna à declaração CREATE TABLE
+				createTableStmt.WriteString(colName)
+				createTableStmt.WriteString(" ")
+				createTableStmt.WriteString(colType)
+
+				// Definir auto incremento se necessário
+				if isAutoInc {
+					createTableStmt.WriteString(" SERIAL")
+				}
+
+				// Definir NOT NULL se a coluna não permitir nulos
+				if !isNullable {
+					createTableStmt.WriteString(" NOT NULL")
+				}
+
+				// Adicionar vírgula para separar as colunas
+				if i < len(columns)-1 {
+					createTableStmt.WriteString(", ")
+				}
+			}
+
+			// Adicionar chave primária se a tabela tiver coluna 'id'
+			hasID := false
+			for _, col := range columns {
+				column := col.(map[string]interface{})
+				if columnName := column["name"].(string); strings.ToLower(columnName) == "id" {
+					hasID = true
+					break
+				}
+			}
+			if hasID {
+				createTableStmt.WriteString(", PRIMARY KEY (id)")
+			}
+
+			// Fechar a declaração CREATE TABLE
+			createTableStmt.WriteString(")")
+
+			// Executar a declaração CREATE TABLE no banco de dados
+			_, err := db.Exec(createTableStmt.String())
+			if err != nil {
+				return err
+			}
+		}
+
+		// Retornar resposta de sucesso
+		return c.SendStatus(fiber.StatusCreated)
 	})
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
