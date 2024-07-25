@@ -907,8 +907,11 @@ func main() {
 			"users":    room.Users,
 		})
 	})
-
+	
 	app.Get("/dump", func(c *fiber.Ctx) error {
+		// Mapa para armazenar o dump completo do banco de dados
+		dump := make(map[string]interface{})
+
 		// Consulta para obter o nome de todas as tabelas no banco de dados
 		tablesQuery := `
 			SELECT table_name
@@ -924,9 +927,6 @@ func main() {
 		}
 		defer tablesRows.Close()
 
-		// Slice para armazenar os nomes das tabelas
-		var tables []string
-
 		// Iterar sobre os resultados da consulta de tabelas
 		for tablesRows.Next() {
 			var tableName string
@@ -934,22 +934,45 @@ func main() {
 			if err != nil {
 				log.Fatalf("Erro ao escanear nome da tabela: %v", err)
 			}
-			tables = append(tables, tableName)
-		}
 
-		// Verificar por erros que podem ter ocorrido durante o percurso das tabelas
-		err = tablesRows.Err()
-		if err != nil {
-			log.Fatalf("Erro ao percorrer tabelas do resultado: %v", err)
-		}
+			// Estrutura para armazenar informações da tabela (colunas e dados)
+			tableInfo := make(map[string]interface{})
 
-		// Mapa para armazenar os dados das tabelas como um dump
-		dump := make(map[string][]map[string]interface{})
+			// Consulta para obter informações das colunas da tabela
+			columnsQuery := fmt.Sprintf(`
+				SELECT column_name, data_type
+				FROM information_schema.columns
+				WHERE table_name = '%s'
+			`, tableName)
 
-		// Iterar sobre cada tabela para obter os dados
-		for _, tableName := range tables {
-			// Consulta para obter todos os dados de uma tabela específica
-			dataQuery := "SELECT * FROM " + tableName
+			// Executar a consulta para obter as colunas da tabela
+			columnsRows, err := db.Query(columnsQuery)
+			if err != nil {
+				log.Fatalf("Erro ao executar a consulta para obter colunas da tabela %s: %v", tableName, err)
+			}
+			defer columnsRows.Close()
+
+			// Slice para armazenar as colunas da tabela
+			var columns []map[string]interface{}
+
+			// Iterar sobre os resultados da consulta de colunas
+			for columnsRows.Next() {
+				var columnName, dataType string
+				err := columnsRows.Scan(&columnName, &dataType)
+				if err != nil {
+					log.Fatalf("Erro ao escanear coluna da tabela %s: %v", tableName, err)
+				}
+
+				// Criar um mapa para armazenar o nome da coluna e o tipo de dado
+				column := map[string]interface{}{
+					"name": columnName,
+					"type": dataType,
+				}
+				columns = append(columns, column)
+			}
+
+			// Consulta para obter todos os dados da tabela
+			dataQuery := fmt.Sprintf("SELECT * FROM %s", tableName)
 
 			// Executar a consulta para obter os dados da tabela
 			dataRows, err := db.Query(dataQuery)
@@ -958,49 +981,47 @@ func main() {
 			}
 			defer dataRows.Close()
 
-			// Descobrir os nomes das colunas da tabela
-			columns, err := dataRows.Columns()
-			if err != nil {
-				log.Fatalf("Erro ao obter os nomes das colunas da tabela %s: %v", tableName, err)
-			}
-
-			// Estrutura para armazenar os resultados da tabela atual
+			// Slice para armazenar os dados da tabela
 			var tableData []map[string]interface{}
 
 			// Iterar sobre os resultados da consulta de dados
 			for dataRows.Next() {
+				// Obter informações sobre os valores das colunas
+				columnPointers, err := dataRows.Columns()
+				if err != nil {
+					log.Fatalf("Erro ao obter os nomes das colunas da tabela %s: %v", tableName, err)
+				}
+
 				// Criar um slice de interface para armazenar os valores das colunas
-				columnValues := make([]interface{}, len(columns))
-				columnPointers := make([]interface{}, len(columns))
-				for i := range columnValues {
-					columnPointers[i] = &columnValues[i]
+				values := make([]interface{}, len(columnPointers))
+				valuePtrs := make([]interface{}, len(columnPointers))
+				for i := range values {
+					valuePtrs[i] = &values[i]
 				}
 
 				// Escanear as colunas na estrutura de interface
-				err := dataRows.Scan(columnPointers...)
+				err = dataRows.Scan(valuePtrs...)
 				if err != nil {
 					log.Fatalf("Erro ao escanear linha da tabela %s: %v", tableName, err)
 				}
 
 				// Criar um mapa para armazenar os pares chave-valor (nome da coluna e valor)
 				rowData := make(map[string]interface{})
-				for i, col := range columns {
-					val := columnPointers[i].(*interface{})
-					rowData[col] = *val
+				for i, col := range columnPointers {
+					val := values[i]
+					if val != nil {
+						rowData[col] = val
+					} else {
+						rowData[col] = nil
+					}
 				}
-
-				// Adicionar os dados da linha ao slice de resultados da tabela atual
 				tableData = append(tableData, rowData)
 			}
 
-			// Adicionar os dados da tabela ao dump final
-			dump[tableName] = tableData
-
-			// Verificar por erros que podem ter ocorrido durante o percurso dos dados da tabela
-			err = dataRows.Err()
-			if err != nil {
-				log.Fatalf("Erro ao percorrer dados da tabela %s: %v", tableName, err)
-			}
+			// Adicionar informações da tabela ao dump completo
+			tableInfo["columns"] = columns
+			tableInfo["data"] = tableData
+			dump[tableName] = tableInfo
 		}
 
 		// Retornar o dump completo como resposta JSON
