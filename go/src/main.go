@@ -907,10 +907,15 @@ func main() {
 			"users":    room.Users,
 		})
 	})
-	
+
 	app.Get("/dump", func(c *fiber.Ctx) error {
 		// Consulta para obter o nome de todas as tabelas no banco de dados
-		tablesQuery := "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+		tablesQuery := `
+			SELECT table_name
+			FROM information_schema.tables
+			WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+			ORDER BY table_name
+		`
 
 		// Executar a consulta para obter os nomes das tabelas
 		tablesRows, err := db.Query(tablesQuery)
@@ -1001,7 +1006,6 @@ func main() {
 		// Retornar o dump completo como resposta JSON
 		return c.JSON(dump)
 	})
-
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 
