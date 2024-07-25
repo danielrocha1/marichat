@@ -590,9 +590,7 @@ func main() {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
 				Name: requestData.ChatName,
-				Users: []Users{
-					{Name: requestData.ChatName, ChatID: requestData.ChatID, HostID: requestData.HostID},
-				},
+				Users: []Users{},
 				Private: requestData.Private,
 				HostID: requestData.HostID,
 				ChatID: requestData.ChatID,
@@ -614,9 +612,7 @@ func main() {
 				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
 				newChatroom := &Chatroom{
 					Name: requestData.ChatName,
-					Users: []Users{
-						{Name: requestData.ChatName, ChatID: requestData.ChatID, HostID: requestData.HostID},
-					},
+					Users: []Users{},
 					Private: requestData.Private,
 					HostID: requestData.HostID,
 					ChatID: requestData.ChatID, // Mantendo o ChatID igual
