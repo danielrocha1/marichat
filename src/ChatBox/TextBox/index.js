@@ -40,7 +40,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
 
   const handleSendMessage = async () => {
     try {
-      const response = await fetch('https://marichat-go.onrender.com/sender', {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/sender', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
