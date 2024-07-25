@@ -937,7 +937,7 @@ func main() {
 
 			// Consulta para obter informações das colunas da tabela
 			columnsQuery := `
-				SELECT column_name, data_type
+				SELECT column_name, data_type, column_default
 				FROM information_schema.columns
 				WHERE table_name = $1
 				ORDER BY ordinal_position
@@ -956,15 +956,22 @@ func main() {
 			// Iterar sobre os resultados da consulta de colunas
 			for columnsRows.Next() {
 				var columnName, dataType string
-				err := columnsRows.Scan(&columnName, &dataType)
+				var columnDefault sql.NullString
+				err := columnsRows.Scan(&columnName, &dataType, &columnDefault)
 				if err != nil {
 					log.Fatalf("Erro ao escanear coluna da tabela %s: %v", tableName, err)
 				}
 
-				// Criar um mapa para armazenar o nome da coluna e o tipo de dado
+				// Verificar se a coluna é auto incrementável
+				isAutoIncrement := strings.Contains(strings.ToLower(columnDefault.String), "nextval")
+
+				// Criar um mapa para armazenar as informações da coluna
 				column := map[string]interface{}{
-					"name": columnName,
-					"type": dataType,
+					"name":            columnName,
+					"type":            dataType,
+					"is_auto_inc":     isAutoIncrement,
+					"default_value":   columnDefault.String,
+					"is_nullable":     columnDefault.Valid,
 				}
 				columns = append(columns, column)
 			}
