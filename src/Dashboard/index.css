@@ -5,6 +5,21 @@
     align-items: flex-start;
     background-color: lightgoldenrodyellow;
   }
+
+  .avatar-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .avatar-button:hover {
+    background-color: #0056b3;
+  }
   
   .content {
     margin-top: 50px;
