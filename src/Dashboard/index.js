@@ -132,7 +132,7 @@ const navigate = useNavigate();
             hostid: userData.data.hostid,
             chatid: chat.chatid 
           }),
-          console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid )
+          console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid ),
         });
       
         if (!response.ok) {
