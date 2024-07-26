@@ -20,7 +20,7 @@ function EnterRoom() {
 
     e.preventDefault();
       try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/enterroom', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
