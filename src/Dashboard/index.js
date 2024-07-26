@@ -117,6 +117,8 @@ const navigate = useNavigate();
         console.error('Erro:', error.message);
       }
     };
+
+    addUserToChat();
   };
 
   const removeChat = async (chat, userData) => { 
