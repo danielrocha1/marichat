@@ -18,8 +18,13 @@ const Sidebar = ({ user, chats }) => {
 
   const AvatarButton = () => {
     return (
-      <a href="https://avatarmaker.com/" target="_blank" rel="noopener noreferrer">
-        <button className="avatar-button">Criar seu Avatar</button>
+      <a 
+        href="https://avatarmaker.com/" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="blue-button"
+      >
+        Criar seu Avatar
       </a>
     );
   };
