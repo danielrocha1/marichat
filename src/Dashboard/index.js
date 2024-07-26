@@ -87,7 +87,7 @@ const navigate = useNavigate();
     };
 
     fetchChats();
-  }, [chats]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
     const queryString = new URLSearchParams(chat).toString();  
@@ -156,17 +156,17 @@ const navigate = useNavigate();
             </tr>
           </thead>
           <tbody>
-            {chats.map((chat, index) => (
-              <tr key={chat.chatid}>
-                <td>{chat.chatname}</td>
-                <td>{chat.chatid}</td>
-                <td>
-                  <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
-                  <button onClick={() => removeChat(chat, userData)} className="red-button">Remover</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {chats && chats.map((chat) => (
+            <tr key={chat.chatid}>
+              <td>{chat.chatname}</td>
+              <td>{chat.chatid}</td>
+              <td>
+                <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
+                <button onClick={() => removeChat(chat)} className="red-button">Remover</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
         </table>
       </div>
     </div>
