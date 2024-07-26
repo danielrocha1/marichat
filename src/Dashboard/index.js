@@ -17,15 +17,14 @@ const Sidebar = ({ user, chats }) => {
   };
 
   const AvatarButton = () => {
+    const handleClick = () => {
+      window.location.href = 'https://avatarmaker.com/';
+    };
+  
     return (
-      <a 
-        href="https://avatarmaker.com/" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="blue-button"
-      >
+      <button className="avatar-button" onClick={handleClick}>
         Criar seu Avatar
-      </a>
+      </button>
     );
   };
 
