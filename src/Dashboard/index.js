@@ -16,6 +16,14 @@ const Sidebar = ({ user, chats }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const AvatarButton = () => {
+    return (
+      <a href="https://avatarmaker.com/" target="_blank" rel="noopener noreferrer">
+        <button className="blue-button">Criar seu Avatar</button>
+      </a>
+    );
+  };
+
   return (
     <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
       <div>
@@ -31,13 +39,15 @@ const Sidebar = ({ user, chats }) => {
         <p>Email: {user.data.email}</p>
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
         <div >
-          <button className="blue-button" onClick={() => {console.log('CARALHO');}} >Criar seu Avatar</button>
+          <AvatarButton/>
         </div>
       </div>
-      
     </div>
   );
 };
+
+
+
 
 const TopHeader = ({ handleLogout }) => {
   return (
@@ -165,7 +175,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    ("Logout");
+    console.log("Logout");
   };
 
 
