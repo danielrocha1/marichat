@@ -27,9 +27,8 @@ function TextInput({ showEmoji, chat, text, setText }) {
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
-    setText(inputValue);
-
     if (inputValue !== '' && inputValue !== ' ') {
+      setText(inputValue);
       setIsTyping(true);
       sendTypingStatus(true);
     } else {
@@ -86,7 +85,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
         style={{ marginRight: '10px', fontSize: "24px", backgroundColor: "#b8cad4" }}
       />
       <div className="submitButton" onClick={() => {
-        if (isTyping !== false && inputValue !== '' || inputValue !== ' '){
+        if (isTyping !== false && text !== '' || text !== ' '){
           handleSendMessage()
           sendTypingStatus(false);
         }
