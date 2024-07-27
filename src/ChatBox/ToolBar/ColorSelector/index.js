@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
 import { HexColorPicker } from 'react-colorful';
 
@@ -6,12 +6,26 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
+  const colorOptionsRef = useRef(null);
+
+  // Função para fechar o seletor de cor se o clique for fora
+  const handleMouseUp = (event) => {
+    if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
+      setIsPickerVisible(false);
+    }
+  };
+
+  // Adiciona o event listener para mouseup
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => document.removeEventListener('mouseup', handleMouseUp);
+  }, []);
 
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
-    // O seletor de cor permanecerá aberto após a seleção
+    setIsPickerVisible(true); // Mantém o seletor aberto após a seleção
   };
 
   const togglePickerVisibility = () => {
@@ -19,7 +33,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   };
 
   return (
-    <div>
+    <div ref={colorOptionsRef}>
       <div className="color-options">
         {colors.map((color, index) => (
           <div
@@ -54,7 +68,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
   const background = [
     'linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)',
     'linear-gradient(#f0a1a0,#b30f15,#96090f,#850606,#63080c)',
