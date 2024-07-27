@@ -15,7 +15,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     }
   };
 
-  // Adiciona o event listener para mouseup
+  // Adiciona e remove o event listener para mouseup
   useEffect(() => {
     document.addEventListener('mouseup', handleMouseUp);
     return () => document.removeEventListener('mouseup', handleMouseUp);
@@ -25,7 +25,8 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
-    setIsPickerVisible(true); // Mantém o seletor aberto após a seleção
+    // Mantém o seletor aberto após a seleção
+    setIsPickerVisible(true);
   };
 
   const togglePickerVisibility = () => {
