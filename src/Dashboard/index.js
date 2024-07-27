@@ -87,7 +87,7 @@ const navigate = useNavigate();
     };
 
     fetchChats();
-  }, [userData.data.hostid]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  }, [chats]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
   const handleChat = (chat) => {
     const queryString = new URLSearchParams(chat).toString();  
