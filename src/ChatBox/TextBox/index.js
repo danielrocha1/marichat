@@ -21,24 +21,22 @@ function TextInput({ showEmoji, chat, text, setText }) {
     };
 
     socket.onerror = (error) => {
-      console.error('Erro:', error.message);
+      console.error('Error:', error.message);
     };
   };
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
-    if (inputValue !== '' && inputValue !== ' ') {
-      setText(inputValue);
-      setIsTyping(true);
-      sendTypingStatus(true);
-    } else {
-      setIsTyping(false);
-      sendTypingStatus(false);
-    }
+    setText(inputValue);
+    setIsTyping(inputValue.trim() !== '');
+    sendTypingStatus(inputValue.trim() !== '');
   };
 
-  const handleSendMessage = async (isTyping) => {
-   
+  const handleSendMessage = async () => {
+    if (text.trim() === '') {
+      return; // Don't send if text is empty or only whitespace
+    }
+
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/sender', {
         method: 'POST',
@@ -46,29 +44,29 @@ function TextInput({ showEmoji, chat, text, setText }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "type": "receiver",
-          "username": userData.data.username,
-          "hostid": userData.data.hostid,
-          "roomname": chat.roomname,
-          "chatid": chat.chatid,
-          "message": text
+          type: "receiver",
+          username: userData.data.username,
+          hostid: userData.data.hostid,
+          roomname: chat.roomname,
+          chatid: chat.chatid,
+          message: text
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Erro ao enviar os dados');
+        throw new Error('Error sending data');
       }
 
+      setText(''); // Clear text after sending
+      setIsTyping(false); // Update typing status
       sendTypingStatus(false);
-      setText('');
     } catch (error) {
-      console.error('Erro:', error.message);
+      console.error('Error:', error.message);
     }
-  
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && isTyping !== false) {
+    if (event.key === 'Enter' && isTyping) {
       event.preventDefault();
       handleSendMessage();
     }
@@ -84,12 +82,14 @@ function TextInput({ showEmoji, chat, text, setText }) {
         placeholder="Digite aqui..."
         style={{ marginRight: '10px', fontSize: "24px", backgroundColor: "#b8cad4" }}
       />
-      <div className="submitButton" onClick={() => {
-        if (isTyping !== false && text !== '' && text !== ' '){
-          handleSendMessage()
-          sendTypingStatus(false);
-        }
-      }}>
+      <div
+        className="submitButton"
+        onClick={() => {
+          if (isTyping && text.trim() !== '') {
+            handleSendMessage();
+          }
+        }}
+      >
         <span role="img" aria-label="Enviar">➡️</span>
       </div>
     </div>
