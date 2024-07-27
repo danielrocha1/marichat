@@ -8,7 +8,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [selectedColor, setSelectedColor] = useState('');
   const colorOptionsRef = useRef(null);
 
-  // Função para fechar o seletor de cor se o clique for fora
+  // Fecha o seletor de cor se o clique for fora do componente
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
       setIsPickerVisible(false);
@@ -38,7 +38,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
       <div className="color-options">
         {colors.map((color, index) => (
           <div
-            key={color} // Usando o valor da cor como chave, assumindo que é único
+            key={index} // Usando o índice como chave
             className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
             style={{ backgroundColor: color }}
             onClick={() => handleSelectColor(color, index)}
