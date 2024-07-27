@@ -24,9 +24,9 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
       <div className="color-options">
         {colors.map((color, index) => (
           <div
-            key={index}
+            key={color} // Melhor usar um valor único
             className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
-            style={{ background: color }}
+            style={{ backgroundColor: color }}
             onClick={() => handleSelectColor(color, index)}
           ></div>
         ))}
@@ -43,7 +43,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
               color={selectedColor}
               onChange={(color) => {
                 setSelectedColor(color);
-                handleSelectColor(color);
+                handleSelectColor(color, selectedOptionIndex); // Adicionando o índice se necessário
               }}
             />
           </div>
@@ -64,9 +64,7 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   ];
 
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
-
   const chatBorderColor = ['black', 'white'];
-
 
   if (!isOpen) return null;
 
@@ -76,25 +74,20 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
-      <div className="">
       <div>
-          <div className="selectBoard">
-          <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58",
-    borderRadius: "4px" }}>Selecione a cor do fundo:</p>
-            <ColorOptions onSelectColor={onSelectColor} colors={background} type="fundo" />
-          </div>
-          
-          <div className="selectBoard">
-            <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58",
-    borderRadius: "4px" }}>Selecione a cor do chat:</p>
-            <ColorOptions onSelectColor={onSelectColor} colors={chatBoxColor} type="chat" />
-          </div>
-          
-          <div className="selectBoard">
-          <p style={{ color: 'black', fontSize: '12px', backgroundColor: "#0c2e58",
-    borderRadius: "4px" }}>Selecione a cor das bordas:</p>
-            <ColorOptions onSelectColor={onSelectColor} colors={chatBorderColor} type="bordas" />
-          </div>
+        <div className="selectBoard">
+          <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do fundo:</p>
+          <ColorOptions onSelectColor={onSelectColor} colors={background} type="fundo" />
+        </div>
+        
+        <div className="selectBoard">
+          <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do chat:</p>
+          <ColorOptions onSelectColor={onSelectColor} colors={chatBoxColor} type="chat" />
+        </div>
+        
+        <div className="selectBoard">
+          <p style={{ color: 'black', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor das bordas:</p>
+          <ColorOptions onSelectColor={onSelectColor} colors={chatBorderColor} type="bordas" />
         </div>
       </div>
     </div>
