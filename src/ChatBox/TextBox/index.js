@@ -69,7 +69,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && (isTyping !== false) {
+    if (event.key === 'Enter' && isTyping !== false) {
       event.preventDefault();
       handleSendMessage();
     }
