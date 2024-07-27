@@ -38,8 +38,8 @@ function TextInput({ showEmoji, chat, text, setText }) {
     }
   };
 
-  const handleSendMessage = async () => {
-    if (text !== '' || text !== ' '){
+  const handleSendMessage = async (isTyping) => {
+    if (isTyping !== false){
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/sender', {
         method: 'POST',
@@ -69,7 +69,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && text !== '' || text !== ' ') {
+    if (event.key === 'Enter' && (isTyping !== false) {
       event.preventDefault();
       handleSendMessage();
     }
