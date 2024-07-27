@@ -87,7 +87,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
       />
       <div className="submitButton" onClick={() => {
         if (isTyping !== false){
-          handleSendMessage
+          handleSendMessage()
         }
       }}>
         <span role="img" aria-label="Enviar">➡️</span>
