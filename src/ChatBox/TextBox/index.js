@@ -39,7 +39,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleSendMessage = async (isTyping) => {
-    if (isTyping !== false){
+   
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/sender', {
         method: 'POST',
@@ -65,7 +65,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
     } catch (error) {
       console.error('Erro:', error.message);
     }
-  }
+  
   };
 
   const handleKeyPress = (event) => {
@@ -85,7 +85,11 @@ function TextInput({ showEmoji, chat, text, setText }) {
         placeholder="Digite aqui..."
         style={{ marginRight: '10px', fontSize: "24px", backgroundColor: "#b8cad4" }}
       />
-      <div className="submitButton" onClick={handleSendMessage}>
+      <div className="submitButton" onClick={() => {
+        if (isTyping !== false){
+          handleSendMessage
+        }
+      }}>
         <span role="img" aria-label="Enviar">➡️</span>
       </div>
     </div>
