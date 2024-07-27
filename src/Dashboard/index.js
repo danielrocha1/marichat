@@ -181,7 +181,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("Logout");
+    navigate(`/`)
   };
 
 
