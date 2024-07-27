@@ -85,7 +85,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
         style={{ marginRight: '10px', fontSize: "24px", backgroundColor: "#b8cad4" }}
       />
       <div className="submitButton" onClick={() => {
-        if (isTyping !== false && text !== '' || text !== ' '){
+        if (isTyping !== false && text !== '' && text !== ' '){
           handleSendMessage()
           sendTypingStatus(false);
         }
