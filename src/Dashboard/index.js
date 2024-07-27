@@ -122,8 +122,9 @@ const navigate = useNavigate();
   };
 
   const removeChat = async (chat, userData) => { 
+    console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid )
       try {
-        console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid )
+        
         const response = await fetch('https://marichat-go-xtcz.onrender.com/deletechat', {
           method: 'POST',
           headers: {
