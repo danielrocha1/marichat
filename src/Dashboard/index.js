@@ -123,26 +123,26 @@ const navigate = useNavigate();
 
   const removeChat = async (chat, userData) => { 
     console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid )
-      // try {
+      try {
         
-      //   const response = await fetch('https://marichat-go-xtcz.onrender.com/deletechat', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({             
-      //       hostid: userData.data.hostid,
-      //       chatid: chat.chatid 
-      //     }),
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/deletechat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({             
+            hostid: userData.data.hostid,
+            chatid: chat.chatid 
+          }),
           
-      //   });
+        });
       
-      //   if (!response.ok) {
-      //     throw new Error('Erro ao enviar os dados');
-      //   }  
-      // } catch (error) {
-      //   console.error('Erro:', error.message);
-      // }
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }  
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
       
   };
 
