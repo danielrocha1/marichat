@@ -164,7 +164,7 @@ const navigate = useNavigate();
               <td>{chat.chatid}</td>
               <td>
                 <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
-                <button onClick={() => removeChat(chat)} className="red-button">Remover</button>
+                <button onClick={() => removeChat(chat,userData)} className="red-button">Remover</button>
               </td>
             </tr>
           ))}
