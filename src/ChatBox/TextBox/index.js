@@ -39,6 +39,7 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleSendMessage = async () => {
+    if (text !== '' || text !== ' '){
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/sender', {
         method: 'POST',
@@ -64,10 +65,11 @@ function TextInput({ showEmoji, chat, text, setText }) {
     } catch (error) {
       console.error('Erro:', error.message);
     }
+  }
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && text !== '') {
+    if (event.key === 'Enter' && text !== '' || text !== ' ') {
       event.preventDefault();
       handleSendMessage();
     }
