@@ -3,7 +3,6 @@ import './index.css';
 import { HexColorPicker } from 'react-colorful';
 
 const ColorOptions = ({ onSelectColor, colors, type }) => {
-  const [hexColorVisible, setHexColorVisible] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
 
@@ -11,11 +10,9 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
-    setHexColorVisible(false);
   };
 
   const toggleHexColor = () => {
-    setHexColorVisible(!hexColorVisible);
     setSelectedOptionIndex(null);
   };
 
@@ -31,23 +28,21 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
           ></div>
         ))}
         <div
-          className={`color-option ${hexColorVisible ? 'selected' : ''}`}
-          style={{ backgroundColor: selectedColor, color: 'white' }}
+          className={`color-option ${selectedOptionIndex === null ? 'selected' : ''}`}
+          style={{ backgroundColor: selectedColor || '#ffffff', color: 'white' }}
           onClick={toggleHexColor}
         >
           <p style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>?</p>
         </div>
-        {hexColorVisible && (
-          <div className="hex-color-picker-container">
-            <HexColorPicker
-              color={selectedColor}
-              onChange={(color) => {
-                setSelectedColor(color);
-                handleSelectColor(color, selectedOptionIndex); // Adicionando o índice se necessário
-              }}
-            />
-          </div>
-        )}
+        <div className="hex-color-picker-container">
+          <HexColorPicker
+            color={selectedColor}
+            onChange={(color) => {
+              setSelectedColor(color);
+              handleSelectColor(color, selectedOptionIndex); // Atualiza a cor selecionada
+            }}
+          />
+        </div>
       </div>
     </div>
   );
