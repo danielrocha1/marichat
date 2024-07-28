@@ -17,6 +17,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 
   // Adiciona e remove o event listener para mouseup
   useEffect(() => {
+    console.log(event.target)
     document.addEventListener('mouseup', handleMouseUp);
     return () => document.removeEventListener('mouseup', handleMouseUp);
   }, []);
