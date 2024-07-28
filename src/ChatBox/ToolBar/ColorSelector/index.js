@@ -109,3 +109,4 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 };
 
 export default ColorSelector;
+
