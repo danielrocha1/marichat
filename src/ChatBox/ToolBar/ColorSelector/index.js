@@ -38,7 +38,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
       <div className="color-options">
         {colors.map((color, index) => (
           <div
-            key={index} // Usando o índice como chave
+            key={index}
             className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
             style={{ backgroundColor: color }}
             onClick={() => handleSelectColor(color, index)}
