@@ -90,13 +90,10 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 
   if (!isOpen) return null;
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
-      <button onClick={toggleSidebar} className="toggle-button">Toggle Sidebar</button>
       <div>
         <div className="selectBoard">
           <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do fundo:</p>
