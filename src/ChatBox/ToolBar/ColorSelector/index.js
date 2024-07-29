@@ -14,6 +14,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
       setIsPickerVisible(false);
+      setHexColorVisible(false); // Fecha o seletor de cor hexadecimal ao clicar fora
     }
   };
 
@@ -35,14 +36,10 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 
   const toggleHexColor = () => {
     setHexColorVisible(!hexColorVisible);
-    if (hexColorVisible) {
-      setSelectedColor(hexColor);
-      onSelectColor(hexColor, type);
-    }
   };
 
   return (
-    <div ref={colorOptionsRef}>
+    <div ref={colorOptionsRef} className="color-options-container">
       <div className="color-options">
         {colors.map((color, index) => (
           <div
@@ -68,8 +65,8 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
               onChange={color => {
                 setSelectedColor(color);
                 setHexColor(color);
+                onSelectColor(color, type);
               }}
-              onBlur={() => setHexColorVisible(false)}
             />
           </div>
         )}
