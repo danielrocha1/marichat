@@ -6,6 +6,8 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
+  const [hexColorVisible, setHexColorVisible] = useState(false);
+  const [hexColor, setHexColor] = useState('#ffffff');
   const colorOptionsRef = useRef(null);
 
   // Fecha o seletor de cor se o clique for fora do componente
@@ -22,10 +24,8 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   }, []);
 
   const handleSelectColor = (color, index) => {
-    // Atualiza a cor selecionada e o índice
     setSelectedColor(color);
     setSelectedOptionIndex(index);
-    // Notifica o pai sobre a cor selecionada, mas não altera o seletor de cores
     onSelectColor(color, type);
   };
 
@@ -33,30 +33,31 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     setIsPickerVisible(!isPickerVisible);
   };
 
+  const toggleHexColor = () => {
+    setHexColorVisible(!hexColorVisible);
+    if (hexColorVisible) {
+      setSelectedColor(hexColor);
+      onSelectColor(hexColor, type);
+    }
+  };
+
   return (
-    <div>
+    <div ref={colorOptionsRef}>
       <div className="color-options">
         {colors.map((color, index) => (
           <div
             key={index}
             className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
             style={{ background: color }}
-            onClick={() => {
-              setSelectedColor(color);
-              setSelectedOptionIndex(index);
-              onSelectColor(color, type);
-              setHexColorVisible(false); // Definir hexColorVisible como false ao selecionar uma cor sólida
-            }}
+            onClick={() => handleSelectColor(color, index)}
           ></div>
         ))}
         <div
-          className={`color-option ${hexColorVisible ? 'selected' : ''}`} // Aplicar a classe 'selected' se o seletor de cores hexadecimal estiver visível
+          className={`color-option ${hexColorVisible ? 'selected' : ''}`}
           style={{ backgroundColor: hexColor, color: "white" }}
           onClick={toggleHexColor}
         >
-          <p
-            style={{ fontSize: "10px", fontWeight: "bold", color: "white" }}
-          >
+          <p style={{ fontSize: "10px", fontWeight: "bold", color: "white" }}>
             ?
           </p>
         </div>
@@ -65,11 +66,10 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
             <HexColorPicker
               color={selectedColor}
               onChange={color => {
-                onSelectColor(color, type);
                 setSelectedColor(color);
-              setHexColor(color);
-
+                setHexColor(color);
               }}
+              onBlur={() => setHexColorVisible(false)}
             />
           </div>
         )}
@@ -99,6 +99,7 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
+      <button onClick={toggleSidebar} className="toggle-button">Toggle Sidebar</button>
       <div>
         <div className="selectBoard">
           <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do fundo:</p>
