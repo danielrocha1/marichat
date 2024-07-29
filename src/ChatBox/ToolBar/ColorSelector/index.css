@@ -1,4 +1,4 @@
-/* Sidebar do chat */
+/* Estilo inicial do sidebarChat */
 .sidebarChat {
   background-color: #1c71d8;
   border: 2px solid #0c2e58;
@@ -8,81 +8,43 @@
   position: fixed;
   right: -216px; /* Começa fora da tela à direita */
   top: 0;
-  transition: transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
+  transform: translateX(0); /* Inicialmente em sua posição padrão */
+  transition: right 0.6s ease-in-out, transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
   z-index: 1000;
-  border-radius: 10px 0 0 10px;
-  overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
-  transform: translateX(100%); /* Inicialmente fora da tela à direita */
+  border-radius: 10px 0px 0px 10px;
 }
 
-/* Quando a sidebar está aberta */
+/* Estilo do sidebarChat quando a classe open é adicionada */
 .sidebarChat.open {
-  transform: translateX(0); /* Move o elemento para dentro da tela */
+  right: 0; /* Move o elemento para dentro da tela */
+  transform: translateX(0); /* Garante que o elemento está em sua posição final */
 }
 
-/* Container das opções de cor */
+/* Estilo para .color-options-container */
 .color-options-container {
   position: relative;
-  padding: 10px;
+  overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
 }
 
-/* Opções de cor */
+/* Estilo inicial para .color-options */
 .color-options {
   display: flex;
-  flex-wrap: wrap; /* Permite que as opções de cor envolvam a linha */
-  gap: 10px; /* Espaçamento entre as opções de cor */
+  justify-content: space-between;
+  margin-bottom: 20px;
   transition: transform 0.3s ease-out; /* Animação suave */
   transform: translateX(100%); /* Inicialmente fora da tela */
 }
 
-/* Mostrar opções de cor */
+/* Estilo para .color-options quando a classe show é adicionada */
 .color-options.show {
   transform: translateX(0); /* Desliza para dentro da tela */
 }
 
-/* Opção de cor individual */
-.color-option {
-  width: 40px; /* Tamanho maior para facilitar a seleção */
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent; /* Borda transparente inicialmente */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Estilo da opção de cor selecionada */
-.color-option.selected {
-  border: 3px solid rgb(112, 181, 221); /* Borda ao selecionar a cor */
-}
-
-/* Seletor de cores */
+/* Estilo para .hex-color-picker-container */
 .hex-color-picker-container {
   position: absolute;
   top: 50%;
-  left: 50%; /* Centralizado horizontalmente */
+  left: 50%; /* Corrigido para centralizar horizontalmente */
   transform: translate(-50%, -50%);
   z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
-  background: white; /* Fundo branco para o seletor de cor */
-  padding: 10px; /* Espaçamento interno */
-  border-radius: 10px; /* Cantos arredondados */
-}
-
-/* Texto dentro da opção do seletor */
-.color-option p {
-  margin: 0;
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-}
-
-/* Estilos para os rótulos das opções de cor */
-.selectBoard p {
-  color: white;
-  font-size: 12px;
-  background-color: #0c2e58;
-  border-radius: 4px;
-  padding: 5px;
-  margin: 0;
 }
