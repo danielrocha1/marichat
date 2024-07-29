@@ -7,7 +7,7 @@
   margin-top: -524px; /* Ajustado para mover o sidebar para fora da tela inicialmente */
   position: fixed;
   transform: translateX(629px); /* Começa fora da tela à direita */
-  transition: transform 0.6s cubic-bezier(0.42, 0, 0.58, 1); /* Suaviza a transição do movimento com uma curva de aceleração personalizada */
+  transition: transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
   width: 245px; /* Largura do sidebar */
   z-index: 1000;
   border-radius: 10px 0 0 10px;
