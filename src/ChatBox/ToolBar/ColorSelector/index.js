@@ -25,7 +25,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
-    setIsPickerVisible(false); // Fecha o seletor de cores após a seleção
+    
   };
 
   const togglePickerVisibility = () => {
@@ -44,19 +44,22 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
           ></div>
         ))}
         <div
-          className={`color-option ${isPickerVisible ? 'selected' : ''}`}
-          style={{ background: selectedColor || '#ffffff', color: 'white' }}
-          onClick={togglePickerVisibility}
+          className={`color-option ${hexColorVisible ? 'selected' : ''}`}
+          style={{ backgroundColor: hexColor, color: "white" }}
+          onClick={toggleHexColor}
         >
-          <p style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>?</p>
+          <p style={{ fontSize: "10px", fontWeight: "bold", color: "white" }}>
+            ?
+          </p>
         </div>
-        {isPickerVisible && (
+        {hexColorVisible && (
           <div className="hex-color-picker-container">
             <HexColorPicker
               color={selectedColor}
-              onChange={(color) => {
+              onChange={color => {
                 setSelectedColor(color);
-                handleSelectColor(color, selectedOptionIndex); // Atualiza a cor selecionada
+                setHexColor(color);
+                onSelectColor(color, type);
               }}
             />
           </div>
