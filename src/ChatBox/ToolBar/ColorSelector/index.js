@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './index.css';
+import './index.css'; // Certifique-se de que o caminho está correto
 import { HexColorPicker } from 'react-colorful';
 
 const ColorOptions = ({ onSelectColor, colors, type }) => {
@@ -32,7 +32,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 
   return (
     <div ref={colorOptionsRef} className="color-options-container">
-      <div className="color-options">
+      <div className={`color-options ${isPickerVisible ? 'show' : ''}`}>
         {colors.map((color, index) => (
           <div
             key={index}

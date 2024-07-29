@@ -1,25 +1,18 @@
-.sidebarChat {
-  background-color: #1c71d8;
-  border: 2px solid #0c2e58;
-  color: #fff;
-  height: 99vh;
-  margin-top: -516px;
-  position: fixed;
-  transform: translateX(629px);
-  transition: transform 0.6s ease-in-out;
-  width: 216px;
-  z-index: 1000;
-  border-radius: 10px 0px 0px 10px;
+.color-options-container {
+  position: relative;
+  overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
 }
 
-.selectBoard {
-  background-color: #509cd1;
-  border-radius: 7px;
+.color-options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease-out; /* Animação suave */
+  transform: translateX(100%); /* Inicialmente fora da tela */
 }
 
-.sidebarChat.open {
-  background-color: #1a5fb4;
-  transform: translateX(0);
+.color-options.show {
+  transform: translateX(0); /* Desliza para dentro da tela */
 }
 
 .hex-color-picker-container {
@@ -27,28 +20,4 @@
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
-}
-
-.color-options {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.color-option {
-  margin: 5px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.selected-color {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.color-option.selected {
-  border: 3px groove rgb(112, 181, 221);
 }
