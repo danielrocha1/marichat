@@ -6,17 +6,15 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [isPickerVisible, setIsPickerVisible] = useState(false);
-  const [hexColor, setHexColor] = useState('#ffffff'); // Adicionada a variável hexColor
+  const [hexColor, setHexColor] = useState('#ffffff');
   const colorOptionsRef = useRef(null);
 
-  // Fecha o seletor de cor se o clique for fora do componente
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
       setIsPickerVisible(false);
     }
   };
 
-  // Adiciona e remove o event listener para mouseup
   useEffect(() => {
     document.addEventListener('mouseup', handleMouseUp);
     return () => document.removeEventListener('mouseup', handleMouseUp);
@@ -72,6 +70,10 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  useEffect(() => {
+    setIsSidebarOpen(isOpen);
+  }, [isOpen]);
+
   const background = [
     'linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)',
     'linear-gradient(#f0a1a0,#b30f15,#96090f,#850606,#63080c)',
@@ -82,14 +84,16 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
   const chatBorderColor = ['black', 'white'];
 
-  if (!isOpen) return null;
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const handleClose = () => {
+    setIsSidebarOpen(false);
+    if (onClose) onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
+      <button onClick={handleClose} style={{ margin: '10px' }}>Close</button>
       <div>
         <div className="selectBoard">
           <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do fundo:</p>
