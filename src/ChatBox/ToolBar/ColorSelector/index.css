@@ -7,7 +7,7 @@
   margin-top: -524px; /* Ajustado para mover o sidebar para fora da tela inicialmente */
   position: fixed;
   transform: translateX(629px); /* Começa fora da tela à direita */
-  transition: transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
+  transition: transform 0.6s cubic-bezier(0.42, 0, 0.58, 1); /* Suaviza a transição do movimento com uma curva de aceleração personalizada */
   width: 245px; /* Largura do sidebar */
   z-index: 1000;
   border-radius: 10px 0 0 10px;
@@ -18,14 +18,17 @@
   transform: translateX(0); /* Move o sidebar para dentro da tela */
 }
 
+/* Seletor de Cor */
 .hex-color-picker-container {
   position: absolute;
-  top: 50%;
+  top: 50%; /* Ajuste baseado na sua necessidade */
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999; /* Aumentado para garantir que esteja acima de outros elementos */
   width: auto; /* Ajuste conforme necessário */
   height: auto; /* Ajuste conforme necessário */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Adiciona animações suaves para opacidade e transformação */
+  opacity: 1; /* Garanta que esteja visível */
 }
 
 .color-options-container {
@@ -41,6 +44,7 @@
   width: 100%; /* Ajuste conforme necessário */
   max-width: 300px; /* Ajuste conforme necessário */
   overflow-x: auto; /* Permite rolar horizontalmente, se necessário */
+  transition: opacity 0.3s ease-in-out; /* Anima a opacidade ao adicionar ou remover cores */
 }
 
 /* Estilo para a seleção de cor */
@@ -50,7 +54,7 @@
   height: 30px;
   border-radius: 50%; /* Torna o elemento circular */
   cursor: pointer;
-  transition: border 0.3s ease; /* Suaviza a transição da borda */
+  transition: border 0.3s ease-in-out; /* Suaviza a transição da borda */
 }
 
 /* Seleção de cor */
