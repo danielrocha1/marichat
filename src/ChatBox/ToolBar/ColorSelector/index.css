@@ -3,7 +3,7 @@
   background-color: #1c71d8;
   border: 2px solid #0c2e58;
   color: #fff;
-  height: 100vh; /* Ajustado para ocupar toda a altura da viewport */
+  height: 100vh; /* Mantém a altura da viewport */
   position: fixed;
   transform: translateX(100%); /* Começa fora da tela à direita */
   transition: transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
