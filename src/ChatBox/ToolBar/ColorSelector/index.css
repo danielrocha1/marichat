@@ -10,7 +10,7 @@
   right: -216px; /* Começa fora da tela à direita */
   top: 0;
   transform: translateX(0); /* Inicialmente em sua posição padrão */
-  transition: right 0.6s ease-in-out, transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
+  transition: right 0.6s ease-in-out; /* Suaviza a transição do movimento */
   z-index: 1000;
   border-radius: 10px 0 0 10px;
 }
@@ -36,35 +36,28 @@
   transform: translateX(0); /* Desliza para dentro da tela */
 }
 
-  .hex-color-picker-container {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
-  }
-  
-  
-  .color-options {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .color-option {
-    margin: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .selected-color {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .color-option.selected {
-    border: 3px groove rgb(112, 181, 221);
-  }
-  
+.hex-color-picker-container {
+  position: absolute;
+  top: 50%;
+  left: 50%; /* Corrigido para centralizar horizontalmente */
+  transform: translate(-50%, -50%);
+  z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
+}
+
+.color-option {
+  margin: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.selected-color {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.color-option.selected {
+  border: 3px groove rgb(112, 181, 221);
+}
