@@ -1,76 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './index.css';
 import { HexColorPicker } from 'react-colorful';
-
-const ColorOptions = ({ onSelectColor, colors, type }) => {
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
-  const [selectedColor, setSelectedColor] = useState('');
-  const [isPickerVisible, setIsPickerVisible] = useState(false);
-  const [hexColor, setHexColor] = useState('#ffffff'); // Adicionada a variável hexColor
-  const colorOptionsRef = useRef(null);
-
-  // Fecha o seletor de cor se o clique for fora do componente
-  const handleMouseUp = (event) => {
-    if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
-      setIsPickerVisible(false);
-    }
-  };
-
-  // Adiciona e remove o event listener para mouseup
-  useEffect(() => {
-    document.addEventListener('mouseup', handleMouseUp);
-    return () => document.removeEventListener('mouseup', handleMouseUp);
-  }, []);
-
-  const handleSelectColor = (color, index) => {
-    setSelectedColor(color);
-    setSelectedOptionIndex(index);
-    onSelectColor(color, type);
-  };
-
-  const togglePickerVisibility = () => {
-    setIsPickerVisible(!isPickerVisible);
-  };
-
-  return (
-    <div ref={colorOptionsRef} className="color-options-container">
-      <div className="color-options">
-        {colors.map((color, index) => (
-          <div
-            key={index}
-            className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
-            style={{ background: color }}
-            onClick={() => handleSelectColor(color, index)}
-          ></div>
-        ))}
-        <div
-          className={`color-option ${isPickerVisible ? 'selected' : ''}`}
-          style={{ backgroundColor: hexColor, color: "white" }}
-          onClick={togglePickerVisibility}
-        >
-          <p style={{ fontSize: "10px", fontWeight: "bold", color: "white" }}>
-            ?
-          </p>
-        </div>
-        {isPickerVisible && (
-          <div className="hex-color-picker-container">
-            <HexColorPicker
-              color={hexColor}
-              onChange={color => {
-                setHexColor(color);
-                setSelectedColor(color);
-                onSelectColor(color, type);
-              }}
-            />
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+import ColorOptions from './ColorOptions'; // Presumindo que você extraiu ColorOptions em seu próprio arquivo
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(isOpen);
 
   const background = [
     'linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)',
@@ -82,11 +16,17 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
   const chatBorderColor = ['black', 'white'];
 
-  if (!isOpen) return null;
-
+  // Atualiza o estado de abertura da sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  // Atualiza a visibilidade da sidebar com base na prop isOpen
+  useEffect(() => {
+    setIsSidebarOpen(isOpen);
+  }, [isOpen]);
+
+  if (!isOpen && !isSidebarOpen) return null; // Retorna null se a sidebar não deve estar visível
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
