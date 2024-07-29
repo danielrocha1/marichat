@@ -39,13 +39,13 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
           <div
             key={index}
             className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
-            style={{ background: color }}
+            style={{ backgroundColor: color }}
             onClick={() => handleSelectColor(color, index)}
           ></div>
         ))}
         <div
           className={`color-option ${isPickerVisible ? 'selected' : ''}`}
-          style={{ background: hexColor, color: 'white' }}
+          style={{ backgroundColor: hexColor, color: 'white' }}
           onClick={togglePickerVisibility}
         >
           <p style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>
