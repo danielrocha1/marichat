@@ -13,6 +13,7 @@
   transition: right 0.6s ease-in-out; /* Suaviza a transição do movimento */
   z-index: 1000;
   border-radius: 10px 0 0 10px;
+  overflow: auto; /* Permite rolar o conteúdo se necessário */
 }
 
 .sidebarChat.open {
@@ -23,13 +24,14 @@
 .color-options-container {
   position: relative;
   overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
+  padding: 10px;
 }
 
 /* Opções de cor */
 .color-options {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  flex-wrap: wrap; /* Permite que as opções de cor envolvam a linha */
+  gap: 10px; /* Espaçamento entre as opções de cor */
   transition: transform 0.3s ease-out; /* Animação suave */
   transform: translateX(100%); /* Inicialmente fora da tela */
 }
@@ -39,6 +41,19 @@
   transform: translateX(0); /* Desliza para dentro da tela */
 }
 
+/* Opção de cor individual */
+.color-option {
+  width: 40px; /* Tamanho maior para facilitar a seleção */
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent; /* Adiciona borda transparente inicialmente */
+}
+
+.color-option.selected {
+  border: 3px solid rgb(112, 181, 221); /* Borda ao selecionar a cor */
+}
+
 /* Seletor de cores */
 .hex-color-picker-container {
   position: absolute;
@@ -46,25 +61,25 @@
   left: 50%; /* Centralizado horizontalmente */
   transform: translate(-50%, -50%);
   z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
+  background: white; /* Fundo branco para o seletor de cor */
+  padding: 10px; /* Espaçamento interno */
+  border-radius: 10px; /* Cantos arredondados */
 }
 
-/* Opção de cor individual */
-.color-option {
-  margin: 5px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
+/* Texto dentro da opção do seletor */
+.color-option p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
 }
 
-/* Cor selecionada */
-.selected-color {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Opção de cor selecionada */
-.color-option.selected {
-  border: 3px groove rgb(112, 181, 221);
+/* Estilos para os rótulos das opções de cor */
+.selectBoard p {
+  color: white;
+  font-size: 12px;
+  background-color: #0c2e58;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 0;
 }
