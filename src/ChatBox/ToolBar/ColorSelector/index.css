@@ -3,12 +3,12 @@
   background-color: #1c71d8;
     border: 2px solid #0c2e58;
     color: #fff;
-    height: 100vh;
-    margin-top: -524px;
+    height: 99vh;
+    margin-top: -516px;
     position: fixed;
     transform: translateX(629px);
     transition: transform .6s ease-in-out;
-    width: 245px;
+    width: 216px;
     z-index: 1000;
     border-radius: 10px 0px 0px 10px;
 }

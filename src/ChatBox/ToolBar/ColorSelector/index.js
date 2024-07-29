@@ -22,10 +22,11 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   }, []);
 
   const handleSelectColor = (color, index) => {
+    // Atualiza a cor selecionada e o índice
     setSelectedColor(color);
     setSelectedOptionIndex(index);
+    // Notifica o pai sobre a cor selecionada, mas não altera o seletor de cores
     onSelectColor(color, type);
-    // Não abre o seletor de cor automaticamente agora
   };
 
   const togglePickerVisibility = () => {
@@ -55,8 +56,9 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
             <HexColorPicker
               color={selectedColor}
               onChange={(color) => {
+                // Atualiza a cor selecionada somente através do seletor
                 setSelectedColor(color);
-                handleSelectColor(color, selectedOptionIndex); // Atualiza a cor selecionada
+                onSelectColor(color, type); // Notifica o pai sobre a nova cor
               }}
             />
           </div>
