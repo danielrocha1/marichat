@@ -70,7 +70,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 };
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const background = [
     'linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)',
