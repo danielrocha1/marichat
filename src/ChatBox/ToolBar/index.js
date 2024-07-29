@@ -72,7 +72,7 @@ function Toolbar({ chat, roomname, setShowEmoji, setText, theme, setColors }) {
       <div className="icon">
         <Edit2 onClick={handleOpenModal} />
       </div>
-      <ColorSelector isOpen={isModalOpen} onClose={handleCloseModal} onSelectColor={handleSelectColor} />
+      <ColorSelector isOpen={isModalOpen}  onSelectColor={handleSelectColor} />
     </div>
   );
 }
