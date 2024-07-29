@@ -111,4 +111,14 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
           <p style={{ color: 'black', fontSize: '12px', backgroundColor: '#0c2e58', borderRadius: '4px' }}>
             Selecione a cor das bordas:
           </p>
-          <ColorOptions onSelectColor={onSelectColo
+          <ColorOptions onSelectColor={onSelectColor} colors={chatBorderColor} type="bordas" />
+        </div>
+      </div>
+      <button onClick={toggleSidebar} style={{ margin: '10px', padding: '5px 10px', borderRadius: '5px' }}>
+        {isSidebarOpen ? 'Fechar' : 'Abrir'} Sidebar
+      </button>
+    </div>
+  );
+};
+
+export default ColorSelector;
