@@ -21,7 +21,7 @@
 /* Seletor de Cor */
 .hex-color-picker-container {
   position: absolute;
-  top: 50%; /* Ajuste baseado na sua necessidade */
+  top: 320%; /* Ajuste baseado na sua necessidade */
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999; /* Aumentado para garantir que esteja acima de outros elementos */
