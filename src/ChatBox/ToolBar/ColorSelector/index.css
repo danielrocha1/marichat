@@ -13,9 +13,10 @@
   transition: right 0.6s ease-in-out; /* Suaviza a transição do movimento */
   z-index: 1000;
   border-radius: 10px 0 0 10px;
-  overflow: auto; /* Permite rolar o conteúdo se necessário */
+  overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
 }
 
+/* Quando a sidebar está aberta */
 .sidebarChat.open {
   right: 0; /* Move o elemento para dentro da tela */
 }
@@ -23,7 +24,6 @@
 /* Container das opções de cor */
 .color-options-container {
   position: relative;
-  overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
   padding: 10px;
 }
 
@@ -47,9 +47,13 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid transparent; /* Adiciona borda transparente inicialmente */
+  border: 2px solid transparent; /* Borda transparente inicialmente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Estilo da opção de cor selecionada */
 .color-option.selected {
   border: 3px solid rgb(112, 181, 221); /* Borda ao selecionar a cor */
 }
