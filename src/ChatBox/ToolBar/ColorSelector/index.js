@@ -81,7 +81,6 @@ const ColorSelector = ({ isOpen, onSelectColor }) => {
 
   return (
     <div className={`sidebarChat ${isOpen ? 'open' : 'closed'}`}>
-      <button onClick={() => onSelectColor(null)}>Close</button>
       <div className="selectBoard">
         <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do fundo:</p>
         <ColorOptions onSelectColor={onSelectColor} colors={background} type="fundo" />
