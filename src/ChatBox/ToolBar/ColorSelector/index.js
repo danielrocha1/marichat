@@ -11,10 +11,9 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const colorOptionsRef = useRef(null);
 
   // Fecha o seletor de cor se o clique for fora do componente
-  const handleMouseUp = (event) => {
+   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
       setIsPickerVisible(false);
-      setHexColorVisible(false); // Fecha o seletor de cor hexadecimal ao clicar fora
     }
   };
 
@@ -23,6 +22,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     document.addEventListener('mouseup', handleMouseUp);
     return () => document.removeEventListener('mouseup', handleMouseUp);
   }, []);
+
 
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
