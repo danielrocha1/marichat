@@ -5,7 +5,7 @@
   color: #fff;
   height: 100vh; /* Ajustado para ocupar toda a altura da viewport */
   position: fixed;
-  right: -245px; /* Inicialmente fora da tela à direita */
+  right: -255px; /* Inicialmente fora da tela à direita */
   transform: translateX(0); /* Inicia na posição fora da tela */
   transition: right 0.6s ease-in-out; /* Suaviza a transição do movimento */
   width: 245px; /* Largura do sidebar */
@@ -18,8 +18,9 @@
   right: 0; /* Move o sidebar para dentro da tela */
 }
 
-.sidebarChat.closed {
-  right: -245px; /* Move o sidebar para fora da tela, para a direita */
+.sidebarChat.closed {  
+  top: 0.5vh;
+  right: -255px; /* Move o sidebar para fora da tela, para a direita */
 }
 .hex-color-picker-container {
   position: absolute;
