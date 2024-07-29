@@ -6,6 +6,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
+  const [colorSource, setColorSource] = useState(''); // novo estado para diferenciar a origem da cor
   const colorOptionsRef = useRef(null);
 
   // Fecha o seletor de cor se o clique for fora do componente
@@ -22,11 +23,16 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   }, []);
 
   const handleSelectColor = (color, index) => {
-    // Atualiza a cor selecionada e o índice
-    setSelectedColor(color);
-    setSelectedOptionIndex(index);
-    // Notifica o pai sobre a cor selecionada, mas não altera o seletor de cores
-    onSelectColor(color, type);
+    if (colorSource === 'picker') {
+      // Se a origem for o picker, não altera o estado das opções predefinidas
+      setSelectedColor(color);
+      setSelectedOptionIndex(index);
+    } else {
+      // Se a origem for uma opção predefinida, atualiza a cor selecionada e o índice
+      setSelectedColor(color);
+      setSelectedOptionIndex(index);
+      onSelectColor(color, type);
+    }
   };
 
   const togglePickerVisibility = () => {
@@ -41,7 +47,10 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
             key={index}
             className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
             style={{ background: color }}
-            onClick={() => handleSelectColor(color, index)}
+            onClick={() => {
+              setColorSource('predefined'); // Define a origem como predefinida
+              handleSelectColor(color, index);
+            }}
           ></div>
         ))}
         <div
@@ -56,7 +65,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
             <HexColorPicker
               color={selectedColor}
               onChange={(color) => {
-                // Atualiza a cor selecionada somente através do seletor
+                setColorSource('picker'); // Define a origem como picker
                 setSelectedColor(color);
                 onSelectColor(color, type); // Notifica o pai sobre a nova cor
               }}
