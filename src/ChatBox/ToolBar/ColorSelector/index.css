@@ -1,26 +1,39 @@
+/* index.css */
 
 .sidebarChat {
   background-color: #1c71d8;
-    border: 2px solid #0c2e58;
-    color: #fff;
-    height: 99vh;
-    margin-top: -516px;
-    position: fixed;
-    transform: translateX(629px);
-    transition: transform .6s ease-in-out;
-    width: 216px;
-    z-index: 1000;
-    border-radius: 10px 0px 0px 10px;
-}
-
-.selectBoard{
-  background-color: #509cd1;
-  border-radius: 7px;
+  border: 2px solid #0c2e58;
+  color: #fff;
+  height: 99vh;
+  width: 216px; /* Largura do sidebar */
+  position: fixed;
+  right: -216px; /* Começa fora da tela à direita */
+  top: 0;
+  transform: translateX(0); /* Inicialmente em sua posição padrão */
+  transition: right 0.6s ease-in-out, transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
+  z-index: 1000;
+  border-radius: 10px 0 0 10px;
 }
 
 .sidebarChat.open {
-  background-color: #1a5fb4;
-  transform: translateX(0);
+  right: 0; /* Move o elemento para dentro da tela */
+}
+
+.color-options-container {
+  position: relative;
+  overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
+}
+
+.color-options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease-out; /* Animação suave */
+  transform: translateX(100%); /* Inicialmente fora da tela */
+}
+
+.color-options.show {
+  transform: translateX(0); /* Desliza para dentro da tela */
 }
 
   .hex-color-picker-container {
