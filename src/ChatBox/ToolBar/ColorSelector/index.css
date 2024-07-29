@@ -22,7 +22,6 @@
 .hex-color-picker-container {
   position: absolute;
   top: 50%;
-  left: 50%; /* Corrigido para centralizar horizontalmente */
   transform: translate(-50%, -50%);
   z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
 }
