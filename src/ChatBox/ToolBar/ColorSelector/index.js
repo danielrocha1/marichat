@@ -68,7 +68,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 };
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(isOpen);
 
   useEffect(() => {
     setIsSidebarOpen(isOpen);
@@ -89,10 +89,11 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
     if (onClose) onClose();
   };
 
-  if (!isOpen) return null;
+  if (!isOpen && !isSidebarOpen) return null;
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : 'closed'}`}>
+      <button onClick={handleClose}>Close</button>
       
       <div>
         <div className="selectBoard">
