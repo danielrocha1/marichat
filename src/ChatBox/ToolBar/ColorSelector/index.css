@@ -18,6 +18,9 @@
   right: 0; /* Move o sidebar para dentro da tela */
 }
 
+.sidebarChat.closed {
+  right: -245px; /* Move o sidebar para fora da tela, para a direita */
+}
 .hex-color-picker-container {
   position: absolute;
   top: 50%;

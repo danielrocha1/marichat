@@ -92,7 +92,7 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   if (!isOpen) return null;
 
   return (
-    <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
+    <div className={`sidebarChat ${isSidebarOpen ? 'open' : 'closed'}`}>
       
       <div>
         <div className="selectBoard">
