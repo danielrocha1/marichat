@@ -24,7 +24,7 @@
 }
 .hex-color-picker-container {
   position: absolute;
-  top: 310%;
+  top: 25vh;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999; /* Aumentado para garantir que esteja acima de outros elementos */
