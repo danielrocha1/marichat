@@ -8,6 +8,18 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [hexColor, setHexColor] = useState('black');
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
+  const handleMouseUp = (event) => {
+    if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
+      setIsPickerVisible(false);
+    }
+  };
+
+  // Adiciona e remove o event listener para mouseup
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => document.removeEventListener('mouseup', handleMouseUp);
+  }, []);
+  
   const toggleHexColor = () => {
     setHexColorVisible(!hexColorVisible);
     setSelectedOptionIndex(null)
