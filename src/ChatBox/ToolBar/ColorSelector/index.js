@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import { HexColorPicker } from 'react-colorful';
-import ColorOptions from './ColorOptions'; // Presumindo que você extraiu ColorOptions em seu próprio arquivo
+import ColorOptions from './ColorOptions'; // Certifique-se de que o caminho está correto
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(isOpen);
@@ -16,17 +16,11 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
   const chatBorderColor = ['black', 'white'];
 
-  // Atualiza o estado de abertura da sidebar
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  // Atualiza a visibilidade da sidebar com base na prop isOpen
   useEffect(() => {
     setIsSidebarOpen(isOpen);
   }, [isOpen]);
 
-  if (!isOpen && !isSidebarOpen) return null; // Retorna null se a sidebar não deve estar visível
+  if (!isSidebarOpen) return null;
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
