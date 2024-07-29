@@ -18,10 +18,10 @@ function Toolbar({ chat, roomname, setShowEmoji, setText, theme, setColors }) {
     setShowEmojiPicker(false);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleOpenModal = () => {
-    setIsModalOpen(!isModalOpen);
+    
   };
 
   const handleCloseModal = () => {
