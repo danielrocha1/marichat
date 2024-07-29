@@ -3,7 +3,6 @@ import './index.css';
 import { HexColorPicker } from 'react-colorful';
 
 const ColorOptions = ({ onSelectColor, colors, type }) => {
-  const [isPickerVisible, setIsPickerVisible] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [hexColorVisible, setHexColorVisible] = useState(false);
@@ -11,9 +10,9 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   const colorOptionsRef = useRef(null);
 
   // Fecha o seletor de cor se o clique for fora do componente
-   const handleMouseUp = (event) => {
+  const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
-      setIsPickerVisible(false);
+      setHexColorVisible(false);
     }
   };
 
@@ -23,15 +22,10 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     return () => document.removeEventListener('mouseup', handleMouseUp);
   }, []);
 
-
   const handleSelectColor = (color, index) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
-  };
-
-  const togglePickerVisibility = () => {
-    setIsPickerVisible(!isPickerVisible);
   };
 
   const toggleHexColor = () => {
@@ -90,10 +84,13 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
 
   if (!isOpen) return null;
 
-
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
+      <button onClick={toggleSidebar} className="toggle-button">Toggle Sidebar</button>
       <div>
         <div className="selectBoard">
           <p style={{ color: 'white', fontSize: '12px', backgroundColor: "#0c2e58", borderRadius: "4px" }}>Selecione a cor do fundo:</p>
