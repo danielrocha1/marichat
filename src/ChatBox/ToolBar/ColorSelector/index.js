@@ -11,6 +11,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   // Fecha o seletor de cor se o clique for fora do componente
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
+      console.log(event.target)
       setIsPickerVisible(false);
     }
   };
