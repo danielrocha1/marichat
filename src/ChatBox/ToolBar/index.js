@@ -5,9 +5,9 @@ import UploadFile from './UploadFile';
 import ColorSelector from './ColorSelector';
 import './index.css';
 
-
 function Toolbar({ chat, roomname, setShowEmoji, setText, theme, setColors }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado como booleano
 
   const handleEmojiClick = () => {
     setShowEmojiPicker(!showEmojiPicker);
@@ -18,42 +18,35 @@ function Toolbar({ chat, roomname, setShowEmoji, setText, theme, setColors }) {
     setShowEmojiPicker(false);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState('');
-
   const handleOpenModal = () => {
-    if isModalOpen !== 'closed'{
-      setIsModalOpen('open');
-    }else{
-      setIsModalOpen('closed');
-    }
-    
+    setIsModalOpen((prev) => !prev); // Alterna entre aberto e fechado
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen(false); // Garante que o modal seja fechado
   };
 
   const handleSelectColor = (color, index) => {
-    if(index === "chat"){
-      setColors(prevState => ({
+    if (index === "chat") {
+      setColors((prevState) => ({
         ...prevState,
         chatBox: color,
-      }));  
-    }if(index === "fundo"){
-      setColors(prevState => ({
+      }));
+    } else if (index === "fundo") {
+      setColors((prevState) => ({
         ...prevState,
         background: color,
-      }));  
-    }if(index === "bordas"){
-      setColors(prevState => ({
+      }));
+    } else if (index === "bordas") {
+      setColors((prevState) => ({
         ...prevState,
         border: color,
-      }));  
+      }));
     }
   };
 
   return (
-    <div className="toolbar" style={{color:theme.border}}>
+    <div className="toolbar" style={{ color: theme.border }}>
       <div className="icon" onClick={handleEmojiClick}>
         <Smile />
       </div>
@@ -77,7 +70,7 @@ function Toolbar({ chat, roomname, setShowEmoji, setText, theme, setColors }) {
       <div className="icon">
         <Edit2 onClick={handleOpenModal} />
       </div>
-      <ColorSelector isOpen={isModalOpen}  onSelectColor={handleSelectColor} />
+      <ColorSelector isOpen={isModalOpen} onSelectColor={handleSelectColor} />
     </div>
   );
 }
