@@ -1,7 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
 import { HexColorPicker } from 'react-colorful';
-import ColorOptions from './ColorOptions'; // Certifique-se de que o caminho está correto
+
+const ColorOptions = ({ onSelectColor, colors, type }) => {
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
+  const [hexColor, setHexColor] = useState('#ffffff');
+  const colorOptionsRef = useRef(null);
+
+  const handleMouseUp = (event) => {
+    if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
+      setIsPickerVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => document.removeEventListener('mouseup', handleMouseUp);
+  }, []);
+
+  const handleSelectColor = (color, index) => {
+    setSelectedColor(color);
+    setSelectedOptionIndex(index);
+    onSelectColor(color, type);
+  };
+
+  const togglePickerVisibility = () => {
+    setIsPickerVisible(!isPickerVisible);
+  };
+
+  return (
+    <div ref={colorOptionsRef} className="color-options-container">
+      <div className="color-options">
+        {colors.map((color, index) => (
+          <div
+            key={index}
+            className={`color-option ${selectedOptionIndex === index ? 'selected' : ''}`}
+            style={{ background: color }}
+            onClick={() => handleSelectColor(color, index)}
+          ></div>
+        ))}
+        <div
+          className={`color-option ${isPickerVisible ? 'selected' : ''}`}
+          style={{ backgroundColor: hexColor, color: "white" }}
+          onClick={togglePickerVisibility}
+        >
+          <p style={{ fontSize: "10px", fontWeight: "bold", color: "white" }}>
+            ?
+          </p>
+        </div>
+        {isPickerVisible && (
+          <div className="hex-color-picker-container">
+            <HexColorPicker
+              color={hexColor}
+              onChange={color => {
+                setHexColor(color);
+                setSelectedColor(color);
+                onSelectColor(color, type);
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(isOpen);
