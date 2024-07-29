@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './index.css'; // Certifique-se de que o caminho está correto
+import './index.css';
 import { HexColorPicker } from 'react-colorful';
 
 const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [isPickerVisible, setIsPickerVisible] = useState(false);
-  const [hexColor, setHexColor] = useState('#ffffff');
+  const [hexColor, setHexColor] = useState('#ffffff'); // Adicionada a variável hexColor
   const colorOptionsRef = useRef(null);
 
+  // Fecha o seletor de cor se o clique for fora do componente
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
       setIsPickerVisible(false);
     }
   };
 
+  // Adiciona e remove o event listener para mouseup
   useEffect(() => {
     document.addEventListener('mouseup', handleMouseUp);
     return () => document.removeEventListener('mouseup', handleMouseUp);
@@ -32,7 +34,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 
   return (
     <div ref={colorOptionsRef} className="color-options-container">
-      <div className={`color-options ${isPickerVisible ? 'show' : ''}`}>
+      <div className="color-options">
         {colors.map((color, index) => (
           <div
             key={index}
@@ -68,7 +70,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
 };
 
 const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(isOpen);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const background = [
     'linear-gradient(#98c15c,#80bf4d,#64b231,#1f930f,#107b18)',
@@ -80,11 +82,11 @@ const ColorSelector = ({ isOpen, onClose, onSelectColor }) => {
   const chatBoxColor = ['#80bf4d', '#96090f', '#f97171', '#673844'];
   const chatBorderColor = ['black', 'white'];
 
-  useEffect(() => {
-    setIsSidebarOpen(isOpen);
-  }, [isOpen]);
+  if (!isOpen) return null;
 
-  if (!isSidebarOpen) return null;
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className={`sidebarChat ${isSidebarOpen ? 'open' : ''}`}>
