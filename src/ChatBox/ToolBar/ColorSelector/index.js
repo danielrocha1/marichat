@@ -11,7 +11,6 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
   // Fecha o seletor de cor se o clique for fora do componente
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
-      console.log(event.target)
       setIsPickerVisible(false);
     }
   };
@@ -26,8 +25,7 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
-    // Mantém o seletor aberto após a seleção
-    setIsPickerVisible(true);
+    // Não abre o seletor de cor automaticamente agora
   };
 
   const togglePickerVisibility = () => {
