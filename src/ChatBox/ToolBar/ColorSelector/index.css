@@ -1,5 +1,6 @@
 /* index.css */
 
+/* Sidebar Styles */
 .sidebarChat {
   background-color: #1c71d8;
   border: 2px solid #0c2e58;
@@ -9,8 +10,7 @@
   position: fixed;
   right: -216px; /* Começa fora da tela à direita */
   top: 0;
-  transform: translateX(0); /* Inicialmente em sua posição padrão */
-  transition: right 0.6s ease-in-out, transform 0.6s ease-in-out; /* Suaviza a transição do movimento */
+  transition: right 0.6s ease-in-out; /* Suaviza a transição do movimento */
   z-index: 1000;
   border-radius: 10px 0 0 10px;
 }
@@ -19,27 +19,40 @@
   right: 0; /* Move o elemento para dentro da tela */
 }
 
+/* Color Options Container */
 .color-options-container {
   position: relative;
   overflow: hidden; /* Garante que o conteúdo não ultrapasse a área visível */
 }
 
+/* Color Options Styles */
 .color-options {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
   transition: transform 0.3s ease-out; /* Animação suave */
-  transform: translateX(100%); /* Inicialmente fora da tela */
+  transform: translateX(0); /* Ajustado para começar visível */
 }
 
-.color-options.show {
-  transform: translateX(0); /* Desliza para dentro da tela */
-}
-
+/* Seletor de Cor */
 .hex-color-picker-container {
   position: absolute;
   top: 50%;
   left: 50%; /* Corrigido para centralizar horizontalmente */
   transform: translate(-50%, -50%);
   z-index: 999; /* Garante que o seletor de cores seja exibido na frente do restante do conteúdo */
+}
+
+/* Estilo para a seleção de cor */
+.color-option {
+  width: 30px; /* Ajuste conforme necessário */
+  height: 30px; /* Ajuste conforme necessário */
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent; /* Adiciona uma borda transparente para melhor interação */
+  transition: border-color 0.3s ease; /* Suaviza a transição da borda */
+}
+
+.color-option.selected {
+  border-color: #fff; /* Destaca a cor selecionada com uma borda branca */
 }
