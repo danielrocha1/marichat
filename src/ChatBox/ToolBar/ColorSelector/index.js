@@ -5,14 +5,13 @@ import { HexColorPicker } from 'react-colorful';
 const ColorOptions = ({ onSelectColor, colors, type }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
-  const [hexColorVisible, setHexColorVisible] = useState(false);
-  const [hexColor, setHexColor] = useState('#ffffff');
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
   const colorOptionsRef = useRef(null);
 
   // Fecha o seletor de cor se o clique for fora do componente
   const handleMouseUp = (event) => {
     if (colorOptionsRef.current && !colorOptionsRef.current.contains(event.target)) {
-      setHexColorVisible(false);
+      setIsPickerVisible(false);
     }
   };
 
@@ -26,10 +25,11 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
     setSelectedColor(color);
     setSelectedOptionIndex(index);
     onSelectColor(color, type);
+    setIsPickerVisible(false); // Fecha o seletor de cores após a seleção
   };
 
-  const toggleHexColor = () => {
-    setHexColorVisible(!hexColorVisible);
+  const togglePickerVisibility = () => {
+    setIsPickerVisible(!isPickerVisible);
   };
 
   return (
@@ -44,22 +44,19 @@ const ColorOptions = ({ onSelectColor, colors, type }) => {
           ></div>
         ))}
         <div
-          className={`color-option ${hexColorVisible ? 'selected' : ''}`}
-          style={{ backgroundColor: hexColor, color: "white" }}
-          onClick={toggleHexColor}
+          className={`color-option ${isPickerVisible ? 'selected' : ''}`}
+          style={{ background: selectedColor || '#ffffff', color: 'white' }}
+          onClick={togglePickerVisibility}
         >
-          <p style={{ fontSize: "10px", fontWeight: "bold", color: "white" }}>
-            ?
-          </p>
+          <p style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>?</p>
         </div>
-        {hexColorVisible && (
+        {isPickerVisible && (
           <div className="hex-color-picker-container">
             <HexColorPicker
               color={selectedColor}
-              onChange={color => {
+              onChange={(color) => {
                 setSelectedColor(color);
-                setHexColor(color);
-                onSelectColor(color, type);
+                handleSelectColor(color, selectedOptionIndex); // Atualiza a cor selecionada
               }}
             />
           </div>
