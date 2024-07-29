@@ -14,6 +14,7 @@
 }
 
 .sidebarChat.open {
+  top: 0.5vh;
   right: 0; /* Move o sidebar para dentro da tela */
 }
 
