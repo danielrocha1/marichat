@@ -55,6 +55,10 @@ const Sidebar = ({ user, chats }) => {
 
 const TopHeader = ({ handleLogout }) => {
   return (
+
+    <div className="top-header">
+      <div onClick={console.log("mensagem")}>Messages</div>
+    </div>
     <div className="top-header">
       <div onClick={handleLogout}>Logout</div>
     </div>
