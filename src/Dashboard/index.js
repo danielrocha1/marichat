@@ -59,8 +59,10 @@ const TopHeader = ({ handleLogout }) => {
     
     <div className="top-header">
       <div>
-        <div onClick={console.log("Mensagem")}>Messages</div>
-        <div onClick={handleLogout}>Logout</div>
+        <p onClick={console.log("Mensagem")}>Messages</p>
+        </div>
+        <div>
+        <p onClick={handleLogout}>Logout</p>
       </div>
     </div>
   );
