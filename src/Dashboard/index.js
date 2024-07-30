@@ -49,24 +49,75 @@ const Sidebar = ({ user, chats }) => {
     </div>
   );
 };
-
-
-
+const simulateWebSocket = (callback) => {
+  // Simula a chegada de uma nova mensagem a cada 5 segundos
+  setInterval(() => {
+    callback({ text: 'Nova mensagem recebida!' });
+  }, 5000);
+};
 
 const TopHeader = ({ handleLogout }) => {
-  return (
+  const [notifications, setNotifications] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
-    
+  // Simula a recepção de mensagens pelo WebSocket
+  useEffect(() => {
+    simulateWebSocket((newMessage) => {
+      setNotifications(prev => [...prev, newMessage]);
+    });
+
+    // Cleanup function to clear intervals when component unmounts
+    return () => {
+      clearInterval(simulateWebSocket);
+    };
+  }, []);
+
+  // Função para exibir o modal
+  const handleClickMessages = () => {
+    setShowModal(true);
+  };
+
+  // Função para fechar o modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+    // Opcional: limpar notificações ao fechar o modal
+    // setNotifications([]);
+  };
+
+  return (
     <div className="top-header">
-      <div>
-        <p onClick={()=>{console.log("Mensagem")}}>Messages</p>
-        </div>
+      <div className="header-content">
+        <p onClick={handleClickMessages} className="messages">
+          Messages {notifications.length > 0 && `(${notifications.length})`}
+        </p>
+
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={handleCloseModal}>&times;</span>
+              <h2>Notifications</h2>
+              {notifications.length > 0 ? (
+                notifications.map((notification, index) => (
+                  <div key={index} className="notification">
+                    {notification.text}
+                  </div>
+                ))
+              ) : (
+                <p>No new notifications</p>
+              )}
+            </div>
+          </div>
+        )}
+
         <div>
-        <p onClick={handleLogout}>Logout</p>
+          <p onClick={handleLogout} className="logout">Logout</p>
+        </div>
       </div>
     </div>
   );
 };
+
+
 
 const ChatTable = ({ userData, setUserData, setChats, chats }) => {
 const navigate = useNavigate();
