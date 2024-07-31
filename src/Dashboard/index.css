@@ -277,8 +277,6 @@
   
   .modal-content {
     background: #0056b3;
-    width: 300px;
-    max-height: 30%;
     overflow-y: auto;
     position: relative;
   }
