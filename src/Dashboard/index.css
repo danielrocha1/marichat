@@ -13,7 +13,7 @@
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 4px; 
     text-align: center;
   }
   
@@ -271,7 +271,6 @@
     border-radius: 5px;
     width: 300px;
     max-height: 400px; /* Max height to control the modal's height */
-    overflow-y: auto;
     z-index: 1000; /* Ensures modal is above other content */
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
   }
