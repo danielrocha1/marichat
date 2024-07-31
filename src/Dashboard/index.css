@@ -238,84 +238,83 @@
 
 
 
-.top-header {
-  position: relative;
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-bottom: 1px solid #ddd;
-}
 
-.header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.messages {
-  cursor: pointer;
-  position: relative;
-  padding: 5px 10px;
-}
-
-.messages .notification-count {
-  display: ${props => props.notifications.length > 0 ? 'inline-block' : 'none'};
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  width: 16px;
-  height: 16px;
-  background-color: red;
-  border-radius: 50%;
-  color: white;
-  font-size: 10px;
-  text-align: center;
-  line-height: 16px;
-}
-
-.modal {
-  position: absolute;
-  left: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 300px;
-  max-height: 80%;
-  overflow-y: auto;
-  z-index: 1000; /* Ensures modal is above other content */
-}
-
-.modal-content {
-  padding: 20px;
-  position: relative;
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 20px;
-  color: #aaa;
-}
-
-.close:hover {
-  color: black;
-}
-
-.notification {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.notification:last-child {
-  border-bottom: none;
-}
-
-.logout {
-  cursor: pointer;
-  color: #007bff;
-}
-
-.logout:hover {
-  text-decoration: underline;
-}
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .messages {
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .messages::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    width: 12px;
+    height: 12px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    font-size: 10px;
+    text-align: center;
+    line-height: 12px;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: #0056b3;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #aaa;
+  }
+  
+  .close:hover {
+    color: black;
+  }
+  
+  .notification {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .notification:last-child {
+    border-bottom: none;
+  }
+  
+  .logout {
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .logout:hover {
+    text-decoration: underline;
+  }
+  
