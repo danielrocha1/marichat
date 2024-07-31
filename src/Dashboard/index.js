@@ -87,13 +87,13 @@ const TopHeader = ({ handleLogout }) => {
   return (
     <div className="top-header">
       <div onClick={handleClickMessages} className="">
-      <p className="messages">
-  Messages {
-    notifications.length > 0 && (
-      <b className="notification-count">({notifications.length})</b>
-    )
-  }
-</p>
+        <p className="messages">
+          Messages {
+            notifications.length > 0 && (
+              <b className="notification-count">({notifications.length})</b>
+            )
+          }
+        </p>
         {showModal && (
           <div className="modal">
             <div className="modal-content">
