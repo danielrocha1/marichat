@@ -286,6 +286,9 @@
     overflow-y: auto;
     position: relative;
   }
+  .modal-content:hover {
+
+  }
   
   .close {
     position: absolute;
