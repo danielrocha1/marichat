@@ -109,9 +109,9 @@ const TopHeader = ({ handleLogout }) => {
           </div>
         )}
 
-        <div>
+      
           <p onClick={handleLogout} className="logout">Logout</p>
-        </div>
+       
       </div>
     </div>
   );
