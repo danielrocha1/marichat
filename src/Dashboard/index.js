@@ -112,7 +112,7 @@ const TopHeader = ({ handleLogout }) => {
      
       </div> 
       
-      <div>
+      <div style={{marginRight:"10px"}}>
           <p onClick={handleLogout} className="">Logout</p>
       </div> 
     </div>
