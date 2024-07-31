@@ -109,10 +109,12 @@ const TopHeader = ({ handleLogout }) => {
           </div>
         )}
 
+     
+      </div> 
       
+      <div>
           <p onClick={handleLogout} className="">Logout</p>
-       
-      </div>
+      </div> 
     </div>
   );
 };
