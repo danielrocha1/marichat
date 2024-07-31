@@ -81,7 +81,7 @@ const TopHeader = ({ handleLogout }) => {
   const handleCloseModal = () => {
     setShowModal(false);
     // Opcional: limpar notificações ao fechar o modal
-    // setNotifications([]);
+     setNotifications([]);
   };
 
   return (
@@ -100,6 +100,8 @@ const TopHeader = ({ handleLogout }) => {
                 notifications.map((notification, index) => (
                   <div key={index} className="notification">
                     {notification.text}
+                    <button style={{backgroundColor:"green", color:"white"}}>Aceitar</button>
+                    <button style={{backgroundColor:"red", color:"white"}>Recusar</button>
                   </div>
                 ))
               ) : (
