@@ -86,8 +86,8 @@ const TopHeader = ({ handleLogout }) => {
 
   return (
     <div className="top-header">
-      <div className="">
-        <p onClick={handleClickMessages} className="messages">
+      <div onClick={handleClickMessages} className="">
+        <p  className="messages">
           Messages <b className="notification-count">{notifications.length > 0 && `(${notifications.length})`}</b>
         </p>
 
