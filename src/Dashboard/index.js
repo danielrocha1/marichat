@@ -117,7 +117,7 @@ const TopHeader = ({ handleLogout }) => {
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
                       onClick={() => handleAcceptNotification(index)}
-                      }
+                      
                     >
                       Aceitar
                     </button>
