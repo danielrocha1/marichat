@@ -256,7 +256,8 @@
     width: 16px;
     height: 16px;
     background-color: red;
-    border-radius: 50%;
+    border-radius: 50%;  
+    border: 1px solid #ddd;
     color: white;
     font-size: 10px;
     text-align: center;
