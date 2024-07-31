@@ -110,7 +110,7 @@ const TopHeader = ({ handleLogout }) => {
         )}
 
       
-          <p onClick={handleLogout} className="logout">Logout</p>
+          <p onClick={handleLogout} className="">Logout</p>
        
       </div>
     </div>
