@@ -96,7 +96,7 @@ const TopHeader = ({ handleLogout }) => {
         <p  className="messages">
           Messages {
             notifications.length > 0 && (
-              <b className="notification-count">({notifications.length})</b>
+              <b className="notification-count">{notifications.length}</b>
             )
           }
         </p>
