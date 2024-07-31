@@ -101,7 +101,7 @@ const TopHeader = ({ handleLogout }) => {
                   <div key={index} className="notification">
                     {notification.text}
                     <button style={{backgroundColor:"green", color:"white"}}>Aceitar</button>
-                    <button style={{backgroundColor:"red", color:"white"}>Recusar</button>
+                    <button style={{backgroundColor:"red", color:"white"}}>Recusar</button>
                   </div>
                 ))
               ) : (
