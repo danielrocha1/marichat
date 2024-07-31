@@ -261,6 +261,7 @@
     font-size: 10px;
     text-align: center;
     line-height: 16px;
+    animation: blink 1s infinite; /* Adiciona a animação de piscar */
   }
   
   .modal {
@@ -313,3 +314,15 @@
     text-decoration: underline;
   }
   
+
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
