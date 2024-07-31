@@ -88,7 +88,7 @@ const TopHeader = ({ handleLogout }) => {
     <div className="top-header">
       <div className="">
         <p onClick={handleClickMessages} className="messages">
-          Messages {notifications.length > 0 && `(${notifications.length})`}
+          Messages <b className="notification-count">{notifications.length > 0 && `(${notifications.length})`}</b>
         </p>
 
         {showModal && (
