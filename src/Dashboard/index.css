@@ -283,8 +283,9 @@
     padding: 20px;
     border-radius: 5px;
     width: 300px;
-    margin-right:60vw;
-    max-height: 80%;
+    top:5vh;
+    margin-right:50vw;
+    max-height: 30%;
     overflow-y: auto;
     position: relative;
   }
