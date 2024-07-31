@@ -284,12 +284,7 @@
     overflow-y: auto;
     position: relative;
   }
-  
-  .modal-content {
-    padding: 20px;
-    background: white; /* Background color for the content */
-  }
-  
+
   .close {
     position: absolute;
     top: 10px;
