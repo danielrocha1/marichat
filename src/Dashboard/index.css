@@ -277,8 +277,12 @@
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
   }
   
-  .modal:hover {
-    background: transparent; /* Ensure no background color on hover */
+  .modal-content {
+    background: #0056b3;
+    width: 300px;
+    max-height: 30%;
+    overflow-y: auto;
+    position: relative;
   }
   
   .modal-content {
