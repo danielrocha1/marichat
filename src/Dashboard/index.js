@@ -76,17 +76,16 @@ const TopHeader = ({ handleLogout }) => {
   const handleClickMessages = () => {
     setShowModal(true);
   };
-
-  // Função para fechar o modal
+  
   const handleCloseModal = () => {
+    console.log('Fechando o modal'); // Para depuração
     setShowModal(false);
-    // Opcional: limpar notificações ao fechar o modal
-     setNotifications([]);
+    setNotifications([]);
   };
-
+  
   return (
     <div className="top-header">
-      <div onClick={handleClickMessages} className="">
+      <div onClick={handleClickMessages}>
         <p className="messages">
           Messages {
             notifications.length > 0 && (
@@ -94,6 +93,7 @@ const TopHeader = ({ handleLogout }) => {
             )
           }
         </p>
+        
         {showModal && (
           <div className="modal">
             <div className="modal-content">
@@ -103,8 +103,8 @@ const TopHeader = ({ handleLogout }) => {
                 notifications.map((notification, index) => (
                   <div key={index} className="notification">
                     {notification.text}
-                    <button style={{backgroundColor:"green", color:"white", margin:"5px"}}>Aceitar</button>
-                    <button style={{backgroundColor:"red", color:"white", margin:"5px"}}>Recusar</button>
+                    <button style={{backgroundColor: "green", color: "white", margin: "5px"}}>Aceitar</button>
+                    <button style={{backgroundColor: "red", color: "white", margin: "5px"}}>Recusar</button>
                   </div>
                 ))
               ) : (
@@ -113,18 +113,14 @@ const TopHeader = ({ handleLogout }) => {
             </div>
           </div>
         )}
-
-     
-      </div> 
+      </div>
       
-      <div style={{marginRight:"10px"}}>
-          <p onClick={handleLogout} className="">Logout</p>
-      </div> 
+      <div style={{marginRight: "10px"}}>
+        <p onClick={handleLogout}>Logout</p>
+      </div>
     </div>
   );
-};
-
-
+}
 
 const ChatTable = ({ userData, setUserData, setChats, chats }) => {
 const navigate = useNavigate();
