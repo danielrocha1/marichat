@@ -82,6 +82,13 @@ const TopHeader = ({ handleLogout }) => {
     setShowModal(!showModal);
     setNotifications([]);
   };
+
+  const handleRejectNotification = (index) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((_, i) => i !== index)
+    );
+  };
+
   
   return (
     <div className="top-header">
@@ -104,7 +111,12 @@ const TopHeader = ({ handleLogout }) => {
                   <div key={index} className="notification">
                     {notification.text}
                     <button style={{backgroundColor: "green", color: "white", margin: "5px"}}>Aceitar</button>
-                    <button style={{backgroundColor: "red", color: "white", margin: "5px"}}>Recusar</button>
+                    <button
+                      style={{ backgroundColor: "red", color: "white", margin: "5px" }}
+                      onClick={() => handleRejectNotification(index)}
+                    >
+                      Recusar
+                    </button>
                   </div>
                 ))
               ) : (
