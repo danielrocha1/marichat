@@ -270,13 +270,14 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     width: 300px;
-    max-height: 29vh; /* Max height to control the modal's height */
     z-index: 1000; /* Ensures modal is above other content */
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
   }
   
   .modal-content {
     background: #0056b3;
+    
+    max-height: 30vh;
     overflow-y: auto;
     position: relative;
   }
