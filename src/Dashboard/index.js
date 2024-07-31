@@ -92,7 +92,7 @@ const TopHeader = ({ handleLogout }) => {
         </p>
 
         {showModal && (
-          
+          <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={handleCloseModal}>&times;</span>
               <h2>Notifications</h2>
@@ -106,7 +106,7 @@ const TopHeader = ({ handleLogout }) => {
                 <p>No new notifications</p>
               )}
             </div>
-          
+          </div>
         )}
 
      
