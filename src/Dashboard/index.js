@@ -97,7 +97,7 @@ const TopHeader = ({ handleLogout }) => {
         {showModal && (
           <div className="modal">
             <div className="modal-content">
-              <span className="close" onClick={handleCloseModal}>&times;</span>
+              <span className="close" onClick={() => {handleCloseModal()}}>&times;</span>
               <h2>Notifications</h2>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
