@@ -265,7 +265,6 @@
   
   .modal {
     position: absolute;
-    left: 0;
     top: 100%; /* Position directly below the messages div */
     background: transparent; /* Transparent background */
     border: 1px solid #ddd;
