@@ -89,6 +89,10 @@ const TopHeader = ({ handleLogout }) => {
     );
   };
 
+  const handleAcceptNotification = (index) => {
+    console.log("aceito")
+  };
+
   
   return (
     <div className="top-header">
@@ -112,7 +116,8 @@ const TopHeader = ({ handleLogout }) => {
                     {notification.text}
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
-                      onClick={() => handleRejectNotification(index)}
+                      onClick={() => handleAcceptNotification(index)}
+                      }
                     >
                       Aceitar
                     </button>
