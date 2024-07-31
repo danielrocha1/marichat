@@ -238,52 +238,54 @@
 
 
 
-
+  .top-header {
+    position: relative;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+  }
   
   .header-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
   }
   
   .messages {
     cursor: pointer;
     position: relative;
+    padding: 5px 10px;
   }
   
-  .messages::after {
-    content: '';
+  .messages .notification-count {
+    
     position: absolute;
     top: -5px;
     right: -10px;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     background-color: red;
     border-radius: 50%;
     color: white;
     font-size: 10px;
     text-align: center;
-    line-height: 12px;
+    line-height: 16px;
   }
   
   .modal {
-    position: fixed;
-    top: 0;
+    position: absolute;
     left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: #0056b3;
-    padding: 20px;
+    background: white;
+    border: 1px solid #ddd;
     border-radius: 5px;
     width: 300px;
     max-height: 80%;
     overflow-y: auto;
+    z-index: 1000; /* Ensures modal is above other content */
+  }
+  
+  .modal-content {
+    padding: 20px;
     position: relative;
   }
   
@@ -317,4 +319,3 @@
   .logout:hover {
     text-decoration: underline;
   }
-  
