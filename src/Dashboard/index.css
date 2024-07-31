@@ -269,7 +269,7 @@
     background: transparent; /* Transparent background */
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 300px;
+    width: 27vw;
     z-index: 1000; /* Ensures modal is above other content */
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
   }

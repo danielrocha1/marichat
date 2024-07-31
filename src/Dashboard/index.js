@@ -100,8 +100,8 @@ const TopHeader = ({ handleLogout }) => {
                 notifications.map((notification, index) => (
                   <div key={index} className="notification">
                     {notification.text}
-                    <button style={{backgroundColor:"green", color:"white"}}>Aceitar</button>
-                    <button style={{backgroundColor:"red", color:"white"}}>Recusar</button>
+                    <button style={{backgroundColor:"green", color:"white", margin:"5px"}}>Aceitar</button>
+                    <button style={{backgroundColor:"red", color:"white", margin:"5px"}}>Recusar</button>
                   </div>
                 ))
               ) : (
