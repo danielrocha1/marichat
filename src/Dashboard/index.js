@@ -74,12 +74,12 @@ const TopHeader = ({ handleLogout }) => {
 
   // Função para exibir o modal
   const handleClickMessages = () => {
-    setShowModal(true);
+    setShowModal(!showModal);
   };
   
   const handleCloseModal = () => {
     console.log('Fechando o modal'); // Para depuração
-    setShowModal(false);
+    setShowModal(!showModal);
     setNotifications([]);
   };
   
