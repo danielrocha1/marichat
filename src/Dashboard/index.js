@@ -96,7 +96,9 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     // Corrigido para criar a query string de forma adequada
     //console.log(queryString);
     
-    console.log(notifications[index]);
+    console.log(notifications);
+    console.log(index);
+
 
   const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
