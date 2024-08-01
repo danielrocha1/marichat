@@ -52,7 +52,10 @@ const Sidebar = ({ user, chats }) => {
 const simulateWebSocket = (callback) => {
   // Simula a chegada de uma nova mensagem a cada 5 segundos
   setInterval(() => {
-    callback({ text: 'Nova mensagem recebida!' });
+    callback({ 
+      text: 'Você recebeu um convite para um chat!', 
+      chatid:'fe41361c-054e-4a0a-91bd-b0201953ce00',
+       });
   }, 5000);
 };
 
@@ -78,7 +81,6 @@ const TopHeader = ({ handleLogout }) => {
   };
   
   const handleCloseModal = () => {
-    console.log('Fechando o modal'); // Para depuração
     setShowModal(!showModal);
     setNotifications([]);
   };
@@ -89,8 +91,31 @@ const TopHeader = ({ handleLogout }) => {
     );
   };
 
-  const handleAcceptNotification = (index) => {
-    console.log("aceito")
+  const handleAcceptNotification = async (index) => {
+
+      const queryString = new URLSearchParams(notifications[index].chatid ,userData).toString();  
+        try {
+          const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+              username: userData.data.username,
+              hostid: userData.data.hostid,
+              chatid: notifications[index].chatid 
+            }),
+          });
+  
+          if (!response.ok) {
+            throw new Error('Erro ao enviar os dados');
+          }
+  
+          navigate(`/chatroom?${queryString}`);
+        } catch (error) {
+          console.error('Erro:', error.message);
+        }
+  
   };
 
   
