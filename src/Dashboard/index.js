@@ -91,35 +91,40 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     );
   };
 
-  const handleAcceptNotification = async ({index, userData}) => {
-
-    //const queryString = new URLSearchParams(notifications[index].chatid, userData).toString();  
-    //console.log(queryString)
-    console.log(userData.data.hostid)
-    console.log(userData)
-        try {
-          const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
+  const handleAcceptNotification = async ({ index, userData }) => {
+    // Corrigido para criar a query string de forma adequada
+    const queryString = new URLSearchParams({
+        chatid: notifications[index].chatid,
+        username: userData.data.username,
+        hostid: userData.data.hostid
+    }).toString();
+  
+    console.log(queryString);
+    console.log(userData.data.hostid);
+    console.log(userData);
+  
+    try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 
-              username: userData.data.username,
-              hostid: userData.data.hostid,
-              chatid: notifications[index].chatid 
+                username: userData.data.username,
+                hostid: userData.data.hostid,
+                chatid: notifications[index].chatid 
             }),
-          });
+        });
   
-          if (!response.ok) {
+        if (!response.ok) {
             throw new Error('Erro ao enviar os dados');
-          }
-  
-        //  navigate(`/chatroom?${queryString}`);
-        } catch (error) {
-          console.error('Erro:', error.message);
         }
   
-  };
+        navigate(`/chatroom?${queryString}`);
+    } catch (error) {
+        console.error('Erro:', error.message);
+    }
+};
 
   
   return (
