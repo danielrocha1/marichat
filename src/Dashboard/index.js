@@ -92,7 +92,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     );
   };
 
-  const handleAcceptNotification = async ({ index, userData }) => {
+  const handleAcceptNotification = async ( index, userData ) => {
     // Corrigido para criar a query string de forma adequada
     //console.log(queryString);
     
