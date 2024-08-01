@@ -93,7 +93,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
 
   const handleAcceptNotification = async ({index, userData}) => {
 
-    const queryString = new URLSearchParams(notifications[index].chatid, userData ).toString();  
+    const queryString = new URLSearchParams({notifications[index].chatid, userData}.toString();  
     console.log(queryString)
     console.log(userData.data.hostid)
     console.log(userData)
