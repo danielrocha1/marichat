@@ -1,15 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ChatContext from '../ChatContext';
+import './index.css'; // Certifique-se de que você tem esse arquivo de estilos
 
-import ImageHost from './ImageHost';
-import EnterRoom from '../Dashboard/EnterRoom';
-import CreateChat from '../Dashboard/CreateChat';
+// Simulação de contexto para o exemplo
+const ChatContext = React.createContext();
 
-import './index.css';
+const simulateWebSocket = (callback) => {
+  setInterval(() => {
+    callback({ 
+      text: 'Você recebeu um convite para um chat!', 
+      chatid: 'fe41361c-054e-4a0a-91bd-b0201953ce00',
+    });
+  }, 5000);
+};
 
-// Componentes
-const Sidebar = ({ user, chats }) => {
+// Sidebar Component
+const Sidebar = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -18,9 +24,9 @@ const Sidebar = ({ user, chats }) => {
 
   const AvatarButton = () => {
     const handleClick = () => {
-      window.location.href = 'https://avatarmaker.com/';
+      window.open('https://avatarmaker.com/', '_blank');
     };
-  
+
     return (
       <button className="avatar-button" onClick={handleClick}>
         Criar seu Avatar
@@ -38,102 +44,88 @@ const Sidebar = ({ user, chats }) => {
         </div>
       </div>
       <div className="user-info">
-      <ImageHost user={user}/>
+        {/* Substitua com o componente ImageHost conforme necessário */}
         <p style={{marginTop:"30px"}}>Nome: {user.data.fullname}</p>
         <p>Email: {user.data.email}</p>
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
-        <div >
-          <AvatarButton/>
+        <div>
+          <AvatarButton />
         </div>
       </div>
     </div>
   );
 };
-const simulateWebSocket = (callback) => {
-  // Simula a chegada de uma nova mensagem a cada 5 segundos
-  setInterval(() => {
-    callback({ 
-      text: 'Você recebeu um convite para um chat!', 
-      chatid:'fe41361c-054e-4a0a-91bd-b0201953ce00',
-       });
-  }, 5000);
-};
 
-const TopHeader = ({userData, handleLogout, navigate }) => {
+// TopHeader Component
+const TopHeader = ({ userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
-    simulateWebSocket((newMessage) => {
+    const intervalId = simulateWebSocket((newMessage) => {
       setNotifications(prev => [...prev, newMessage]);
     });
 
-    // Cleanup function to clear intervals when component unmounts
     return () => {
-      clearInterval(simulateWebSocket);
+      clearInterval(intervalId);
     };
   }, []);
 
-  // Função para exibir o modal
   const handleClickMessages = () => {
     setShowModal(!showModal);
   };
-  
+
   const handleCloseModal = () => {
-    setShowModal(!showModal);
+    setShowModal(false);
     setNotifications([]);
   };
 
   const handleRejectNotification = (index) => {
-    setNotifications((prevNotifications) =>
+    setNotifications(prevNotifications =>
       prevNotifications.filter((_, i) => i !== index)
     );
   };
 
   const handleAcceptNotification = async (index) => {
+    const queryString = new URLSearchParams({ chatid: notifications[index].chatid }).toString();  
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          username: userData.data.username,
+          hostid: userData.data.hostid,
+          chatid: notifications[index].chatid 
+        }),
+      });
 
-      const queryString = new URLSearchParams(notifications[index].chatid ,userData).toString();  
-        try {
-          const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              username: userData.data.username,
-              hostid: userData.data.hostid,
-              chatid: notifications[index].chatid 
-            }),
-          });
-  
-          if (!response.ok) {
-            throw new Error('Erro ao enviar os dados');
-          }
-  
-          navigate(`/chatroom?${queryString}`);
-        } catch (error) {
-          console.error('Erro:', error.message);
-        }
-  
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+
+      navigate(`/chatroom?${queryString}`);
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
   };
 
-  
   return (
     <div className="top-header">
-      <div onClick={handleClickMessages} >
-        <p  className="messages">
+      <div onClick={handleClickMessages}>
+        <p className="messages">
           Messages {
             notifications.length > 0 && (
               <b className="notification-count">{notifications.length}</b>
             )
           }
         </p>
-        
+
         {showModal && (
           <div className="modal">
             <div className="modal-content">
-              <span className="close" onClick={() => {handleCloseModal()}}>&times;</span>
+              <span className="close" onClick={handleCloseModal}>&times;</span>
               <h2>Notifications</h2>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
@@ -142,7 +134,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
                       onClick={() => handleAcceptNotification(index)}
-                      
                     >
                       Aceitar
                     </button>
@@ -161,18 +152,19 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
           </div>
         )}
       </div>
-      
-      <div style={{marginRight: "10px"}}>
+
+      <div style={{ marginRight: "10px" }}>
         <p onClick={handleLogout}>Logout</p>
       </div>
     </div>
   );
-}
+};
 
-const ChatTable = ({ userData, setUserData, setChats, chats }) => {
-const navigate = useNavigate();
+// ChatTable Component
+const ChatTable = ({ userData, setChats, chats }) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    
     const fetchChats = async () => {
       try {
         const response = await fetch('https://marichat-go-xtcz.onrender.com/chatrooms', {
@@ -180,7 +172,7 @@ const navigate = useNavigate();
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+          body: JSON.stringify({ hostid: userData.data.hostid }),
         });
 
         if (!response.ok) {
@@ -195,7 +187,7 @@ const navigate = useNavigate();
     };
 
     fetchChats();
-  }, [chats]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  }, [userData.data.hostid]);
 
   const handleChat = (chat) => {
     const queryString = new URLSearchParams(chat).toString();  
@@ -212,14 +204,12 @@ const navigate = useNavigate();
             hostid: userData.data.hostid,
             chatid: chat.chatid 
           }),
-          
         });
 
         if (!response.ok) {
-         
           throw new Error('Erro ao enviar os dados');
         }
-            
+
         navigate(`/chatroom?${queryString}`);
       } catch (error) {
         console.error('Erro:', error.message);
@@ -229,29 +219,25 @@ const navigate = useNavigate();
     addUserToChat();
   };
 
-  const removeChat = async (chat, userData) => { 
-    console.log("hostid:", userData.data.hostid,"chatid:", chat.chatid )
-      try {
-        
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/deletechat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({             
-            hostid: userData.data.hostid,
-            chatid: chat.chatid 
-          }),
-          
-        });
-      
-        if (!response.ok) {
-          throw new Error('Erro ao enviar os dados');
-        }  
-      } catch (error) {
-        console.error('Erro:', error.message);
-      }
-      
+  const removeChat = async (chat) => { 
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/deletechat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({             
+          hostid: userData.data.hostid,
+          chatid: chat.chatid 
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }  
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
   };
 
   return (
@@ -272,7 +258,7 @@ const navigate = useNavigate();
               <td>{chat.chatid}</td>
               <td>
                 <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
-                <button onClick={() => removeChat(chat,userData)} className="red-button">Remover</button>
+                <button onClick={() => removeChat(chat)} className="red-button">Remover</button>
               </td>
             </tr>
           ))}
@@ -283,33 +269,26 @@ const navigate = useNavigate();
   );
 };
 
-// App
+// Dashboard Component
 const Dashboard = () => {
   const { userData, setUserData, setChats, chats } = useContext(ChatContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate(`/`)
+    navigate(`/`);
   };
-
 
   return (
     <div>
-      <TopHeader handleLogout={handleLogout} user={userData} navigate={navigate}/>
+      <TopHeader handleLogout={handleLogout} userData={userData} navigate={navigate}/>
       <div className="app">
-        <Sidebar user={userData} chats={chats} />
+        <Sidebar user={userData} />
         <div className="container">
-        <div className="containerchat">
-          <div className="createChat">
-            <EnterRoom />
+          <div className="containerchat">
+            {/* Substitua com os componentes EnterRoom e CreateChat conforme necessário */}
           </div>
-          <div className="createChat">
-            <CreateChat setChats={setChats} />
-            
-          </div>
-        </div>
-          <div className="">
-            <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
+          <div>
+            <ChatTable userData={userData} setChats={setChats} chats={chats} />
           </div>
         </div>
       </div>
@@ -317,4 +296,16 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+// Exemplo de implementação de App.js
+const App = () => {
+  const [userData, setUserData] = useState({});
+  const [chats, setChats] = useState([]);
+
+  return (
+    <ChatContext.Provider value={{ userData, setUserData, setChats, chats }}>
+      <Dashboard />
+    </ChatContext.Provider>
+  );
+};
+
+export default App;
