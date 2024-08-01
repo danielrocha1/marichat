@@ -62,7 +62,7 @@ const simulateWebSocket = (callback) => {
 const TopHeader = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  
+
   console.log("userData no TopHeader:", userData);
 
   // Simula a recepção de mensagens pelo WebSocket
@@ -313,7 +313,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <TopHeader handleLogout={handleLogout} user={userData} navigate={navigate}/>
+      <TopHeader handleLogout={handleLogout} userData={userData} navigate={navigate}/>
       <div className="app">
         <Sidebar user={userData} chats={chats} />
         <div className="container">
