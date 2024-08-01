@@ -93,16 +93,17 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
 
   const handleAcceptNotification = async ({ index, userData }) => {
     // Corrigido para criar a query string de forma adequada
-    const queryString = new URLSearchParams({
+     console.log(queryString);
+    console.log(userData.data.hostid);
+    console.log(userData);
+    
+  const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
         username: userData.data.username,
         hostid: userData.data.hostid
     }).toString();
   
-    console.log(queryString);
-    console.log(userData.data.hostid);
-    console.log(userData);
-  
+   
     try {
         const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
             method: 'POST',
