@@ -62,6 +62,8 @@ const simulateWebSocket = (callback) => {
 const TopHeader = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  
+  console.log("userData no TopHeader:", userData);
 
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
@@ -74,6 +76,13 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       clearInterval(simulateWebSocket);
     };
   }, []);
+
+
+  useEffect(() => {
+    console.log("userData no TopHeader:", userData);
+  }, [userData]);
+
+
 
   // Função para exibir o modal
   const handleClickMessages = () => {
@@ -94,7 +103,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   const handleAcceptNotification = async ({ index, userData }) => {
     // Corrigido para criar a query string de forma adequada
     //console.log(queryString);
-    console.log(userData.data.hostid);
+    
     console.log(userData);
 
   const queryString = new URLSearchParams({
