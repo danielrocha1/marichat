@@ -91,7 +91,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     );
   };
 
-  const handleAcceptNotification = async (index) => {
+  const handleAcceptNotification = async (index, userData) => {
 
     const queryString = new URLSearchParams(notifications[index].chatid, userData ).toString();  
     console.log(queryString)
@@ -142,7 +142,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                     {notification.text}
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
-                      onClick={() => handleAcceptNotification(index)}
+                      onClick={() => handleAcceptNotification(index, userData)}
                       
                     >
                       Aceitar
