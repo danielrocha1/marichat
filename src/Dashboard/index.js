@@ -78,12 +78,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   }, []);
 
 
-  useEffect(() => {
-    console.log("userData no TopHeader:", userData);
-  }, [userData]);
-
-
-
   // Função para exibir o modal
   const handleClickMessages = () => {
     setShowModal(!showModal);
@@ -104,7 +98,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     // Corrigido para criar a query string de forma adequada
     //console.log(queryString);
     
-    console.log(userData);
+    console.log(notifications[index].chatid, "AU",notifications[index]);
 
   const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
