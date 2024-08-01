@@ -59,7 +59,7 @@ const simulateWebSocket = (callback) => {
   }, 5000);
 };
 
-const TopHeader = ({ handleLogout }) => {
+const TopHeader = ({userData, handleLogout }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -92,7 +92,7 @@ const TopHeader = ({ handleLogout }) => {
   };
 
   const handleAcceptNotification = async (index) => {
-
+    const navigate = useNavigate();
       const queryString = new URLSearchParams(notifications[index].chatid ,userData).toString();  
         try {
           const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
@@ -295,7 +295,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <TopHeader handleLogout={handleLogout} />
+      <TopHeader handleLogout={handleLogout} user={userData}/>
       <div className="app">
         <Sidebar user={userData} chats={chats} />
         <div className="container">
