@@ -114,7 +114,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             throw new Error('Erro ao enviar os dados');
           }
   
-          navigate(`/chatroom?${queryString}`);
+        //  navigate(`/chatroom?${queryString}`);
         } catch (error) {
           console.error('Erro:', error.message);
         }
