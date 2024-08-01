@@ -63,8 +63,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  console.log("userData no TopHeader:", notifications);
-
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
     simulateWebSocket((newMessage) => {
@@ -98,7 +96,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     // Corrigido para criar a query string de forma adequada
     //console.log(queryString);
     
-    console.log(notifications[index].chatid, "AU",notifications[index]);
+    console.log(notifications[index]);
 
   const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
