@@ -65,13 +65,36 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
 
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
-    simulateWebSocket((newMessage) => {
-      setNotifications(prev => [...prev, newMessage]);
-    });
+    // Função para configurar o WebSocket
+    const setupWebSocket = () => {
+      // Substitua 'ws://example.com/socket' pela URL do seu WebSocket
+      const socket = new WebSocket('wss://marichat-go-xtcz.onrender.com/websocket');
 
-    // Cleanup function to clear intervals when component unmounts
+      // Função para lidar com novas mensagens do WebSocket
+      socket.onmessage = (event) => {
+        const newMessage = JSON.parse(event.data);
+        setNotifications(prev => [...prev, newMessage]);
+      };
+
+      // Função para lidar com erros
+      socket.onerror = (error) => {
+        console.error('WebSocket Error:', error);
+      };
+
+      // Função para lidar quando a conexão WebSocket é fechada
+      socket.onclose = () => {
+        console.log('WebSocket closed');
+      };
+
+      return socket;
+    };
+
+    // Configura o WebSocket
+    const socket = setupWebSocket();
+
+    // Cleanup function to close WebSocket when component unmounts
     return () => {
-      clearInterval(simulateWebSocket);
+      socket.close();
     };
   }, []);
 
