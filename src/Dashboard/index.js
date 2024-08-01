@@ -63,7 +63,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  console.log("userData no TopHeader:", userData);
+  console.log("userData no TopHeader:", notifications);
 
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
