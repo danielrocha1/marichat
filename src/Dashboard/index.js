@@ -94,6 +94,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   const handleAcceptNotification = async (index) => {
 
     const queryString = new URLSearchParams({ chatid: notifications[index].chatid, userData }).toString();  
+    console.log(queryString)
         try {
           const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
             method: 'POST',
