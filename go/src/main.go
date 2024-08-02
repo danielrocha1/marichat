@@ -1190,7 +1190,7 @@ func main() {
 		// Definição da instrução SQL para adicionar a restrição de unicidade
 		alterTableStmt := `
 			ALTER TABLE userinfo
-			ADD CONSTRAINT unique_hostid UNIQUE (hostid);
+			ADD CONSTRAINT hostid UNIQUE (hostid);
 		`
 
 		// Executar a instrução SQL no banco de dados
