@@ -1097,6 +1097,94 @@ func main() {
 		// Retornar resposta de sucesso
 		return c.SendStatus(fiber.StatusCreated)
 	})
+
+	app.Post("/friendshiptables", func(c *fiber.Ctx) error {
+		// Definição das tabelas e colunas diretamente no código
+		tables := []struct {
+			name    string
+			columns []struct {
+				name       string
+				dataType   string
+				isAutoInc  bool
+				isNullable bool
+			}
+		}{
+			{
+				name: "friendships",
+				columns: []struct {
+					name       string
+					dataType   string
+					isAutoInc  bool
+					isNullable bool
+				}{
+					{name: "id", dataType: "SERIAL", isAutoInc: true, isNullable: false},
+					{name: "hostid1", dataType: "VARCHAR(255)", isAutoInc: false, isNullable: false},
+					{name: "hostid2", dataType: "VARCHAR(255)", isAutoInc: false, isNullable: false},
+					{name: "status", dataType: "VARCHAR(20)", isAutoInc: false, isNullable: false},
+					{name: "created_at", dataType: "TIMESTAMP", isAutoInc: false, isNullable: true},
+					{name: "updated_at", dataType: "TIMESTAMP", isAutoInc: false, isNullable: true},
+				},
+			},
+		}
+
+		// Iterar sobre as definições de tabela e criar cada uma no banco de dados
+		for _, table := range tables {
+			// Construir a declaração CREATE TABLE
+			var createTableStmt strings.Builder
+			createTableStmt.WriteString("CREATE TABLE IF NOT EXISTS ")
+			createTableStmt.WriteString(table.name)
+			createTableStmt.WriteString(" (")
+
+			// Iterar sobre as colunas da tabela
+			for i, col := range table.columns {
+				createTableStmt.WriteString(col.name)
+				createTableStmt.WriteString(" ")
+				createTableStmt.WriteString(col.dataType)
+
+				// Definir auto incremento se necessário
+				if col.isAutoInc {
+					createTableStmt.WriteString(" SERIAL")
+				}
+
+				// Definir NOT NULL se a coluna não permitir nulos
+				if !col.isNullable {
+					createTableStmt.WriteString(" NOT NULL")
+				}
+
+				// Adicionar vírgula para separar as colunas
+				if i < len(table.columns)-1 {
+					createTableStmt.WriteString(", ")
+				}
+			}
+
+			// Adicionar chave primária se a tabela tiver coluna 'id'
+			for _, col := range table.columns {
+				if col.name == "id" {
+					createTableStmt.WriteString(", PRIMARY KEY (id)")
+					break
+				}
+			}
+
+			// Adicionar chaves estrangeiras para 'hostid1' e 'hostid2'
+			createTableStmt.WriteString(", CONSTRAINT fk_hostid1 FOREIGN KEY (hostid1) REFERENCES userinfo (hostid) ON DELETE CASCADE")
+			createTableStmt.WriteString(", CONSTRAINT fk_hostid2 FOREIGN KEY (hostid2) REFERENCES userinfo (hostid) ON DELETE CASCADE")
+
+			// Adicionar restrição de unicidade para o par de hostids
+			createTableStmt.WriteString(", CONSTRAINT unique_pair UNIQUE (hostid1, hostid2)")
+
+			// Fechar a declaração CREATE TABLE
+			createTableStmt.WriteString(")")
+
+			// Executar a declaração CREATE TABLE no banco de dados
+			_, err := db.Exec(createTableStmt.String())
+			if err != nil {
+				return err
+			}
+		}
+
+		// Retornar resposta de sucesso
+		return c.SendStatus(fiber.StatusCreated)
+	})
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 

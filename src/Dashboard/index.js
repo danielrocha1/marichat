@@ -116,12 +116,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   };
 
   const handleAcceptNotification = async ( index, userData ) => {
-    // Corrigido para criar a query string de forma adequada
-    //console.log(queryString);
-    
-    console.log(notifications);
-    console.log(index);
-
+   
 
   const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
