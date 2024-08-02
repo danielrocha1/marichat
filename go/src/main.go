@@ -1181,6 +1181,17 @@ func main() {
 		return c.SendStatus(fiber.StatusCreated)
 	})
 
+	app.Delete("/drop-userinfo", func(c *fiber.Ctx) error {
+        // Executar o comando DROP TABLE
+        _, err := db.Exec("DROP TABLE IF EXISTS userinfo")
+        if err != nil {
+            return c.Status(fiber.StatusInternalServerError).SendString(fmt.Sprintf("Failed to drop table: %v", err))
+        }
+
+        // Responder com sucesso
+        return c.SendString("Table userinfo dropped successfully.")
+    })
+
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 
