@@ -199,7 +199,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   );
 }
 
-const ChatTable = ({ userData, setUserData, setChats, chats }) => {
+const ChatTable = ({ userData, setChats, chats }) => {
 const navigate = useNavigate();
   useEffect(() => {
     
@@ -227,6 +227,7 @@ const navigate = useNavigate();
     fetchChats();
   }, [chats]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
+   
   const handleChat = (chat) => {
     const queryString = new URLSearchParams(chat).toString();  
     const addUserToChat = async () => {
@@ -313,6 +314,111 @@ const navigate = useNavigate();
   );
 };
 
+
+
+
+
+const PublicChatTable = ({ userData }) => {
+  const [publicChats, setPublicChats] = useState([]);
+  const navigate = useNavigate();
+    useEffect(() => {
+      
+      const fetchChats = async () => {
+        try {
+          const response = await fetch('https://marichat-go-xtcz.onrender.com/publicchatrooms', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+          });
+  
+          if (!response.ok) {
+            throw new Error('Erro ao enviar os dados');
+          }
+  
+          const data = await response.json();
+          setPublicChats(data);
+        } catch (error) {
+          console.error('Erro:', error.message);
+        }
+      };
+  
+      fetchChats();
+    }, [publicChats]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  
+     
+    const handleChat = (chat) => {
+      const queryString = new URLSearchParams(chat).toString();  
+      const addUserToChat = async () => {
+        try {
+          const response = await fetch('https://marichat-go-xtcz.onrender.com/enterroom', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+              chatname: chat.chatname,
+              username: userData.data.username,
+              hostid: userData.data.hostid,
+              chatid: chat.chatid 
+            }),
+            
+          });
+  
+          if (!response.ok) {
+           
+            throw new Error('Erro ao enviar os dados');
+          }
+              
+          navigate(`/chatroom?${queryString}`);
+        } catch (error) {
+          console.error('Erro:', error.message);
+        }
+      };
+  
+      addUserToChat();
+    };
+  
+  
+    return (
+      <div className="">
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome do Chat</th>
+                <th>Chat ID</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+            {publicChats && publicChats.map((chat) => (
+              <tr key={chat.chatid}>
+                <td>{chat.chatname}</td>
+                <td>{chat.chatid}</td>
+                <td>
+                  <button onClick={() => handleChat(chat)} className="blue-button">Entrar</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+  
+
+
+
+
+
+
+
+
+
+
 // App
 const Dashboard = () => {
   const { userData, setUserData, setChats, chats } = useContext(ChatContext);
@@ -340,6 +446,9 @@ const Dashboard = () => {
         </div>
           <div className="">
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
+          </div>
+          <div className="">
+            <PublicChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
         </div>
       </div>

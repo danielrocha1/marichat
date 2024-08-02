@@ -396,6 +396,63 @@ func main() {
 		return c.JSON(chatroomsFiltered)
 	})
 
+	app.Post("/publicchatrooms", func(c *fiber.Ctx) error {
+		var requestData struct {
+			HostID string `json:"hostid"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Failed to parse request body",
+			})
+		}
+
+		type Chatroom struct {
+			ID       string `json:"id"`
+			RoomName string `json:"chatname"`
+			ChatID   string `json:"chatid"`
+			HostID   string `json:"hostid"`
+			Active   bool   `json:"active"`
+			
+		}
+
+		var chatrooms []Chatroom
+
+		rows, err := db.Query("SELECT id, chatname, chatid, hostid, active FROM Chatrooms WHERE private = $1", false)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to query database",
+			})
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			var chatroom Chatroom
+			err := rows.Scan(&chatroom.ID, &chatroom.RoomName, &chatroom.ChatID, &chatroom.HostID, &chatroom.Active)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to scan row from database",
+				})
+			}
+			chatrooms = append(chatrooms, chatroom)
+		}
+
+		if err := rows.Err(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Error iterating over rows",
+			})
+		}
+
+		// Filter chatrooms by hostid
+		chatroomsFiltered := make([]Chatroom, 0)
+		for _, chatroom := range chatrooms {
+			if chatroom.HostID == requestData.HostID {
+				chatroomsFiltered = append(chatroomsFiltered, chatroom)
+			}
+		}
+
+		return c.JSON(chatroomsFiltered)
+	})
+
 	app.Post("/addUser", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var user Users
