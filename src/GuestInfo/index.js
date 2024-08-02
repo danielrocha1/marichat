@@ -1,10 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
-import avataaars from '../Dashboard/ImageHost/av.png'
-import guestAvatar from './guestAvatar.png'; // Importe a imagem corretamente
+
+
+const Modal = ({ isOpen, onClose, onExpel, onAddFriend }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="close-btn" onClick={onClose}>X</button>
+        <div className="modal-options">
+          <button className="modal-option" onClick={onExpel}>Expulsar do Chat</button>
+          <button className="modal-option" onClick={onAddFriend}>Adicionar como Amigo</button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const GuestInfo = (props) => {
   const [isTyping, setIsTyping] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleExpel = () => {
+    // Lógica para expulsar do chat
+    console.log('Expulsar do chat');
+    closeModal();
+  };
+
+  const handleAddFriend = () => {
+    // Lógica para adicionar como amigo
+    console.log('Adicionar como amigo');
+    closeModal();
+  };
+
 
   // Atualiza o estado de "isTyping" quando a propriedade muda
   useEffect(() => {
@@ -35,20 +67,27 @@ const GuestInfo = (props) => {
   };
 
   return (
-    <div  id={`${props.hostid}`} className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
-  {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser()}>
+    <div id={`${props.hostid}`} className="box">
+      {props.name === "Daniel" ? ' ' : (
+        <div className="options" onClick={openModal}>
           <div className="bar1"></div>
           <div className="bar2"></div>
           <div className="bar3"></div>
         </div>
-      }
+      )}
       <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
         <img src={props.photo} className="guestPhoto" alt="logo" />
-        <div className="">
+        <div className="guestInfo">
           <p className="guestName">{props.name}</p>
           {isTyping && <p className="typingIndicator">Digitando...</p>}
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onExpel={handleExpel}
+        onAddFriend={handleAddFriend}
+      />
     </div>
   );
 }
