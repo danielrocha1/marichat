@@ -69,7 +69,7 @@ const GuestInfo = (props) => {
   return (
     <div id={`${props.hostid}`} className="box">
       {props.name === "Daniel" ? ' ' : (
-        <div className="options" onClick={openModal}>
+        <div className="kick" onClick={openModal}>
           <div className="bar1"></div>
           <div className="bar2"></div>
           <div className="bar3"></div>

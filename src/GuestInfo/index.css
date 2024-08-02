@@ -76,3 +76,94 @@
     font-size: 13px;
   }
 }
+
+
+/* Estilos para o componente principal */
+.box {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+}
+
+
+.bar1, .bar2, .bar3 {
+  width: 25px;
+  height: 3px;
+  background: black;
+  margin: 5px;
+}
+
+.guestBox {
+  display: flex;
+  align-items: center;
+}
+
+.guestPhoto {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.guestInfo {
+  margin-left: 10px;
+}
+
+.guestName {
+  margin: 0;
+}
+
+.typingIndicator {
+  margin: 0;
+  font-style: italic;
+}
+
+/* Estilos para o Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  width: 300px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-option {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-option:hover {
+  background-color: #0056b3;
+}
