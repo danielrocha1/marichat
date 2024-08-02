@@ -192,8 +192,8 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
         )}
       </div>
       
-      <div style={{marginRight: "10px"}}>
-        <p onClick={handleLogout}>Logout</p>
+      <div onClick={handleLogout} style={{marginRight: "10px"}}>
+        <p >Logout</p>
       </div>
     </div>
   );
