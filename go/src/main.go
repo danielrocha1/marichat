@@ -1141,11 +1141,6 @@ func main() {
 				createTableStmt.WriteString(" ")
 				createTableStmt.WriteString(col.dataType)
 
-				// Definir auto incremento se necessário
-				if col.isAutoInc {
-					createTableStmt.WriteString(" GENERATED ALWAYS AS IDENTITY")
-				}
-
 				// Definir NOT NULL se a coluna não permitir nulos
 				if !col.isNullable {
 					createTableStmt.WriteString(" NOT NULL")
@@ -1185,6 +1180,7 @@ func main() {
 		// Retornar resposta de sucesso
 		return c.SendStatus(fiber.StatusCreated)
 	})
+
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 
