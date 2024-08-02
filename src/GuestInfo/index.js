@@ -37,8 +37,11 @@ const GuestInfo = (props) => {
   return (
     <div  id={`${props.hostid}`} className="box" style={{ flex: "row", display: "flex", marginTop: "5px" }}>
   {props.name === "Daniel" ? ' ' : <div className="kick" onClick={() => kickUser()}>
-        <p style={{ marginTop: "35px" }}>X</p>
-      </div> }
+          <div className="bar1"></div>
+          <div className="bar2"></div>
+          <div className="bar3"></div>
+        </div>
+      }
       <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
         <img src={props.photo} className="guestPhoto" alt="logo" />
         <div className="">
