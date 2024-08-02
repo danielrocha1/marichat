@@ -1098,7 +1098,7 @@ func main() {
 		return c.SendStatus(fiber.StatusCreated)
 	})
 
-	app.Post("/friendshiptables", func(c *fiber.Ctx) error {
+	app.Post("/create-tables", func(c *fiber.Ctx) error {
 		// Definição das tabelas e colunas diretamente no código
 		tables := []struct {
 			name    string
@@ -1117,7 +1117,7 @@ func main() {
 					isAutoInc  bool
 					isNullable bool
 				}{
-					{name: "id", dataType: "SERIAL", isAutoInc: true, isNullable: false},
+					{name: "id", dataType: "INTEGER", isAutoInc: true, isNullable: false},
 					{name: "hostid1", dataType: "VARCHAR(255)", isAutoInc: false, isNullable: false},
 					{name: "hostid2", dataType: "VARCHAR(255)", isAutoInc: false, isNullable: false},
 					{name: "status", dataType: "VARCHAR(20)", isAutoInc: false, isNullable: false},
@@ -1143,7 +1143,7 @@ func main() {
 
 				// Definir auto incremento se necessário
 				if col.isAutoInc {
-					createTableStmt.WriteString(" SERIAL")
+					createTableStmt.WriteString(" GENERATED ALWAYS AS IDENTITY")
 				}
 
 				// Definir NOT NULL se a coluna não permitir nulos
