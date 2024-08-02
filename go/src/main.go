@@ -1098,7 +1098,7 @@ func main() {
 		return c.SendStatus(fiber.StatusCreated)
 	})
 
-	app.Post("/create-tables", func(c *fiber.Ctx) error {
+	app.Post("/friendships-tables", func(c *fiber.Ctx) error {
 		// Definição das tabelas e colunas diretamente no código
 		tables := []struct {
 			name    string
