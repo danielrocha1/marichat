@@ -433,6 +433,7 @@ func main() {
 					"error": "Failed to scan row from database",
 				})
 			}
+			fmt.Println(chatroom)
 			chatrooms = append(chatrooms, chatroom)
 		}
 
@@ -443,14 +444,8 @@ func main() {
 		}
 
 		// Filter chatrooms by hostid
-		chatroomsFiltered := make([]Chatroom, 0)
-		for _, chatroom := range chatrooms {
-			if chatroom.HostID == requestData.HostID {
-				chatroomsFiltered = append(chatroomsFiltered, chatroom)
-			}
-		}
 
-		return c.JSON(chatroomsFiltered)
+		return c.JSON(chatrooms)
 	})
 
 	app.Post("/addUser", func(c *fiber.Ctx) error {
