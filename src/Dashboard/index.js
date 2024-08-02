@@ -447,8 +447,9 @@ const Dashboard = () => {
           <div className="">
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
-          <h1>Chats Públicos</h1>
+         
           <div className="">
+            <h1>Chats Públicos</h1>
             <PublicChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
         </div>
