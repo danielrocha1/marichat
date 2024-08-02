@@ -1191,7 +1191,27 @@ func main() {
         // Responder com sucesso
         return c.SendString("Table userinfo dropped successfully.")
     })
+	
+	app.Post("/create-userinfo", func(c *fiber.Ctx) error {
+        createTableSQL := `
+        CREATE TABLE IF NOT EXISTS userinfo (
+            id SERIAL PRIMARY KEY,
+            hostid VARCHAR(255) UNIQUE NOT NULL,
+            fullname VARCHAR(255) NOT NULL,
+            username VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            birthdate DATE NOT NULL
+        );
+        `
 
+        _, err := db.Exec(createTableSQL)
+        if err != nil {
+            return c.Status(fiber.StatusInternalServerError).SendString(fmt.Sprintf("Failed to create table: %v", err))
+        }
+
+        return c.SendString("Table 'userinfo' created successfully.")
+    })
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 
