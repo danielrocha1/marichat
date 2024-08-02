@@ -1185,6 +1185,23 @@ func main() {
 		// Retornar resposta de sucesso
 		return c.SendStatus(fiber.StatusCreated)
 	})
+
+	app.Get("/uniqueConstraint", func(c *fiber.Ctx) error {
+		// Definição da instrução SQL para adicionar a restrição de unicidade
+		alterTableStmt := `
+			ALTER TABLE userinfo
+			ADD CONSTRAINT unique_hostid UNIQUE (hostid);
+		`
+
+		// Executar a instrução SQL no banco de dados
+		_, err := db.Exec(alterTableStmt)
+		if err != nil {
+			return err
+		}
+
+		// Retornar resposta de sucesso
+		return c.SendStatus(fiber.StatusOK)
+	})
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 
