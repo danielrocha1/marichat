@@ -6,8 +6,8 @@ const Modal = ({ isOpen, onClose, onExpel, onAddFriend }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay1">
+      <div className="modal-content1">
         <button className="close-btn" onClick={onClose}>X</button>
         <div className="modal-options">
           <button className="modal-option" onClick={onExpel}>Expulsar do Chat</button>
