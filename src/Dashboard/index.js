@@ -190,7 +190,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
           </div>
         )}
       </div>
-      <p  className="messages">
+      <p  className="friend">
           FriendRequest {
             notifications.length > 0 && (
               <b className="notification-count">{notifications.length}</b>
