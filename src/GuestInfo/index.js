@@ -102,6 +102,7 @@ const GuestInfo = (props) => {
       </div>
       <Modal
         isOpen={isModalOpen}
+        onExpel={handleExpel}
         onAddFriend={handleAddFriend}
       />
     </div> : (
@@ -120,7 +121,6 @@ const GuestInfo = (props) => {
       </div>
       <Modal
         isOpen={isModalOpen}
-        onExpel={handleExpel}
         onAddFriend={handleAddFriend}
       />
     </div>
