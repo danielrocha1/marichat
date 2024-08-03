@@ -310,6 +310,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             <h2>Friend Request's</h2>
             {friendRequests?.length ? (
               friendRequests.map((user, index) => {
+                console.log("User:", user); // Adicione este log para verificar cada usuário
                 return (
                   <div key={index} className="notification">
                     <p>{user?.name}</p>
