@@ -84,7 +84,7 @@
 
 
 .bar1, .bar2, .bar3 {
-background-color: #ebebeb;
+  background-color: #ebebeb;
   height: 4px;
   margin: 8px;
   transition: .4s;
@@ -125,6 +125,7 @@ background-color: #ebebeb;
   border-radius: 5px;
   z-index: 1000; /* Ensures modal is above other content */
   transition: background-color 0.3s ease; /* Smooth transition for background-color */
+  top: 0.3vh;
 }
 
 .modal-content1 {
@@ -135,8 +136,8 @@ background-color: #ebebeb;
 
 .close-btn {
   position: absolute;
-  top: -3vh;
-  right: -25px;
+  top: 6vh;
+  right: -22px;
   background: rgb(64, 64, 202);
   border: none;
   font-size: 20px;
@@ -151,7 +152,7 @@ background-color: #ebebeb;
 .modal-option {
   display: block;
   margin: 4px;
-  padding: 8px;
+  padding: 4px;
   width: 13vw;
   border: none;
   background-color: #007bff;
