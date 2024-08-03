@@ -151,9 +151,9 @@
 
 .modal-option {
   display: block;
-  margin: 10px 0;
-  padding: 10px;
-  width: 100%;
+  margin: 4px;
+  padding: 8px;
+  width: 22vw;
   border: none;
   background-color: #007bff;
   color: white;
