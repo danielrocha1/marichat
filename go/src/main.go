@@ -259,13 +259,10 @@ func main() {
 				})
 			}
 		}
-	
-		response := Response{
-			Users: users,
-		}
+
 	
 		// Retornar os detalhes dos usuários como JSON
-		return c.JSON(response)
+		return c.JSON(users)
 	})
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
