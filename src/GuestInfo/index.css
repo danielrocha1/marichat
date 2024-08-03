@@ -121,31 +121,26 @@
 
 .modal-overlay1 {
   position: absolute;
-  top: 100%; /* Position directly below the messages div */
   background: transparent; /* Transparent background */
   border: 1px solid #ddd;
   border-radius: 5px;
-  width: 27vw;
   z-index: 1000; /* Ensures modal is above other content */
   transition: background-color 0.3s ease; /* Smooth transition for background-color */
 }
 
 .modal-content1 {
   background: #0056b3;
-  
-  max-height: 30vh;
-  overflow-y: auto;
   position: relative;
 }
 
 
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
+  top: -3vh;
+  right: -25px;
+  background: rgb(64, 64, 202);
   border: none;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
 }
 
