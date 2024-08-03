@@ -2,7 +2,7 @@
 .kick {
   display: none; /* Inicialmente, esconde o elemento */
   border-radius: 5px 0px 0px 5px;
-  background-color: red;
+  background-color: rgb(4, 38, 189);
   cursor: pointer;
 }
 
@@ -13,7 +13,7 @@
 
 /* Estilo quando .kick está em estado de hover */
 .kick:hover {
-  background-color: rgb(145, 3, 3);
+  background-color: rgb(3, 20, 145);
 }
 
 /* Estilo dos elementos .guestBox */
