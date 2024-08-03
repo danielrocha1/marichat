@@ -65,6 +65,36 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   const [showFriendModal, setShowFriendModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
 
+  useEffect(() => {
+      
+    const fetchRequest = async () => {
+      try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectfriendRequest', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        const data = await response.json();
+        setFriendRequests(data);
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+    };
+
+    fetchRequest();
+  }, [friendRequests]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+
+
+
+
+
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
     // Função para configurar o WebSocket
