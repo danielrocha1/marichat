@@ -84,7 +84,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
         const data = await response.json();
         
         setFriendRequests(data);
-        console.log(friendRequests)
+        
       } catch (error) {
         console.error('Erro:', error.message);
       }
