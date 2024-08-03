@@ -216,6 +216,7 @@ function ChatRoom() {
                         key={index}
                         name={user.username}
                         roomname={user.chatRoom}
+                        chat={chat}
                         chatid={user.chatid}
                         photo={`data:image/*;base64,${user.photo}`}  // Passando a imagem base64 como propriedade
                       />
