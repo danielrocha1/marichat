@@ -272,7 +272,6 @@ func main() {
 		}
 	
 		response := Response{
-			FriendRequests: requests,
 			Users:          users,
 		}
 	
