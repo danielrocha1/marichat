@@ -65,7 +65,7 @@ const GuestInfo = (props) => {
     }
   };
 
-  const kickUser = async ({userData}) => {
+  const kickUser = async () => {
     console.log(props.hostid, userData.data.hostid)
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/kickuser', {
