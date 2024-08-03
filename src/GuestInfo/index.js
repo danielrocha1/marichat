@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './index.css';
 
 
-const Modal = ({ isOpen, onClose, onExpel, onAddFriend }) => {
+const Modal = ({ isOpen, onExpel, onAddFriend }) => {
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay1">
       <div className="modal-content1">
-        <button className="close-btn" onClick={onClose}>X</button>
         <div className="modal-options">
           <button className="modal-option" onClick={onExpel}>Expulsar do Chat</button>
           <button className="modal-option" onClick={onAddFriend}>Adicionar como Amigo</button>
@@ -22,19 +21,18 @@ const GuestInfo = (props) => {
   const [isTyping, setIsTyping] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = () => setIsModalOpen(!isModalOpen);
 
   const handleExpel = () => {
     // Lógica para expulsar do chat
     console.log('Expulsar do chat');
-    closeModal();
+    setIsModalOpen(false)
   };
 
   const handleAddFriend = () => {
     // Lógica para adicionar como amigo
     console.log('Adicionar como amigo');
-    closeModal();
+    setIsModalOpen(false)
   };
 
 
