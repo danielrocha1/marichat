@@ -82,7 +82,6 @@ const GuestInfo = (props) => {
       </div>
       <Modal
         isOpen={isModalOpen}
-        onClose={closeModal}
         onExpel={handleExpel}
         onAddFriend={handleAddFriend}
       />
