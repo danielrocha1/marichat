@@ -121,7 +121,7 @@
 
 .modal-overlay1 {
   position: absolute;
-  background: transparent; /* Transparent background */
+  background:  #2a79cc; /* Transparent background */
   border: 1px solid #ddd;
   border-radius: 5px;
   z-index: 1000; /* Ensures modal is above other content */
@@ -136,8 +136,7 @@
 
 .close-btn {
   position: absolute;
-  top: -3vh;
-  right: -25px;
+  right: -1.6vw;
   background: rgb(64, 64, 202);
   border: none;
   font-size: 20px;
