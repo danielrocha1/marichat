@@ -308,14 +308,13 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             <div className="modal-content">
               <span className="close" onClick={() => {handleFriendModal()}}>&times;</span>
               <h2>Friend Request's</h2>
-              {friendRequests !== null ? (
+              {friendRequests?.length ? (
                 friendRequests.map((notification, index) => (
                   <div key={index} className="notification">
                     {notification.text}
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
                       onClick={() => handleAcceptRequest(index, userData)}
-                      
                     >
                       Aceitar
                     </button>
