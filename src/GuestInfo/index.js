@@ -84,7 +84,7 @@ const GuestInfo = (props) => {
 
   return (
     <div id={`${props.hostid}`} className="box">
-      {props.hostid !== userData.data.hostid ? ' ' : (
+      {props.hostid === userData.data.hostid ? ' ' : (
         <div className="kick" onClick={openModal}>
           <div className="Bar1"></div>
           <div className="Bar2"></div>
