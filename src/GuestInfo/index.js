@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import ChatContext from '../ChatContext';
 import './index.css';
-
 
 const Modal = ({ isOpen, onExpel, onAddFriend }) => {
   if (!isOpen) return null;
@@ -18,30 +18,27 @@ const Modal = ({ isOpen, onExpel, onAddFriend }) => {
 };
 
 const GuestInfo = (props) => {
+  const { userData } = useContext(ChatContext);
   const [isTyping, setIsTyping] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(!isModalOpen);
 
-  const handleExpel = () => {
-    // Lógica para expulsar do chat
-    kickUser()
-    setIsModalOpen(false)
+  const handleExpel = async () => {
+    await kickUser();
+    setIsModalOpen(false);
   };
 
-  const handleAddFriend = () => {
-    // Lógica para adicionar como amigo
-    console.log('Adicionar como amigo');
-    setIsModalOpen(false)
+  const handleAddFriend = async () => {
+    await sendFriendRequest();
+    setIsModalOpen(false);
   };
 
-
-  // Atualiza o estado de "isTyping" quando a propriedade muda
   useEffect(() => {
     setIsTyping(props.isTyping);
   }, [props.isTyping]);
 
-  const FriendRequest = async () => {
+  const sendFriendRequest = async () => {
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/friendRequest', {
         method: 'POST',
@@ -53,7 +50,7 @@ const GuestInfo = (props) => {
           "hostid2": props.hostid,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
@@ -70,13 +67,13 @@ const GuestInfo = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username":props.name,
+          "username": props.name,
           "hostid": props.hostid,
           "chatid": props.chatid,
           "roomname": props.roomname,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
       }
@@ -87,7 +84,7 @@ const GuestInfo = (props) => {
 
   return (
     <div id={`${props.hostid}`} className="box">
-      {props.name === "Daniel" ? ' ' : (
+      {props.hostid !== userData.data.hostid ? ' ' : (
         <div className="kick" onClick={openModal}>
           <div className="Bar1"></div>
           <div className="Bar2"></div>
@@ -108,6 +105,6 @@ const GuestInfo = (props) => {
       />
     </div>
   );
-}
+};
 
 export default GuestInfo;
