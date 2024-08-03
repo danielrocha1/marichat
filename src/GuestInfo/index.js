@@ -66,7 +66,8 @@ const GuestInfo = (props) => {
     }
   };
 
-  const kickUser = async () => {
+  const kickUser = async (userData) => {
+    console.log(props.name, userData)
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/kickuser', {
         method: 'POST',
@@ -109,7 +110,6 @@ const GuestInfo = (props) => {
         isOpen={isModalOpen}
         onExpel={handleExpel}
         onAddFriend={handleAddFriend}
-        userData={userData}
         showExpelOption={props.hostid === userData.data.hostid}
       />
     </div>
