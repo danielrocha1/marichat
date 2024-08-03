@@ -199,7 +199,7 @@ func main() {
         query := `
             SELECT id, hostid1, hostid2, status, created_at, updated_at
             FROM friendships
-            WHERE hostid1 = $1 AND status = 'pending'
+            WHERE hostid2 = $1 AND status = 'pending'
         `
         
         // Execute query
