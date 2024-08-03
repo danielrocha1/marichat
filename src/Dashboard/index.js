@@ -309,7 +309,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             <span className="close" onClick={handleFriendModal}>&times;</span>
             <h2>Friend Request's</h2>
             {friendRequests?.length ? (
-              friendRequests.map((request, index) => {
+              friendRequests.map((user, index) => {
                 return (
                   <div key={index} className="notification">
                     <p>{user?.name}</p>
