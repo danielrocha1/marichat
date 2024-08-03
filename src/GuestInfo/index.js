@@ -41,6 +41,27 @@ const GuestInfo = (props) => {
     setIsTyping(props.isTyping);
   }, [props.isTyping]);
 
+  const FriendRequest = async () => {
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/friendRequest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "hostid1": userData.data.hostid,
+          "hostid2": props.hostid,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
+  };
+
   const kickUser = async () => {
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/kickuser', {

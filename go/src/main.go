@@ -127,6 +127,50 @@ func main() {
 		return c.Next()
 	})
 
+	app.Post("/friendRequest", func(c *fiber.Ctx) error {
+        // Estrutura para receber os dados do corpo da solicitação
+        type FriendRequest struct {
+            HostID1 string `json:"hostid1"`
+            HostID2 string `json:"hostid2"`
+        }
+
+        // Parsear os dados do corpo da solicitação para a estrutura FriendRequest
+        var friendRequest FriendRequest
+        if err := c.BodyParser(&friendRequest); err != nil {
+            return err
+        }
+
+        // Verificar se a solicitação de amizade já existe
+        var count int
+        err := db.QueryRow("SELECT COUNT(*) FROM friendships WHERE (hostid1 = $1 AND hostid2 = $2) OR (hostid1 = $2 AND hostid2 = $1)",
+            friendRequest.HostID1, friendRequest.HostID2).Scan(&count)
+        if err != nil {
+            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+                "error": "Erro ao verificar solicitação de amizade",
+            })
+        }
+
+        if count > 0 {
+            return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+                "error": "Solicitação de amizade já existe",
+            })
+        }
+
+        // Inserir a nova solicitação de amizade com timestamps
+        now := time.Now()
+        _, err = db.Exec("INSERT INTO friendships (hostid1, hostid2, status, created_at, updated_at) VALUES ($1, $2, 'pending', $3, $3)",
+            friendRequest.HostID1, friendRequest.HostID2, now)
+        if err != nil {
+            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+                "error": "Erro ao criar solicitação de amizade",
+            })
+        }
+
+        return c.SendString("Solicitação de amizade enviada com sucesso!")
+    
+    })
+
+
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 		// Consulta SQL para obter os nomes das colunas da tabela userinfo
 		query := "SELECT * FROM userinfo"
