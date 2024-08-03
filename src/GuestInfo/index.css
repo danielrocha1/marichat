@@ -84,10 +84,13 @@
 
 
 .bar1, .bar2, .bar3 {
-  width: 25px;
+background-color: #ebebeb;
   height: 3px;
-  background: black;
-  margin: 5px;
+  margin: 4px;
+  margin-top: 4px;
+  transition: .4s;
+  width: 15px;
+  margin-top: 15px;
 }
 
 .guestBox {
