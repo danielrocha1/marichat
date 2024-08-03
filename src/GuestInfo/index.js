@@ -68,9 +68,9 @@ const GuestInfo = (props) => {
     <div id={`${props.hostid}`} className="box">
       {props.name === "Daniel" ? ' ' : (
         <div className="kick" onClick={openModal}>
-          <div className="bar1"></div>
-          <div className="bar2"></div>
-          <div className="bar3"></div>
+          <div className="Bar1"></div>
+          <div className="Bar2"></div>
+          <div className="Bar3"></div>
         </div>
       )}
       <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
