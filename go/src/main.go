@@ -176,26 +176,15 @@ func main() {
 			HostID string `json:"hostid"`
 		}
 	
-		// Estrutura para representar uma solicitação de amizade
-		type FriendRequest struct {
-			ID        int    `json:"id"`
-			HostID1   string `json:"hostid1"`
-			HostID2   string `json:"hostid2"`
-			Status    string `json:"status"`
-			CreatedAt string `json:"created_at"`
-			UpdatedAt string `json:"updated_at"`
-		}
-	
 		// Estrutura para representar um usuário com foto e nome
 		type User struct {
 			Name     string `json:"name"`
 			PhotoURL []byte `json:"photo_url"`
 		}
 	
-		// Estrutura para representar a resposta, contendo os convites e os detalhes do usuário
+		// Estrutura para representar a resposta, contendo apenas os detalhes do usuário
 		type Response struct {
-			FriendRequests []FriendRequest `json:"friend_requests"`
-			Users          []User          `json:"users"`
+			Users []User `json:"users"`
 		}
 	
 		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
@@ -208,7 +197,7 @@ func main() {
 	
 		// Prepare SQL query
 		query := `
-			SELECT id, hostid1, hostid2, status, created_at, updated_at
+			SELECT hostid1
 			FROM friendships
 			WHERE hostid2 = $1 AND status = 'pending'
 		`
@@ -222,15 +211,15 @@ func main() {
 		}
 		defer rows.Close()
 	
-		var requests []FriendRequest
+		var hostIDs []string
 		for rows.Next() {
-			var req FriendRequest
-			if err := rows.Scan(&req.ID, &req.HostID1, &req.HostID2, &req.Status, &req.CreatedAt, &req.UpdatedAt); err != nil {
+			var hostid1 string
+			if err := rows.Scan(&hostid1); err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Erro ao ler os resultados da consulta",
 				})
 			}
-			requests = append(requests, req)
+			hostIDs = append(hostIDs, hostid1)
 		}
 	
 		if err := rows.Err(); err != nil {
@@ -241,12 +230,12 @@ func main() {
 	
 		var users []User
 	
-		for _, req := range requests {
+		for _, hostID := range hostIDs {
 			userRow, err := db.Query(`
 				SELECT up.photo, ui.username
 				FROM userphotos up
 				JOIN userinfo ui ON up.hostid = ui.hostid
-				WHERE up.hostid = $1`, req.HostID1)
+				WHERE up.hostid = $1`, hostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user data",
@@ -272,10 +261,10 @@ func main() {
 		}
 	
 		response := Response{
-			Users:          users,
+			Users: users,
 		}
 	
-		// Retornar os convites pendentes como JSON
+		// Retornar os detalhes dos usuários como JSON
 		return c.JSON(response)
 	})
 
