@@ -315,22 +315,28 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
               friendRequests.map((user, index) => {
                 console.log("User:", user); // Adicione este log para verificar cada usuário
                 return (
-                  <div key={index} className="notification">
-                    <p>{user?.name}</p>
-                    <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" />
-                    <button
-                      style={{ backgroundColor: "green", color: "white", margin: "5px" }}
-                      onClick={() => handleAcceptRequest(index, user)}
-                    >
-                      Aceitar
-                    </button>
-                    <button
-                      style={{ backgroundColor: "red", color: "white", margin: "5px" }}
-                      onClick={() => handleDeclineRequest(index)}
-                    >
-                      Recusar
-                    </button>
+                  <div className="notification-container">
+                  <div key={index} className="notification-card">
+                    <div className="user-info">
+                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="user-photo" />
+                      <p className="user-name">{user?.name}</p>
+                    </div>
+                    <div className="action-buttons">
+                      <button
+                        className="accept-button"
+                        onClick={() => handleAcceptRequest(index, user)}
+                      >
+                        Aceitar
+                      </button>
+                      <button
+                        className="decline-button"
+                        onClick={() => handleDeclineRequest(index)}
+                      >
+                        Recusar
+                      </button>
+                    </div>
                   </div>
+                </div>
                 );
               })
             ) : (
