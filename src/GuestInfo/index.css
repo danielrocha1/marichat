@@ -1,10 +1,9 @@
 /* Estilo padrão do elemento .kick */
 .kick {
   display: none; /* Inicialmente, esconde o elemento */
-  width: 15px;
+  width: 5vw;
   height: 80px;
   border-radius: 5px 0px 0px 5px;
-  margin-top: 8px;
   background-color: red;
   cursor: pointer;
 }
@@ -121,7 +120,7 @@
 
 .modal-overlay1 {
   position: absolute;
-  background:  #2a79cc; /* Transparent background */
+  background:  #032244; /* Transparent background */
   border: 1px solid #ddd;
   border-radius: 5px;
   z-index: 1000; /* Ensures modal is above other content */
@@ -136,7 +135,8 @@
 
 .close-btn {
   position: absolute;
-  right: -1.6vw;
+  top: -3vh;
+  right: -25px;
   background: rgb(64, 64, 202);
   border: none;
   font-size: 20px;
