@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import ChatContext from '../ChatContext';
 import './index.css';
 
-const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption, props, userData }) => {
+const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption }) => {
   if (!isOpen) return null;
-
+  
   return (
     <div className="modal-overlay1">
       <div className="modal-content1">
@@ -65,8 +65,8 @@ const GuestInfo = (props) => {
     }
   };
 
-  const kickUser = async (userData) => {
-    console.log(props.hostid, userData)
+  const kickUser = async ({userData}) => {
+    console.log(props.hostid, userData.data.hostid)
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/kickuser', {
         method: 'POST',
