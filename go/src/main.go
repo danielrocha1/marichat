@@ -172,11 +172,19 @@ func main() {
 
 
 	app.Post("/selectfriendRequest", func(c *fiber.Ctx) error {
-        // Estrutura para receber os dados do corpo da solicitação
-
         // Estrutura para receber o usuário que está buscando os convites
         type RequestBody struct {
             UserID string `json:"user_id"`
+        }
+
+        // Estrutura para representar uma solicitação de amizade
+        type FriendRequest struct {
+            ID        int    `json:"id"`
+            HostID1   string `json:"hostid1"`
+            HostID2   string `json:"hostid2"`
+            Status    string `json:"status"`
+            CreatedAt string `json:"created_at"`
+            UpdatedAt string `json:"updated_at"`
         }
 
         // Parsear os dados do corpo da solicitação para a estrutura RequestBody
@@ -191,7 +199,7 @@ func main() {
         query := `
             SELECT id, hostid1, hostid2, status, created_at, updated_at
             FROM friendships
-            WHERE (hostid1 = $1) AND status = 'pending'
+            WHERE hostid1 = $1 AND status = 'pending'
         `
         
         // Execute query
