@@ -298,7 +298,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       <div onClick={handleFriendModal} >
         <p  className="friend">
           FriendRequest {
-            friendRequests.length > 0 && (
+            friendRequests?.length > 0 && (
               <b className="notification-count">{friendRequests.length}</b>
             )
           }
