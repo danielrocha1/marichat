@@ -62,6 +62,7 @@ const simulateWebSocket = (callback) => {
 const TopHeader = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
 
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
