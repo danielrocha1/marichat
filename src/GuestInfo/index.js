@@ -9,11 +9,11 @@ const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption }) => {
     <div className="modal-overlay1">
       <div className="modal-content1">
         <div className="modal-options">
-          {showExpelOption && (
+          {showExpelOption ? (
             <button className="modal-option" onClick={onExpel}>
               Expulsar do Chat
             </button>
-          )}
+          ) : '' }
           <button className="modal-option" onClick={onAddFriend}>
             Adicionar como Amigo
           </button>
