@@ -141,7 +141,11 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
 
   const handleFriendModal = () => {
     setShowFriendModal(!showFriendModal);
-    setNotifications([]);
+    friendRequests.map((user) => {
+      console.log("User:", user);
+      console.log(friendRequests)
+    })
+    
   };
 
 
