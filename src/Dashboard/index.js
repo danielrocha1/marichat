@@ -199,7 +199,37 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
               <b className="notification-count">{notifications.length}</b>
             )
           }
-        </p> 
+        </p>
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={() => {handleCloseModal()}}>&times;</span>
+              <h2>Friend Request's</h2>
+              {notifications.length > 0 ? (
+                notifications.map((notification, index) => (
+                  <div key={index} className="notification">
+                    {notification.text}
+                    <button
+                      style={{ backgroundColor: "green", color: "white", margin: "5px" }}
+                      onClick={() => handleAcceptNotification(index, userData)}
+                      
+                    >
+                      Aceitar
+                    </button>
+                    <button
+                      style={{ backgroundColor: "red", color: "white", margin: "5px" }}
+                      onClick={() => handleRejectNotification(index)}
+                    >
+                      Recusar
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>No new requests</p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       
       <div onClick={handleLogout} style={{marginRight: "10px"}}>

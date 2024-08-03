@@ -2,15 +2,21 @@ import React, { useState, useEffect, useContext } from 'react';
 import ChatContext from '../ChatContext';
 import './index.css';
 
-const Modal = ({ isOpen, onExpel, onAddFriend }) => {
+const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption }) => {
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay1">
       <div className="modal-content1">
         <div className="modal-options">
-          <button className="modal-option" onClick={onExpel}>Expulsar do Chat</button>
-          <button className="modal-option" onClick={onAddFriend}>Adicionar como Amigo</button>
+          {showExpelOption && (
+            <button className="modal-option" onClick={onExpel}>
+              Expulsar do Chat
+            </button>
+          )}
+          <button className="modal-option" onClick={onAddFriend}>
+            Adicionar como Amigo
+          </button>
         </div>
       </div>
     </div>
@@ -46,8 +52,8 @@ const GuestInfo = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "hostid1": userData.data.hostid,
-          "hostid2": props.hostid,
+          hostid1: userData.data.hostid,
+          hostid2: props.hostid,
         }),
       });
 
@@ -67,10 +73,10 @@ const GuestInfo = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username": props.name,
-          "hostid": props.hostid,
-          "chatid": props.chatid,
-          "roomname": props.roomname,
+          username: props.name,
+          hostid: props.hostid,
+          chatid: props.chatid,
+          roomname: props.roomname,
         }),
       });
 
@@ -84,9 +90,7 @@ const GuestInfo = (props) => {
 
   return (
     <div id={`${props.hostid}`} className="box">
-      {props.hostid !== userData.data.hostid ? 
-      <div id={`${props.hostid}`} className="box">
-      {props.hostid === userData.data.hostid ? ' ' : (
+      {props.hostid === userData.data.hostid && (
         <div className="kick" onClick={openModal}>
           <div className="Bar1"></div>
           <div className="Bar2"></div>
@@ -104,24 +108,7 @@ const GuestInfo = (props) => {
         isOpen={isModalOpen}
         onExpel={handleExpel}
         onAddFriend={handleAddFriend}
-      />
-    </div> : (
-        <div className="kick" onClick={openModal}>
-          <div className="Bar1"></div>
-          <div className="Bar2"></div>
-          <div className="Bar3"></div>
-        </div>
-      )}
-      <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
-        <img src={props.photo} className="guestPhoto" alt="logo" />
-        <div className="guestInfo">
-          <p className="guestName">{props.name}</p>
-          {isTyping && <p className="typingIndicator">Digitando...</p>}
-        </div>
-      </div>
-      <Modal
-        isOpen={isModalOpen}
-        onAddFriend={handleAddFriend}
+        showExpelOption={props.hostid === userData.data.hostid}
       />
     </div>
   );
