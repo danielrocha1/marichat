@@ -295,26 +295,29 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       </div>
 
      
-      <div onClick={handleFriendModal} >
-        <p  className="friend">
-          FriendRequest {
-            friendRequests?.length > 0 && (
-              <b className="notification-count">{friendRequests.length}</b>
-            )
-          }
-        </p>
-        {showFriendModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={() => {handleFriendModal()}}>&times;</span>
-              <h2>Friend Request's</h2>
-              {friendRequests?.length ? (
-                friendRequests.map((notification, index) => (
+      <div onClick={handleFriendModal}>
+      <p className="friend">
+        FriendRequest {
+          friendRequests?.length > 0 && (
+            <b className="notification-count">{friendRequests.length}</b>
+          )
+        }
+      </p>
+      {showFriendModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleFriendModal}>&times;</span>
+            <h2>Friend Request's</h2>
+            {friendRequests?.length ? (
+              friendRequests.map((request, index) => {
+                const user = users.find(user => user.hostid === request.hostid1);
+                return (
                   <div key={index} className="notification">
-                    {notification.text}
+                    <p>{user?.name}</p>
+                    <img src={`data:image/jpeg;base64,${user?.photoURL}`} alt="User photo" />
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
-                      onClick={() => handleAcceptRequest(index, userData)}
+                      onClick={() => handleAcceptRequest(index, user)}
                     >
                       Aceitar
                     </button>
@@ -325,14 +328,15 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                       Recusar
                     </button>
                   </div>
-                ))
-              ) : (
-                <p>No new requests</p>
-              )}
-            </div>
+                );
+              })
+            ) : (
+              <p>No new requests</p>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
       
       <div onClick={handleLogout} style={{marginRight: "10px"}}>
         <p >Logout</p>
