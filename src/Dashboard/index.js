@@ -142,7 +142,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   const handleFriendModal = () => {
     setShowFriendModal(!showFriendModal);
    
-      console.log(friendRequests)
+      console.log(friendRequests.users)
   
     
   };
