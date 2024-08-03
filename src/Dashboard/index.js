@@ -317,7 +317,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                 return (
                   <div key={index} className="notification">
                     <p>{user?.name}</p>
-                    <img src={`data:image/jpeg;base64,${user?.photoURL}`} alt="User photo" />
+                    <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" />
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
                       onClick={() => handleAcceptRequest(index, user)}
