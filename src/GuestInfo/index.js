@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import ChatContext from '../ChatContext';
 import './index.css';
 
-const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption }) => {
+const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption, props, userData }) => {
   if (!isOpen) return null;
 
   return (
@@ -109,6 +109,7 @@ const GuestInfo = (props) => {
         isOpen={isModalOpen}
         onExpel={handleExpel}
         onAddFriend={handleAddFriend}
+        userData={userData}
         showExpelOption={props.hostid === userData.data.hostid}
       />
     </div>
