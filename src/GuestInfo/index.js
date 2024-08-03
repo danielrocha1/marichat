@@ -84,7 +84,27 @@ const GuestInfo = (props) => {
 
   return (
     <div id={`${props.hostid}`} className="box">
+      {props.hostid !== userData.data.hostid ? 
+      <div id={`${props.hostid}`} className="box">
       {props.hostid === userData.data.hostid ? ' ' : (
+        <div className="kick" onClick={openModal}>
+          <div className="Bar1"></div>
+          <div className="Bar2"></div>
+          <div className="Bar3"></div>
+        </div>
+      )}
+      <div className={`guestBox ${isTyping ? 'typing' : ''}`}>
+        <img src={props.photo} className="guestPhoto" alt="logo" />
+        <div className="guestInfo">
+          <p className="guestName">{props.name}</p>
+          {isTyping && <p className="typingIndicator">Digitando...</p>}
+        </div>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onAddFriend={handleAddFriend}
+      />
+    </div> : (
         <div className="kick" onClick={openModal}>
           <div className="Bar1"></div>
           <div className="Bar2"></div>
