@@ -158,8 +158,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
               <b className="notification-count">{notifications.length}</b>
             )
           }
-        </p>
-        
+        </p>        
         {showModal && (
           <div className="modal">
             <div className="modal-content">
@@ -190,6 +189,16 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             </div>
           </div>
         )}
+      </div>
+      <p  className="messages">
+          FriendRequest {
+            notifications.length > 0 && (
+              <b className="notification-count">{notifications.length}</b>
+            )
+          }
+        </p> 
+      <div>
+      
       </div>
       
       <div onClick={handleLogout} style={{marginRight: "10px"}}>
