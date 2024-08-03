@@ -59,21 +59,26 @@ const simulateWebSocket = (callback) => {
   }, 5000);
 };
 
-const TopHeader = ({userData, handleLogout, navigate }) => {
+const TopHeader = ({ userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState('');
 
   // Simula a recepção de mensagens pelo WebSocket
   useEffect(() => {
     // Função para configurar o WebSocket
     const setupWebSocket = () => {
-      // Substitua 'ws://example.com/socket' pela URL do seu WebSocket
       const socket = new WebSocket('wss://marichat-go-xtcz.onrender.com/websocket');
 
       // Função para lidar com novas mensagens do WebSocket
       socket.onmessage = (event) => {
         const newMessage = JSON.parse(event.data);
-        setNotifications(prev => [...prev, newMessage]);
+        if (newMessage.type === 'notification') {
+          setNotifications(prev => [...prev, newMessage]);
+        } else if (newMessage.type === 'friendRequest') {
+          setFriendRequests(prev => [...prev, newMessage]);
+        }
       };
 
       // Função para lidar com erros
@@ -98,15 +103,16 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     };
   }, []);
 
-
   // Função para exibir o modal
-  const handleClickMessages = () => {
+  const handleClickMessages = (type) => {
+    setModalType(type);
     setShowModal(!showModal);
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(!showModal);
     setNotifications([]);
+    setFriendRequests([]);
   };
 
   const handleRejectNotification = (index) => {
@@ -115,68 +121,69 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     );
   };
 
-  const handleAcceptNotification = async ( index, userData ) => {
-   
+  const handleRejectFriendRequest = (index) => {
+    setFriendRequests((prevFriendRequests) =>
+      prevFriendRequests.filter((_, i) => i !== index)
+    );
+  };
 
-  const queryString = new URLSearchParams({
-        chatid: notifications[index].chatid,
-        username: userData.data.username,
-        hostid: userData.data.hostid
+  const handleAcceptNotification = async (index, userData) => {
+    const queryString = new URLSearchParams({
+      chatid: notifications[index].chatid,
+      username: userData.data.username,
+      hostid: userData.data.hostid,
     }).toString();
-  
-   
-    try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                username: userData.data.username,
-                hostid: userData.data.hostid,
-                chatid: notifications[index].chatid 
-            }),
-        });
-  
-        if (!response.ok) {
-            throw new Error('Erro ao enviar os dados');
-        }
-  
-        navigate(`/chatroom?${queryString}`);
-    } catch (error) {
-        console.error('Erro:', error.message);
-    }
-};
 
-  
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: userData.data.username,
+          hostid: userData.data.hostid,
+          chatid: notifications[index].chatid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
+
+      navigate(`/chatroom?${queryString}`);
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
+  };
+
+  const handleAcceptFriendRequest = async (index) => {
+    // Lógica para aceitar solicitação de amizade
+  };
+
   return (
     <div className="top-header">
-      <div onClick={handleClickMessages} >
-        <p  className="messages">
-          Messages {
-            notifications.length > 0 && (
-              <b className="notification-count">{notifications.length}</b>
-            )
-          }
-        </p>        
-        {showModal && (
+      <div onClick={() => handleClickMessages('messages')}>
+        <p className="messages">
+          Messages {notifications.length > 0 && <b className="notification-count">{notifications.length}</b>}
+        </p>
+        {showModal && modalType === 'messages' && (
           <div className="modal">
             <div className="modal-content">
-              <span className="close" onClick={() => {handleCloseModal()}}>&times;</span>
+              <span className="close" onClick={handleCloseModal}>&times;</span>
               <h2>Notifications</h2>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
                   <div key={index} className="notification">
                     {notification.text}
                     <button
-                      style={{ backgroundColor: "green", color: "white", margin: "5px" }}
+                      style={{ backgroundColor: 'green', color: 'white', margin: '5px' }}
                       onClick={() => handleAcceptNotification(index, userData)}
-                      
                     >
                       Aceitar
                     </button>
                     <button
-                      style={{ backgroundColor: "red", color: "white", margin: "5px" }}
+                      style={{ backgroundColor: 'red', color: 'white', margin: '5px' }}
                       onClick={() => handleRejectNotification(index)}
                     >
                       Recusar
@@ -191,34 +198,28 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
         )}
       </div>
 
-     
-      <div>
-        <p  className="friend">
-          FriendRequest {
-            notifications.length > 0 && (
-              <b className="notification-count">{notifications.length}</b>
-            )
-          }
+      <div onClick={() => handleClickMessages('friendRequests')}>
+        <p className="friend">
+          FriendRequest {friendRequests.length > 0 && <b className="notification-count">{friendRequests.length}</b>}
         </p>
-        {showModal && (
+        {showModal && modalType === 'friendRequests' && (
           <div className="modal">
             <div className="modal-content">
-              <span className="close" onClick={() => {handleCloseModal()}}>&times;</span>
-              <h2>Friend Request's</h2>
-              {notifications.length > 0 ? (
-                notifications.map((notification, index) => (
+              <span className="close" onClick={handleCloseModal}>&times;</span>
+              <h2>Friend Requests</h2>
+              {friendRequests.length > 0 ? (
+                friendRequests.map((request, index) => (
                   <div key={index} className="notification">
-                    {notification.text}
+                    {request.text}
                     <button
-                      style={{ backgroundColor: "green", color: "white", margin: "5px" }}
-                      onClick={() => handleAcceptNotification(index, userData)}
-                      
+                      style={{ backgroundColor: 'green', color: 'white', margin: '5px' }}
+                      onClick={() => handleAcceptFriendRequest(index)}
                     >
                       Aceitar
                     </button>
                     <button
-                      style={{ backgroundColor: "red", color: "white", margin: "5px" }}
-                      onClick={() => handleRejectNotification(index)}
+                      style={{ backgroundColor: 'red', color: 'white', margin: '5px' }}
+                      onClick={() => handleRejectFriendRequest(index)}
                     >
                       Recusar
                     </button>
@@ -231,13 +232,14 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
           </div>
         )}
       </div>
-      
-      <div onClick={handleLogout} style={{marginRight: "10px"}}>
-        <p >Logout</p>
+
+      <div onClick={handleLogout} style={{ marginRight: '10px' }}>
+        <p>Logout</p>
       </div>
     </div>
   );
-}
+};
+
 
 const ChatTable = ({ userData, setChats, chats }) => {
 const navigate = useNavigate();

@@ -108,7 +108,7 @@ const GuestInfo = (props) => {
         isOpen={isModalOpen}
         onExpel={handleExpel}
         onAddFriend={handleAddFriend}
-        showExpelOption={props.hostid === userData.data.hostid}
+        showExpelOption={props.hostid !== userData.data.hostid}
       />
     </div>
   );
