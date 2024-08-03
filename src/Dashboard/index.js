@@ -102,10 +102,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
 
 
   // Função para exibir o modal
-  const handleClickMessages = () => {
-    setShowNotificationModal(!showNotificationModal);
-  };
-  
   const handleNotificationModal = () => {
     setShowNotificationModal(!showNotificationModal);
     setNotifications([]);
@@ -226,7 +222,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   
   return (
     <div className="top-header">
-      <div onClick={handleClickMessages} >
+      <div onClick={handleNotificationModal} >
         <p  className="messages">
           Messages {
             notifications.length > 0 && (
@@ -267,7 +263,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       </div>
 
      
-      <div>
+      <div onClick={handleFriendModal} >
         <p  className="friend">
           FriendRequest {
             notifications.length > 0 && (
