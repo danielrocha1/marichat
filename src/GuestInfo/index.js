@@ -9,7 +9,6 @@ const Modal = ({ isOpen, onExpel, onAddFriend, showExpelOption, props, userData 
     <div className="modal-overlay1">
       <div className="modal-content1">
         <div className="modal-options">
-          <p>{props.hostid , userData.data.hostid}</p>
           {showExpelOption && (
             <button className="modal-option" onClick={onExpel}>
               Expulsar do Chat
