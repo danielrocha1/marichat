@@ -310,7 +310,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             <h2>Friend Request's</h2>
             {friendRequests?.length ? (
               friendRequests.map((request, index) => {
-                const user = users.find(user => user.hostid === request.hostid1);
                 return (
                   <div key={index} className="notification">
                     <p>{user?.name}</p>
