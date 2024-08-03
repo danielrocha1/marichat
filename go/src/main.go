@@ -174,7 +174,7 @@ func main() {
 	app.Post("/selectfriendRequest", func(c *fiber.Ctx) error {
         // Estrutura para receber o usuário que está buscando os convites
         type RequestBody struct {
-            UserID string `json:"user_id"`
+            HostID string `json:"hostid"`
         }
 
         // Estrutura para representar uma solicitação de amizade
@@ -203,7 +203,7 @@ func main() {
         `
         
         // Execute query
-        rows, err := db.Query(query, requestBody.UserID)
+        rows, err := db.Query(query, requestBody.HostID)
         if err != nil {
             return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
                 "error": "Erro ao executar a consulta",
