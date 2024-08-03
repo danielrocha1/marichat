@@ -190,15 +190,16 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
           </div>
         )}
       </div>
-      <p  className="friend">
+
+     
+      <div>
+        <p  className="friend">
           FriendRequest {
             notifications.length > 0 && (
               <b className="notification-count">{notifications.length}</b>
             )
           }
         </p> 
-      <div>
-      
       </div>
       
       <div onClick={handleLogout} style={{marginRight: "10px"}}>
