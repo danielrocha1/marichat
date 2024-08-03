@@ -279,14 +279,14 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                     {notification.text}
                     <button
                       style={{ backgroundColor: "green", color: "white", margin: "5px" }}
-                      onClick={() => handleAcceptNotification(index, userData)}
+                      onClick={() => handleAcceptRequest(index, userData)}
                       
                     >
                       Aceitar
                     </button>
                     <button
                       style={{ backgroundColor: "red", color: "white", margin: "5px" }}
-                      onClick={() => handleRejectNotification(index)}
+                      onClick={() => handleRejectRequest(index)}
                     >
                       Recusar
                     </button>
