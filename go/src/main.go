@@ -170,68 +170,115 @@ func main() {
     
     })
 
-
 	app.Post("/selectfriendRequest", func(c *fiber.Ctx) error {
-        // Estrutura para receber o usuário que está buscando os convites
-        type RequestBody struct {
-            HostID string `json:"hostid"`
-        }
-
-        // Estrutura para representar uma solicitação de amizade
-        type FriendRequest struct {
-            ID        int    `json:"id"`
-            HostID1   string `json:"hostid1"`
-            HostID2   string `json:"hostid2"`
-            Status    string `json:"status"`
-            CreatedAt string `json:"created_at"`
-            UpdatedAt string `json:"updated_at"`
-        }
-
-        // Parsear os dados do corpo da solicitação para a estrutura RequestBody
-        var requestBody RequestBody
-        if err := c.BodyParser(&requestBody); err != nil {
-            return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-                "error": "Erro ao analisar o corpo da solicitação",
-            })
-        }
-
-        // Prepare SQL query
-        query := `
-            SELECT id, hostid1, hostid2, status, created_at, updated_at
-            FROM friendships
-            WHERE hostid2 = $1 AND status = 'pending'
-        `
-        
-        // Execute query
-        rows, err := db.Query(query, requestBody.HostID)
-        if err != nil {
-            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-                "error": "Erro ao executar a consulta",
-            })
-        }
-        defer rows.Close()
-
-        var requests []FriendRequest
-        for rows.Next() {
-            var req FriendRequest
-            if err := rows.Scan(&req.ID, &req.HostID1, &req.HostID2, &req.Status, &req.CreatedAt, &req.UpdatedAt); err != nil {
-                return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-                    "error": "Erro ao ler os resultados da consulta",
-                })
-            }
-            requests = append(requests, req)
-        }
-
-        // Check for errors from iterating over rows
-        if err := rows.Err(); err != nil {
-            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-                "error": "Erro ao iterar sobre os resultados",
-            })
-        }
-
-        // Retornar os convites pendentes como JSON
-        return c.JSON(requests)
-    })
+		// Estrutura para receber o usuário que está buscando os convites
+		type RequestBody struct {
+			HostID string `json:"hostid"`
+		}
+	
+		// Estrutura para representar uma solicitação de amizade
+		type FriendRequest struct {
+			ID        int    `json:"id"`
+			HostID1   string `json:"hostid1"`
+			HostID2   string `json:"hostid2"`
+			Status    string `json:"status"`
+			CreatedAt string `json:"created_at"`
+			UpdatedAt string `json:"updated_at"`
+		}
+	
+		// Estrutura para representar um usuário com foto e nome
+		type User struct {
+			Name     string `json:"name"`
+			PhotoURL []byte `json:"photo_url"`
+		}
+	
+		// Estrutura para representar a resposta, contendo os convites e os detalhes do usuário
+		type Response struct {
+			FriendRequests []FriendRequest `json:"friend_requests"`
+			Users          []User          `json:"users"`
+		}
+	
+		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
+		var requestBody RequestBody
+		if err := c.BodyParser(&requestBody); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Erro ao analisar o corpo da solicitação",
+			})
+		}
+	
+		// Prepare SQL query
+		query := `
+			SELECT id, hostid1, hostid2, status, created_at, updated_at
+			FROM friendships
+			WHERE hostid2 = $1 AND status = 'pending'
+		`
+		
+		// Execute query
+		rows, err := db.Query(query, requestBody.HostID)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao executar a consulta",
+			})
+		}
+		defer rows.Close()
+	
+		var requests []FriendRequest
+		for rows.Next() {
+			var req FriendRequest
+			if err := rows.Scan(&req.ID, &req.HostID1, &req.HostID2, &req.Status, &req.CreatedAt, &req.UpdatedAt); err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Erro ao ler os resultados da consulta",
+				})
+			}
+			requests = append(requests, req)
+		}
+	
+		if err := rows.Err(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao iterar sobre os resultados",
+			})
+		}
+	
+		var users []User
+	
+		for _, req := range requests {
+			userRow, err := db.Query(`
+				SELECT up.photo, ui.username
+				FROM userphotos up
+				JOIN userinfo ui ON up.hostid = ui.hostid
+				WHERE up.hostid = $1`, req.HostID1)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to fetch user data",
+				})
+			}
+			defer userRow.Close()
+	
+			for userRow.Next() {
+				var user User
+				if err := userRow.Scan(&user.PhotoURL, &user.Name); err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+						"error": "Erro ao ler os resultados da consulta de usuário",
+					})
+				}
+				users = append(users, user)
+			}
+	
+			if err := userRow.Err(); err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Erro ao iterar sobre os resultados dos usuários",
+				})
+			}
+		}
+	
+		response := Response{
+			FriendRequests: requests,
+			Users:          users,
+		}
+	
+		// Retornar os convites pendentes como JSON
+		return c.JSON(response)
+	})
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {
 		// Consulta SQL para obter os nomes das colunas da tabela userinfo
