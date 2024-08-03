@@ -286,7 +286,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                     </button>
                     <button
                       style={{ backgroundColor: "red", color: "white", margin: "5px" }}
-                      onClick={() => handleRejectRequest(index)}
+                      onClick={() => handleDeclineRequest(index)}
                     >
                       Recusar
                     </button>
