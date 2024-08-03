@@ -25,7 +25,7 @@ const GuestInfo = (props) => {
 
   const handleExpel = () => {
     // Lógica para expulsar do chat
-    console.log('Expulsar do chat');
+    kickUser()
     setIsModalOpen(false)
   };
 
