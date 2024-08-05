@@ -200,6 +200,7 @@ func main() {
 			SELECT hostid1
 			FROM friendships
 			WHERE hostid2 = $1 
+			//AND status = 'pending'
 		`
 		
 		// Execute query
@@ -232,7 +233,7 @@ func main() {
 	
 		for _, hostID := range hostIDs {
 			userRow, err := db.Query(`
-				SELECT up.photo, ui.username, ui.hostid
+				SELECT up.photo, ui.username
 				FROM userphotos up
 				JOIN userinfo ui ON up.hostid = ui.hostid
 				WHERE up.hostid`, hostID)
@@ -258,6 +259,7 @@ func main() {
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
+			users = append(users, {"hostId":hostID})
 		}
 
 	
