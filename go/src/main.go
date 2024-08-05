@@ -259,7 +259,7 @@ func main() {
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
-			users = append(users, {"hostId":hostID})
+			users = append(users,hostID)
 		}
 
 	
