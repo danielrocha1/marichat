@@ -178,7 +178,7 @@ func main() {
 	
 		// Estrutura para representar um usuário com foto e nome
 		type User struct {
-			hostID string RequestBody.HostID
+			HostID string `json:"hostid"`
 			Name     string `json:"name"`
 			PhotoURL []byte `json:"photo_url"`
 		}
@@ -234,7 +234,7 @@ func main() {
 	
 		for _, hostID := range hostIDs {
 			userRow, err := db.Query(`
-				SELECT up.photo, ui.username
+				SELECT up.photo, ui.username, ui.hostid
 				FROM userphotos up
 				JOIN userinfo ui ON up.hostid = ui.hostid
 				WHERE up.hostid`, hostID)
@@ -247,7 +247,7 @@ func main() {
 	
 			for userRow.Next() {
 				var user User
-				if err := userRow.Scan(&user.PhotoURL, &user.Name); err != nil {
+				if err := userRow.Scan(&user.PhotoURL, &user.Name, &user.HostID); err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 						"error": "Erro ao ler os resultados da consulta de usuário",
 					})
@@ -260,7 +260,7 @@ func main() {
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
-			users = append(users, hostID)
+
 		}
 
 	
