@@ -178,8 +178,8 @@ func main() {
 	
 		// Estrutura para representar um usuário com foto e nome
 		type User struct {
-			HostID string `json:"hostid"`
-			Name     string `json:"name"`
+			HostID  string `json:"hostid"`
+			Name    string `json:"name"`
 			PhotoURL []byte `json:"photo_url"`
 		}
 	
@@ -201,9 +201,9 @@ func main() {
 			SELECT hostid1
 			FROM friendships
 			WHERE hostid2 = $1 
-			//AND status = 'pending'
+			-- AND status = 'pending'
 		`
-		
+	
 		// Execute query
 		rows, err := db.Query(query, requestBody.HostID)
 		if err != nil {
@@ -237,13 +237,13 @@ func main() {
 				SELECT up.photo, ui.username, ui.hostid
 				FROM userphotos up
 				JOIN userinfo ui ON up.hostid = ui.hostid
-				WHERE up.hostid`, hostID)
+				WHERE up.hostid = $1`, hostID) // Use parameterized query
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user data",
 				})
 			}
-			defer userRow.Close()
+			defer userRow.Close() // Close userRow immediately after it's executed
 	
 			for userRow.Next() {
 				var user User
@@ -260,12 +260,11 @@ func main() {
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
-
 		}
-
 	
 		// Retornar os detalhes dos usuários como JSON
-		return c.JSON(users)
+		response := Response{Users: users}
+		return c.JSON(response)
 	})
 
 	app.Post("/acceptFriendRequest", func(c *fiber.Ctx) error {
