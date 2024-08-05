@@ -232,10 +232,10 @@ func main() {
 	
 		for _, hostID := range hostIDs {
 			userRow, err := db.Query(`
-				SELECT up.photo, ui.username
+				SELECT up.photo, ui.username, ui.hostid
 				FROM userphotos up
 				JOIN userinfo ui ON up.hostid = ui.hostid
-				WHERE up.hostid = $1`, hostID)
+				WHERE up.hostid`, hostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user data",
@@ -263,6 +263,56 @@ func main() {
 	
 		// Retornar os detalhes dos usuários como JSON
 		return c.JSON(users)
+	})
+
+	app.Post("/acceptFriendRequest", func(c *fiber.Ctx) error {
+		// Estrutura para receber o ID do usuário que está aceitando a amizade e o ID do solicitante
+		type RequestBody struct {
+			HostID   string `json:"hostid"`
+			FriendID string `json:"friendid"`
+		}
+	
+		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
+		var requestBody RequestBody
+		if err := c.BodyParser(&requestBody); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Erro ao analisar o corpo da solicitação",
+			})
+		}
+	
+		// Prepare SQL query para atualizar o status da amizade para 'accepted'
+		query := `
+			UPDATE friendships
+			SET status = 'accepted'
+			WHERE hostid1 = $1 AND hostid2 = $2 AND status = 'pending'
+		`
+	
+		// Execute query
+		result, err := db.Exec(query, requestBody.FriendID, requestBody.HostID)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao atualizar o status da amizade",
+			})
+		}
+	
+		// Verificar se a linha foi atualizada
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao verificar as linhas afetadas",
+			})
+		}
+	
+		if rowsAffected == 0 {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "Amizade não encontrada ou já aceita",
+			})
+		}
+	
+		// Retornar sucesso
+		return c.JSON(fiber.Map{
+			"message": "Amizade aceita com sucesso",
+		})
 	})
 
 	app.Get("/select-user", func(c *fiber.Ctx) error {

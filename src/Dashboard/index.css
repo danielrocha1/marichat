@@ -103,9 +103,18 @@
     transform: rotate(45deg) translate(-8px, -7px);
   }
   
-  .top-header div {
+  .logout{
     padding: 5px;
-    margin-left: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #1c71d8;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+
+  .messages-header {
+    padding: 5px;
+    margin-left: 20vw;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s ease;
@@ -232,11 +241,6 @@
   }
   
 
-  .header-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
   
   .messages {
     cursor: pointer;
@@ -244,7 +248,7 @@
     
   }
   
-  .messages .notification-count {
+  .messages .messages-count {
     position: absolute;
     top: -5px;
     right: -18px;
@@ -266,15 +270,20 @@
     background: transparent; /* Transparent background */
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 27vw;
+    max-width: 40vw;
     z-index: 1000; /* Ensures modal is above other content */
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
+    padding: 5px;
   }
   
+.friend{
+  padding:5px;
+}
+
   .modal-content {
     background: #0056b3;
-    
-    max-height: 30vh;
+    padding: 15px;
+    max-height: 40vh;
     overflow-y: auto;
     position: relative;
   }
@@ -284,22 +293,49 @@
     top: 10px;
     right: 10px;
     cursor: pointer;
-    font-size: 20px;
-    color: #aaa;
+    font-size: 30px;
+    color: #978d8d;
   }
   
+  .containerPublic {
+    position: relative;
+    top: 25vh;
+  }
+  
+  h1 {
+    position: relative;
+    text-align: center;
+  }
+
+
   .close:hover {
-    color: black;
+    color: rgb(255, 255, 255);
   }
   
   .notification {
     padding: 10px;
     border-bottom: 1px solid #ddd;
   }
+
+  .friend .notification-count {
+    position: absolute;
+    top: 1px;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;  
+    border: 1px solid #ddd;
+    color: white;
+    font-size: 10px;
+    text-align: center;
+    line-height: 16px;
+    animation: blink 1s infinite; /* Adiciona a animação de piscar */
+  }
   
   .notification:last-child {
     border-bottom: none;
   }
+
   
   .logout {
     cursor: pointer;
@@ -321,4 +357,86 @@
     100% {
       opacity: 1;
     }
+  }
+
+
+  
+
+  .notification-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 20vw;
+    
+  }
+  
+  .notification-container:hover .friend-name {
+  color:white;
+    
+  }
+
+
+  .notification-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .friend-info {
+    display: flex;
+    align-items: center;
+    color:#054708;
+    margin:10px;
+  }
+  
+  
+  .friend-photo {
+    width: 6vw;
+    height: 12vh;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .friend-name {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 30px;
+
+  }
+  
+  .accept-button {
+    font-size: 18px;
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .accept-button:hover {
+    background-color: darkgreen;
+  }
+  
+  .decline-button {
+    font-size: 18px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .decline-button:hover {
+    background-color: darkred;
   }

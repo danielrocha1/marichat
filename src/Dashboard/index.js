@@ -186,38 +186,33 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       }
   };
 
-  const handleAcceptRequest = async ( index, userData ) => {
-   
+  const handleAcceptRequest = async (index, userData) => {
 
-    const queryString = new URLSearchParams({
-          chatid: notifications[index].chatid,
-          username: userData.data.username,
-          hostid: userData.data.hostid
-      }).toString();
-    
-     
-      try {
-          const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ 
-                  username: userData.data.username,
-                  hostid: userData.data.hostid,
-                  chatid: notifications[index].chatid 
-              }),
-          });
-    
-          if (!response.ok) {
-              throw new Error('Erro ao enviar os dados');
-          }
-    
-          navigate(`/chatroom?${queryString}`);
-      } catch (error) {
-          console.error('Erro:', error.message);
-      }
-  };
+    try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/acceptFriendRequest', { // Atualize a URL com o endereço correto do seu backend
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                hostid: userData.data.hostid,
+                friendid: friendRequests[index].friendid  // Assume-se que o friendid é parte das notificações
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao enviar os dados');
+        }
+
+        // Se necessário, processe a resposta aqui
+        const result = await response.json();
+        console.log('Sucesso:', result);
+
+    } catch (error) {
+        console.error('Erro:', error.message);
+    }
+};
+
 
 
 
@@ -257,11 +252,11 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   
   return (
     <div className="top-header">
-      <div onClick={handleNotificationModal} >
+      <div className="messages-header" onClick={handleNotificationModal} >
         <p  className="messages">
           Messages {
             notifications.length > 0 && (
-              <b className="notification-count">{notifications.length}</b>
+              <b className="messages-count">{notifications.length}</b>
             )
           }
         </p>        
@@ -317,9 +312,9 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                 return (
                   <div className="notification-container">
                   <div key={index} className="notification-card">
-                    <div className="user-info">
-                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="user-photo" />
-                      <p className="user-name">{user?.name}</p>
+                    <div className="friend-info">
+                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
+                      <p className="friend-name">{user?.name}</p>
                     </div>
                     <div className="action-buttons">
                       <button
@@ -347,8 +342,8 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       )}
     </div>
       
-      <div onClick={handleLogout} style={{marginRight: "10px"}}>
-        <p >Logout</p>
+      <div onClick={handleLogout} style={{marginRight: "20px"}}>
+        <p style={{marginTop: "15px", padding:"5px",}}>Logout</p>
       </div>
     </div>
   );
@@ -603,7 +598,7 @@ const Dashboard = () => {
             <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
          
-          <div className="">
+          <div className="containerPublic">
             <h1>Chats Públicos</h1>
             <PublicChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
           </div>
