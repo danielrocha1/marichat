@@ -178,6 +178,7 @@ func main() {
 	
 		// Estrutura para representar um usuário com foto e nome
 		type User struct {
+			hostID string RequestBody.HostID
 			Name     string `json:"name"`
 			PhotoURL []byte `json:"photo_url"`
 		}
@@ -259,7 +260,7 @@ func main() {
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
-			users = append(users,hostID)
+			users = append(users, hostID)
 		}
 
 	
