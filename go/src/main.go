@@ -199,7 +199,7 @@ func main() {
 		query := `
 			SELECT hostid1
 			FROM friendships
-			WHERE hostid2 = $1 AND status = 'accepted'
+			WHERE hostid2 = $1 
 		`
 		
 		// Execute query
