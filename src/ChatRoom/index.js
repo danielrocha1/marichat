@@ -242,7 +242,7 @@ function ChatRoom() {
     <div className="App">
       <header className="App-header" style={{ background: colors.background }}>
         <div>
-          <b onClick={handleFriendModal}>Convidar Amigo</b>
+          <b style={{ cursor: "pointer" }} onClick={handleFriendModal}>Convidar Amigo</b>
           <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
