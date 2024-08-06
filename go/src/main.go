@@ -198,10 +198,10 @@ func main() {
 	
 		// Prepare SQL query
 		query := `
-			SELECT *
+			SELECT hostid1
 			FROM friendships
-			WHERE hostid1 = $1 
-		
+			WHERE hostid2 = $1 
+			
 		`
 	
 		// Execute query
