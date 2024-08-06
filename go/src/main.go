@@ -223,6 +223,7 @@ func main() {
 			}
 			hostIDs = append(hostIDs, hostid1)
 		}
+		fmt.Println("hostid",hostIDs)
 	
 		if err := rows.Err(); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
