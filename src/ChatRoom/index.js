@@ -198,12 +198,10 @@ function ChatRoom() {
   return (
     <div className="App">
       <header className="App-header" style={{ background: colors.background }}>
-      <div>
-          <p style={{  }}>Convidar Amigo</p>
-          
-        </div>
+  
         <div>
-          <chatroom style={{ marginLeft: "410px" }}>{roomname ? roomname : ''}</chatroom>
+        <p style={{  }}>Convidar Amigo</p>
+          <chatroom style={{ marginLeft: "710px" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
