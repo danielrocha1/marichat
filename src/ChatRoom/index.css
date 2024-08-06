@@ -109,8 +109,8 @@
 
 .modal-friend {
   position: absolute; /* Posiciona o modal de forma absoluta em relação ao pai */
-  top: 100%; /* Posiciona o modal logo abaixo do elemento pai */
-  left: 0; /* Alinha o modal com o lado esquerdo do elemento pai */
+  top: 11vh; /* Posiciona o modal logo abaixo do elemento pai */
+  left: 31vw; /* Alinha o modal com o lado esquerdo do elemento pai */
   background: transparent; /* Fundo transparente */
   border: 1px solid #ddd; /* Borda do modal */
   border-radius: 5px; /* Bordas arredondadas */
