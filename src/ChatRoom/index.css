@@ -124,7 +124,7 @@
 .modal-content-friend {
   background: #0056b3; /* Cor de fundo do conteúdo do modal */
   padding: 15px; /* Espaçamento interno do conteúdo do modal */
-  max-height: 40vh; /* Altura máxima do conteúdo do modal */
+  max-height: 50vh; /* Altura máxima do conteúdo do modal */
   overflow-y: auto; /* Adiciona rolagem se o conteúdo for grande demais */
   position: relative; /* Relativo ao modal */
 }
