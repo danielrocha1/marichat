@@ -130,7 +130,7 @@
 }
 
 /* Define o estilo do elemento pai */
-.friend {
+.friend-list {
   position: relative; /* Faz com que o modal seja posicionado em relação a este elemento */
   padding: 5px; /* Espaçamento interno do elemento pai */
 }
