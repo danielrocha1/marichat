@@ -105,3 +105,29 @@
       font-size: 19px;
   }
 }
+
+
+
+.modal {
+  position: absolute;
+  top: 100%; /* Position directly below the messages div */
+  background: transparent; /* Transparent background */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-width: 40vw;
+  z-index: 1000; /* Ensures modal is above other content */
+  transition: background-color 0.3s ease; /* Smooth transition for background-color */
+  padding: 5px;
+}
+
+.friend{
+padding:5px;
+}
+
+.modal-content {
+  background: #0056b3;
+  padding: 15px;
+  max-height: 40vh;
+  overflow-y: auto;
+  position: relative;
+}
