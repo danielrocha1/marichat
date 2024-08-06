@@ -243,37 +243,7 @@ function ChatRoom() {
       <header className="App-header" style={{ background: colors.background }}>
         <div>
           <b classname="friend-list" style={{ cursor: "pointer" }} onClick={handleFriendModal}>Convidar Amigo</b>
-          <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
-          <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
-        </div>
-        <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
-          <div className="flexBox">
-            <div className="columnFlexBox">
-              <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
-                <ul>
-                  {users.map((user, index) => (
-                    user.hostid === userData.data.hostid ? null : (
-                      <GuestInfo
-                        isTyping={userTypingStatus[user.hostid]}
-                        hostid={user.hostid}
-                        key={index}
-                        name={user.username}
-                        roomname={user.chatRoom}
-                        chat={chat}
-                        chatid={user.chatid}
-                        photo={`data:image/*;base64,${user.photo}`}  // Passando a imagem base64 como propriedade
-                      />
-                    )
-                  ))}
-                </ul>
-              </div>
-              <HostInfo name={userData.data.username} photo={`data:image/png;base64,${userData.data.UserPhoto.photo}`} theme={colors.border} />
-            </div>
-            <ChatBox chat={chat} messages={messages} roomname={roomname} theme={colors} setColors={setColors} />
-          </div>
-        </div>
-      </header>
-      {showFriendModal && (
+          {showFriendModal && (
     <div className="modal-friend">
       <div className="modal-content-friend">
         <span className="close" onClick={handleFriendModal}>&times;</span>
@@ -307,6 +277,37 @@ function ChatRoom() {
       </div>
     </div>
   )}
+          <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
+          <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
+        </div>
+        <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
+          <div className="flexBox">
+            <div className="columnFlexBox">
+              <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
+                <ul>
+                  {users.map((user, index) => (
+                    user.hostid === userData.data.hostid ? null : (
+                      <GuestInfo
+                        isTyping={userTypingStatus[user.hostid]}
+                        hostid={user.hostid}
+                        key={index}
+                        name={user.username}
+                        roomname={user.chatRoom}
+                        chat={chat}
+                        chatid={user.chatid}
+                        photo={`data:image/*;base64,${user.photo}`}  // Passando a imagem base64 como propriedade
+                      />
+                    )
+                  ))}
+                </ul>
+              </div>
+              <HostInfo name={userData.data.username} photo={`data:image/png;base64,${userData.data.UserPhoto.photo}`} theme={colors.border} />
+            </div>
+            <ChatBox chat={chat} messages={messages} roomname={roomname} theme={colors} setColors={setColors} />
+          </div>
+        </div>
+      </header>
+      
     </div>
   );
 }
