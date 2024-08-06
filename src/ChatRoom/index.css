@@ -107,27 +107,30 @@
 }
 
 
-
 .modal {
-  position: absolute;
-  top: 100%; /* Position directly below the messages div */
-  background: transparent; /* Transparent background */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-width: 40vw;
-  z-index: 1000; /* Ensures modal is above other content */
-  transition: background-color 0.3s ease; /* Smooth transition for background-color */
-  padding: 5px;
+  position: absolute; /* Posiciona o modal de forma absoluta em relação ao pai */
+  top: 100%; /* Posiciona o modal logo abaixo do elemento pai */
+  left: 0; /* Alinha o modal com o lado esquerdo do elemento pai */
+  background: transparent; /* Fundo transparente */
+  border: 1px solid #ddd; /* Borda do modal */
+  border-radius: 5px; /* Bordas arredondadas */
+  max-width: 40vw; /* Largura máxima do modal */
+  z-index: 1000; /* Garante que o modal fique acima de outros conteúdos */
+  transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+  padding: 5px; /* Espaçamento interno do modal */
 }
 
-.friend{
-padding:5px;
-}
-
+/* Define o estilo do conteúdo do modal */
 .modal-content {
-  background: #0056b3;
-  padding: 15px;
-  max-height: 40vh;
-  overflow-y: auto;
-  position: relative;
+  background: #0056b3; /* Cor de fundo do conteúdo do modal */
+  padding: 15px; /* Espaçamento interno do conteúdo do modal */
+  max-height: 40vh; /* Altura máxima do conteúdo do modal */
+  overflow-y: auto; /* Adiciona rolagem se o conteúdo for grande demais */
+  position: relative; /* Relativo ao modal */
+}
+
+/* Define o estilo do elemento pai */
+.friend {
+  position: relative; /* Faz com que o modal seja posicionado em relação a este elemento */
+  padding: 5px; /* Espaçamento interno do elemento pai */
 }
