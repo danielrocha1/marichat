@@ -23,8 +23,6 @@ function ReceiverMessage(props) {
   );
 }
 
-
-
 function SenderMessage(props) {
   const timestamp = new Date();
   const hora = format(timestamp, 'HH:mm');
@@ -45,21 +43,43 @@ function ChatRoom() {
 
   const [showFriendModal, setShowFriendModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
-
   const [roomname, setRoomname] = useState('');
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState([]);
   const [users, setUsers] = useState([]);
+  const [colors, setColors] = useState({
+    chatBox: '#7d3e5d',
+    background: 'linear-gradient(to bottom, #482436, #000000)',
+    border: 'white',
+  });
 
+  const handleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
+    console.log(friendRequests);
+  };
 
+  const handleInviteRequest = async (index) => {
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/acceptFriendRequest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          friendid: friendRequests[index].hostid
+        }),
+      });
 
-const handleFriendModal = () => {
-  setShowFriendModal(!showFriendModal);
- 
-    console.log(friendRequests)
-};
+      if (!response.ok) {
+        throw new Error('Erro ao enviar os dados');
+      }
 
-const modalFriendList = () => {
+      const result = await response.json();
+      console.log('Sucesso:', result);
+    } catch (error) {
+      console.error('Erro:', error.message);
+    }
+  };
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -69,7 +89,7 @@ const modalFriendList = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+          body: JSON.stringify({ hostid: userData.data.hostid }),
         });
 
         if (!response.ok) {
@@ -77,100 +97,15 @@ const modalFriendList = () => {
         }
 
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setFriendRequests(data);
-        
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
 
     fetchRequest();
-  }, [friendRequests]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
-
-
-  const handleInviteRequest = async (index) => {
-
-    try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/acceptFriendRequest', { // Atualize a URL com o endereço correto do seu backend
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                friendid: friendRequests[index].hostid  // Assume-se que o friendid é parte das notificações
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro ao enviar os dados');
-        }
-
-        // Se necessário, processe a resposta aqui
-        const result = await response.json();
-        console.log('Sucesso:', result);
-
-    } catch (error) {
-        console.error('Erro:', error.message);
-    }
-};
-
-
-  return(
-    <div onClick={handleFriendModal}>
-      <p className="friend">
-        FriendRequest {
-          
-          friendRequests?.length > 0 && (
-            <b className="notification-count">{friendRequests.length}</b>
-          )
-        }
-      </p>
-      {showFriendModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleFriendModal}>&times;</span>
-            <h2>Friend Request's</h2>
-            {friendRequests?.length ? (
-              friendRequests.map((user, index) => {
-                console.log("User:", user); // Adicione este log para verificar cada usuário
-                return (
-                  <div className="notification-container">
-                  <div key={index} className="notification-card">
-                    <div className="friend-info">
-                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
-                      <p className="friend-name">{user?.name}</p>
-                    </div>
-                    <div className="action-buttons">
-                      <button
-                        className="accept-button"
-                        onClick={() => handleInviteRequest(index)}
-                      >
-                        Convidar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                );
-              })
-            ) : (
-              <p>No new requests</p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-
-
-
-  const [colors, setColors] = useState({
-    chatBox: '#7d3e5d',
-    background: 'linear-gradient(to bottom, #482436, #000000)',
-    border: 'white',
-  });
+  }, [userData.data.hostid]); // Corrigido para evitar loop infinito
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -182,24 +117,20 @@ const modalFriendList = () => {
           },
           body: JSON.stringify({ chatid: chat.chatid }),
         });
-        
+
         if (!response.ok) {
           throw new Error('Erro ao obter os usuários');
         }
 
         const data = await response.json();
-
         setUsers(data.users);
         setRoomname(data.roomname);
-
-     
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
 
     fetchUsers();
-    
 
     const socket = new WebSocket('wss://marichat-go-xtcz.onrender.com/websocket');
     socket.onmessage = handleWebSocketMessage;
@@ -207,13 +138,10 @@ const modalFriendList = () => {
     return () => {
       socket.close();
     };
-  }, []);
- 
-
+  }, [chat.chatid]); // Corrigido para garantir reconexão com chatid
 
   const handleWebSocketMessage = (event) => {
     const message = JSON.parse(event.data);
-
 
     switch (message.type || message.Type) {
       case 'newUser':
@@ -240,7 +168,7 @@ const modalFriendList = () => {
         chatname: message.chatRoom,
         chatid: message.chatid,
         username: message.username,
-        photo:message.photo
+        photo: message.photo
       }]);
     }
   };
@@ -249,7 +177,7 @@ const modalFriendList = () => {
     if (message.chatid === chat.chatid) {
       setUsers(prevUsers => prevUsers.filter(user => user.hostid !== message.hostid));
       if (message.hostid === userData.data.hostid) {
-        navigate(`/dashboard`, userData);
+        navigate(`/dashboard`);
       }
     }
   };
@@ -270,7 +198,6 @@ const modalFriendList = () => {
         setMessages(prevMessages => [...prevMessages, Message]);
       }
     } else if (message.Type === 'receiver' && message.HostID !== userData.data.hostid && !message.upload && message.ChatID === chat.chatid) {
-      
       const Message = <ReceiverMessage Name={message.Name} Message={message.Message} Hour={message.Timestamp} />;
       setMessages(prevMessages => [...prevMessages, Message]);
     } else if (message.Type === 'receiver' && message.HostID === userData.data.hostid && !message.upload) {
@@ -281,14 +208,12 @@ const modalFriendList = () => {
 
   const handleTypingMessage = (message) => {
     if (message.hostid !== userData.data.hostid) {
-      setUserTypingStatus((prevTypingStatus) => {
-        const updatedTypingStatus = { ...prevTypingStatus, [message.hostid]: message.isTyping };
-        return updatedTypingStatus;
-      });
+      setUserTypingStatus(prevTypingStatus => ({
+        ...prevTypingStatus,
+        [message.hostid]: message.isTyping
+      }));
     }
   };
-
- 
 
   const kickUser = async () => {
     try {
@@ -316,9 +241,8 @@ const modalFriendList = () => {
   return (
     <div className="App">
       <header className="App-header" style={{ background: colors.background }}>
-  
         <div>
-        <b onClick={modalFriendList} style={{  }}>Convidar Amigo</b>
+          <b onClick={handleFriendModal}>Convidar Amigo</b>
           <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
@@ -328,7 +252,6 @@ const modalFriendList = () => {
               <div style={{ borderBottom: colors.border, borderRadius: "5px", maxHeight: '280px', overflowY: 'auto', scrollBehavior: 'smooth', overscrollBehavior: 'contain' }}>
                 <ul>
                   {users.map((user, index) => (
-                    
                     user.hostid === userData.data.hostid ? null : (
                       <GuestInfo
                         isTyping={userTypingStatus[user.hostid]}
@@ -346,10 +269,40 @@ const modalFriendList = () => {
               </div>
               <HostInfo name={userData.data.username} photo={`data:image/png;base64,${userData.data.UserPhoto.photo}`} theme={colors.border} />
             </div>
-            <ChatBox chat={chat} messages={messages} chat={chat} roomname={roomname} theme={colors} setColors={setColors} />
+            <ChatBox chat={chat} messages={messages} roomname={roomname} theme={colors} setColors={setColors} />
           </div>
         </div>
       </header>
+      {showFriendModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleFriendModal}>&times;</span>
+            <h2>Friend Request's</h2>
+            {friendRequests.length ? (
+              friendRequests.map((user, index) => (
+                <div key={index} className="notification-container">
+                  <div className="notification-card">
+                    <div className="friend-info">
+                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
+                      <p className="friend-name">{user?.name}</p>
+                    </div>
+                    <div className="action-buttons">
+                      <button
+                        className="accept-button"
+                        onClick={() => handleInviteRequest(index)}
+                      >
+                        Convidar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No new requests</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
