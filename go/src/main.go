@@ -265,6 +265,101 @@ func main() {
 		return c.JSON(users)
 	})
 
+	app.Post("/selectFriend", func(c *fiber.Ctx) error {
+		// Estrutura para receber o usuário que está buscando os convites
+		type RequestBody struct {
+			HostID string `json:"hostid"`
+		}
+	
+		// Estrutura para representar um usuário com foto e nome
+		type User struct {
+			HostID  string `json:"hostid"`
+			Name    string `json:"name"`
+			PhotoURL []byte `json:"photo_url"`
+		}
+	
+	
+	
+		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
+		var requestBody RequestBody
+		if err := c.BodyParser(&requestBody); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Erro ao analisar o corpo da solicitação",
+			})
+		}
+	
+		// Prepare SQL query
+		query := `
+			SELECT hostid1
+			FROM friendships
+			WHERE hostid2 = $1 
+			 AND status = 'accepted'
+		`
+	
+		// Execute query
+		rows, err := db.Query(query, requestBody.HostID)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao executar a consulta",
+			})
+		}
+		defer rows.Close()
+	
+		var hostIDs []string
+		for rows.Next() {
+			var hostid1 string
+			if err := rows.Scan(&hostid1); err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Erro ao ler os resultados da consulta",
+				})
+			}
+			hostIDs = append(hostIDs, hostid1)
+		}
+		fmt.Println("hostid",hostIDs)
+	
+		if err := rows.Err(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao iterar sobre os resultados",
+			})
+		}
+	
+		var users []User
+	
+		for _, hostID := range hostIDs {
+			userRow, err := db.Query(`
+				SELECT up.photo, ui.username, ui.hostid
+				FROM userphotos up
+				JOIN userinfo ui ON up.hostid = ui.hostid
+				WHERE up.hostid = $1`, hostID) // Use parameterized query
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Failed to fetch user data",
+				})
+			}
+			defer userRow.Close() // Close userRow immediately after it's executed
+	
+			for userRow.Next() {
+				var user User
+				if err := userRow.Scan(&user.PhotoURL, &user.Name, &user.HostID); err != nil {
+					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+						"error": "Erro ao ler os resultados da consulta de usuário",
+					})
+				}
+				users = append(users, user)
+			}
+	
+			if err := userRow.Err(); err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Erro ao iterar sobre os resultados dos usuários",
+				})
+			}
+		}
+	
+		// Retornar os detalhes dos usuários como JSON
+		
+		return c.JSON(users)
+	})
+
 	app.Post("/acceptFriendRequest", func(c *fiber.Ctx) error {
 		// Estrutura para receber o ID do usuário que está aceitando a amizade e o ID do solicitante
 		type RequestBody struct {
