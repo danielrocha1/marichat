@@ -198,10 +198,10 @@ func main() {
 	
 		// Prepare SQL query
 		query := `
-			SELECT hostid1
+			SELECT *
 			FROM friendships
 			WHERE hostid2 = $1 
-			-- AND status = 'pending'
+		
 		`
 	
 		// Execute query
