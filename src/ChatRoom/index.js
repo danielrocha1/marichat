@@ -242,7 +242,7 @@ function ChatRoom() {
     <div className="App">
       <header className="App-header" style={{ background: colors.background }}>
         <div>
-          <b style={{ cursor: "pointer" }} onClick={handleFriendModal}>Convidar Amigo</b>
+          <b classname="friend" style={{ cursor: "pointer" }} onClick={handleFriendModal}>Convidar Amigo</b>
           <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
@@ -274,35 +274,39 @@ function ChatRoom() {
         </div>
       </header>
       {showFriendModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleFriendModal}>&times;</span>
-            <h2>Friend Request's</h2>
-            {friendRequests.length ? (
-              friendRequests.map((user, index) => (
-                <div key={index} className="notification-container">
-                  <div className="notification-card">
-                    <div className="friend-info">
-                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
-                      <p className="friend-name">{user?.name}</p>
-                    </div>
-                    <div className="action-buttons">
-                      <button
-                        className="accept-button"
-                        onClick={() => handleInviteRequest(index)}
-                      >
-                        Convidar
-                      </button>
-                    </div>
-                  </div>
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={handleFriendModal}>&times;</span>
+        <h2>Friend Request's</h2>
+        {friendRequests.length ? (
+          friendRequests.map((user, index) => (
+            <div key={index} className="notification-container">
+              <div className="notification-card">
+                <div className="friend-info">
+                  <img
+                    src={`data:image/jpeg;base64,${user?.photo_url}`}
+                    alt="User photo"
+                    className="friend-photo"
+                  />
+                  <p className="friend-name">{user?.name}</p>
                 </div>
-              ))
-            ) : (
-              <p>No new requests</p>
-            )}
-          </div>
-        </div>
-      )}
+                <div className="action-buttons">
+                  <button
+                    className="accept-button"
+                    onClick={() => handleInviteRequest(index)}
+                  >
+                    Convidar
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No new requests</p>
+        )}
+      </div>
+    </div>
+  )}
     </div>
   );
 }
