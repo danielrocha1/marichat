@@ -264,7 +264,7 @@ func main() {
 		}
 	
 		// Retornar os detalhes dos usuários como JSON
-		response := Response{Users: users}
+		response := Response{users}
 		return c.JSON(response)
 	})
 
