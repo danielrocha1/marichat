@@ -200,7 +200,7 @@ func main() {
 		query := `
 			SELECT *
 			FROM friendships
-			WHERE hostid2 = $1 
+			WHERE hostid1 = $1 
 		
 		`
 	
