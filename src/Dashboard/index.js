@@ -82,7 +82,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
         }
 
         const data = await response.json();
-        
+        console.log(data)
         setFriendRequests(data);
         
       } catch (error) {
@@ -196,7 +196,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             },
             body: JSON.stringify({
                 hostid: userData.data.hostid,
-                friendid: friendRequests[index].friendid  // Assume-se que o friendid é parte das notificações
+                friendid: friendRequests[index].hostid  // Assume-se que o friendid é parte das notificações
             }),
         });
 
@@ -296,6 +296,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       <div onClick={handleFriendModal}>
       <p className="friend">
         FriendRequest {
+          
           friendRequests?.length > 0 && (
             <b className="notification-count">{friendRequests.length}</b>
           )
