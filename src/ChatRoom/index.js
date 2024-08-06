@@ -244,39 +244,39 @@ function ChatRoom() {
         <div>
           <b classname="friend-list" style={{ cursor: "pointer" }} onClick={handleFriendModal}>Convidar Amigo</b>
           {showFriendModal && (
-    <div className="modal-friend">
-      <div className="modal-content-friend">
-        <span className="close" onClick={handleFriendModal}>&times;</span>
-        <h2>Friend Request's</h2>
-        {friendRequests.length ? (
-          friendRequests.map((user, index) => (
-            <div key={index} className="notification-container">
-              <div className="notification-card">
-                <div className="friend-info">
-                  <img
-                    src={`data:image/jpeg;base64,${user?.photo_url}`}
-                    alt="User photo"
-                    className="friend-photo"
-                  />
-                  <p className="friend-name">{user?.name}</p>
-                </div>
-                <div className="action-buttons">
-                  <button
-                    className="accept-button"
-                    onClick={() => handleInviteRequest(index)}
-                  >
-                    Convidar
-                  </button>
-                </div>
+            <div className="modal-friend">
+              <div className="modal-content-friend">
+                <span className="close" onClick={handleFriendModal}>&times;</span>
+                <h2>Amigos Online</h2>
+                {friendRequests.length ? (
+                  friendRequests.map((user, index) => (
+                    <div key={index} className="notification-container">
+                      <div className="notification-card">
+                        <div className="friend-info">
+                          <img
+                            src={`data:image/jpeg;base64,${user?.photo_url}`}
+                            alt="User photo"
+                            className="friend-photo"
+                          />
+                          <p className="friend-name">{user?.name}</p>
+                        </div>
+                        <div className="action-buttons">
+                          <button
+                            className="accept-button"
+                            onClick={() => handleInviteRequest(index)}
+                          >
+                            Convidar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No new requests</p>
+                )}
               </div>
             </div>
-          ))
-        ) : (
-          <p>No new requests</p>
-        )}
-      </div>
-    </div>
-  )}
+          )}
           <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
