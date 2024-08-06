@@ -43,10 +43,107 @@ function ChatRoom() {
   const searchParams = new URLSearchParams(location.search);
   const chat = Object.fromEntries(searchParams.entries());
 
+  const [showFriendModal, setShowFriendModal] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
+
   const [roomname, setRoomname] = useState('');
   const [messages, setMessages] = useState([]);
   const [userTypingStatus, setUserTypingStatus] = useState([]);
   const [users, setUsers] = useState([]);
+
+
+
+const handleFriendModal = () => {
+  setShowFriendModal(!showFriendModal);
+ 
+    console.log(friendRequests)
+};
+
+const modalFriendList = () => {
+
+  useEffect(() => {
+    const fetchRequest = async () => {
+      try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectfriendRequest', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        const data = await response.json();
+        console.log(data)
+        setFriendRequests(data);
+        
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+    };
+
+    fetchRequest();
+  }, [friendRequests]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+
+
+  return(
+    <div onClick={handleFriendModal}>
+      <p className="friend">
+        FriendRequest {
+          
+          friendRequests?.length > 0 && (
+            <b className="notification-count">{friendRequests.length}</b>
+          )
+        }
+      </p>
+      {showFriendModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleFriendModal}>&times;</span>
+            <h2>Friend Request's</h2>
+            {friendRequests?.length ? (
+              friendRequests.map((user, index) => {
+                console.log("User:", user); // Adicione este log para verificar cada usuário
+                return (
+                  <div className="notification-container">
+                  <div key={index} className="notification-card">
+                    <div className="friend-info">
+                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
+                      <p className="friend-name">{user?.name}</p>
+                    </div>
+                    <div className="action-buttons">
+                      <button
+                        className="accept-button"
+                        onClick={() => handleAcceptRequest(index, user)}
+                      >
+                        Aceitar
+                      </button>
+                      <button
+                        className="decline-button"
+                        onClick={() => handleDeclineRequest(index)}
+                      >
+                        Recusar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                );
+              })
+            ) : (
+              <p>No new requests</p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
+
 
   const [colors, setColors] = useState({
     chatBox: '#7d3e5d',
@@ -200,8 +297,8 @@ function ChatRoom() {
       <header className="App-header" style={{ background: colors.background }}>
   
         <div>
-        <b style={{  }}>Convidar Amigo</b>
-          <chatroom style={{ marginLeft: "710px" }}>{roomname ? roomname : ''}</chatroom>
+        <b onClick={modalFriendList} style={{  }}>Convidar Amigo</b>
+          <chatroom style={{ marginLeft: "40vw" }}>{roomname ? roomname : ''}</chatroom>
           <FaSignOutAlt size={24} color={"white"} style={{ marginLeft: "15px", cursor: "pointer" }} onClick={kickUser} />
         </div>
         <div className="Box" style={{ backgroundColor: colors.chatBox, borderColor: colors.border }}>
