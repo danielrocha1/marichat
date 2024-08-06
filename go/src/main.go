@@ -605,7 +605,7 @@ func main() {
 
 		var chatrooms []Chatroom
 
-		rows, err := db.Query("SELECT id, chatname, chatid, hostid, active FROM Chatrooms WHERE private = $1", false)
+		rows, err := db.Query("SELECT id, chatname, chatid, hostid, active FROM Chatrooms WHERE private = $1 AND active = true", false)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Failed to query database",
