@@ -89,6 +89,33 @@ const modalFriendList = () => {
   }, [friendRequests]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
 
+  const handleInviteRequest = async (index) => {
+
+    try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/acceptFriendRequest', { // Atualize a URL com o endereço correto do seu backend
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                friendid: friendRequests[index].hostid  // Assume-se que o friendid é parte das notificações
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao enviar os dados');
+        }
+
+        // Se necessário, processe a resposta aqui
+        const result = await response.json();
+        console.log('Sucesso:', result);
+
+    } catch (error) {
+        console.error('Erro:', error.message);
+    }
+};
+
+
   return(
     <div onClick={handleFriendModal}>
       <p className="friend">
@@ -117,15 +144,9 @@ const modalFriendList = () => {
                     <div className="action-buttons">
                       <button
                         className="accept-button"
-                        onClick={() => handleAcceptRequest(index, user)}
+                        onClick={() => handleInviteRequest(index)}
                       >
-                        Aceitar
-                      </button>
-                      <button
-                        className="decline-button"
-                        onClick={() => handleDeclineRequest(index)}
-                      >
-                        Recusar
+                        Convidar
                       </button>
                     </div>
                   </div>
