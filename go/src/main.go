@@ -265,7 +265,7 @@ func main() {
 	
 		// Retornar os detalhes dos usuários como JSON
 		response := Response{users}
-		return c.JSON(response)
+		return c.JSON(users)
 	})
 
 	app.Post("/acceptFriendRequest", func(c *fiber.Ctx) error {
