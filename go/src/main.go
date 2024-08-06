@@ -183,10 +183,7 @@ func main() {
 			PhotoURL []byte `json:"photo_url"`
 		}
 	
-		// Estrutura para representar a resposta, contendo apenas os detalhes do usuário
-		type Response struct {
-			Users []User `json:"users"`
-		}
+	
 	
 		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
 		var requestBody RequestBody
@@ -264,7 +261,7 @@ func main() {
 		}
 	
 		// Retornar os detalhes dos usuários como JSON
-		response := Response{users}
+		
 		return c.JSON(users)
 	})
 
