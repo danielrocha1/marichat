@@ -274,8 +274,8 @@ function ChatRoom() {
         </div>
       </header>
       {showFriendModal && (
-    <div className="modal">
-      <div className="modal-content">
+    <div className="modal-friend">
+      <div className="modal-content-friend">
         <span className="close" onClick={handleFriendModal}>&times;</span>
         <h2>Friend Request's</h2>
         {friendRequests.length ? (
