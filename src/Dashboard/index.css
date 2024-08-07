@@ -444,9 +444,12 @@
 
 
 
+  .friends-list {
+    overflow-y: auto;
+  }
 
   .friends {
-    overflow-y: auto;
+    
     display: flex;
     flex-direction: column;
     max-width: 185px; /* Ajuste conforme necessário */
