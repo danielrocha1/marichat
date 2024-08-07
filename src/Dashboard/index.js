@@ -64,9 +64,9 @@ const simulateWebSocket = (callback) => {
 };
 
 const friends = [
-  { id: 1, name: 'Alice', status: 'Ativo', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
-  { id: 2, name: 'Bob', status: 'Ocioso', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
-  { id: 3, name: 'Charlie', status: 'Ativo', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
+  { id: 1, name: 'Alice',  photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
+  { id: 2, name: 'Bob',  photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
+  { id: 3, name: 'Charlie', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
   // Adicione mais amigos conforme necessário
 ];
 
@@ -79,7 +79,6 @@ const FriendList = () => {
           <img src={friend.photo} alt={friend.name} className="friend-photo" />
           <div className="friend-info">
             <h3 className="friend-name">{friend.name}</h3>
-            <p className="friend-status">{friend.status}</p>
           </div>
         </div>
       ))}
