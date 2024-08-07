@@ -128,7 +128,7 @@
   .toggle-btn {
     cursor: pointer;
     position: absolute;
-    top: 42px;
+    top: 2vh;
     right: 10px;
     z-index: 1;
   }
@@ -136,8 +136,45 @@
   .user-btn {
     cursor: pointer;
     position: absolute;
-    top: 52px;
+    top: 22vh;
     right: 10px;
+    z-index: 1;
+  }
+  .user-btn.open {
+    background-color: #133b8f;
+    transform: translateX(0);
+  }
+  .user-btn:hover {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    z-index: 1;
+  }
+
+
+  .chat-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 62vh;
+    right: 10px;
+    z-index: 1;
+  }
+  .chat-btn:hover {
+    cursor: pointer;
+    right: 5px;
+    z-index: 1;
+  }
+
+  .friend-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 42vh;
+    right: 10px;
+    z-index: 1;
+  }
+  .friend-btn:hover {
+    cursor: pointer;
+    right: 5px;
     z-index: 1;
   }
 
@@ -491,5 +528,6 @@
   .friends-name {
     margin: 0;
     font-size: 1.2em;
+    color:#007bff;
   }
   

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
 
+import { FaUser, FaUsers, FaCommentDots } from 'react-icons/fa';
 import ImageHost from './ImageHost';
 import EnterRoom from '../Dashboard/EnterRoom';
 import CreateChat from '../Dashboard/CreateChat';
@@ -11,6 +12,7 @@ import './index.css';
 // Componentes
 const Sidebar = ({ user }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -28,40 +30,25 @@ const Sidebar = ({ user }) => {
     );
   };
 
+
+
   return (
     <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-      <div>
-        <div onClick={toggleSidebar} className="toggle-btn">
+        <div onClick={toggleSidebar} className="toggle-btn" title="Abrir barra lateral">
           <div className="bar1"></div>
           <div className="bar2"></div>
           <div className="bar3"></div>
         </div>
-        <div onClick={toggleSidebar} className="user-btn">
-          <div className="bar1"></div>
-          <div className="bar2"></div>
-          <div className="bar3"></div>
+        <div onClick={toggleSidebar} className="user-btn" title="Infomações de Usuário">
+        <FaUser size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
-        <div onClick={toggleSidebar} className="toggle-btn">
-          <div className="bar1"></div>
-          <div className="bar2"></div>
-          <div className="bar3"></div>
+        <div onClick={toggleSidebar} className="friend-btn" title="Lista de Amigos">
+        <FaUsers size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
-        <div onClick={toggleSidebar} className="toggle-btn">
-          <div className="bar1"></div>
-          <div className="bar2"></div>
-          <div className="bar3"></div>
+        <div onClick={toggleSidebar} className="chat-btn" title="Chats"> 
+        <FaCommentDots size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
-        <div onClick={toggleSidebar} className="toggle-btn">
-          <div className="bar1"></div>
-          <div className="bar2"></div>
-          <div className="bar3"></div>
-        </div>
-        <div onClick={toggleSidebar} className="toggle-btn">
-          <div className="bar1"></div>
-          <div className="bar2"></div>
-          <div className="bar3"></div>
-        </div>
-      </div>
+      
       <div className="user-info">
       <ImageHost user={user}/>
         <p style={{marginTop:"10px"}}>Nome: {user.data.fullname}</p>
@@ -71,9 +58,8 @@ const Sidebar = ({ user }) => {
           <AvatarButton/>
         </div>
         <div style={{marginTop:"10px"}}>
-          <FriendList/>
+          <FriendList userData={user}/>
         </div>
-
       </div>
     </div>
   );
@@ -88,21 +74,46 @@ const simulateWebSocket = (callback) => {
   }, 5000);
 };
 
-const friends = [
-  { id: 1, name: 'Alice',  photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
-  { id: 2, name: 'Bob',  photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
-  { id: 3, name: 'Charlie', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
-  // Adicione mais amigos conforme necessário
-];
 
-const FriendList = () => {
+const FriendList = ({userData}) => {
+  const [friends, setFriends] = useState([]);
+
+
+  useEffect(() => {
+      
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        const data = await response.json();
+        console.log(data)
+        setFriends(data);
+        
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+    };
+
+    fetchFriends();
+  }, [friends]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+
   return (
     <div className="friends">
       <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
       <div className="friends-list">
       {friends.map(friend => (
         <div key={friend.id} className="friends-card">
-          <img src={friend.photo} alt={friend.name} className="friends-photo" />
+          <img src={`data:image/jpeg;base64,${friend?.photo_url}`} alt={friend.name} className="friends-photo" />
           <div className="friends-info">
             <h3 className="friends-name">{friend.name}</h3>
           </div>
@@ -320,7 +331,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={() => {handleNotificationModal()}}>&times;</span>
-              <h2>Notifications</h2>
+              <h2>Notificações</h2>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
                   <div key={index} className="notification">
@@ -341,7 +352,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                   </div>
                 ))
               ) : (
-                <p>No new notifications</p>
+                <p>Sem novas notificações</p>
               )}
             </div>
           </div>
@@ -362,7 +373,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={handleFriendModal}>&times;</span>
-            <h2>Friend Request's</h2>
+            <h3>Solicitações de Amizade</h3>
             {friendRequests?.length ? (
               friendRequests.map((user, index) => {
                 console.log("User:", user); // Adicione este log para verificar cada usuário
@@ -392,7 +403,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                 );
               })
             ) : (
-              <p>No new requests</p>
+              <p>Sem novas solicitações</p>
             )}
           </div>
         </div>
