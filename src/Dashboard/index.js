@@ -64,9 +64,9 @@ const simulateWebSocket = (callback) => {
 };
 
 const friends = [
-  { id: 1, name: 'Alice', status: 'Ativo', photo: 'url_da_foto_alice' },
-  { id: 2, name: 'Bob', status: 'Ocioso', photo: 'url_da_foto_bob' },
-  { id: 3, name: 'Charlie', status: 'Ativo', photo: 'url_da_foto_charlie' },
+  { id: 1, name: 'Alice', status: 'Ativo', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
+  { id: 2, name: 'Bob', status: 'Ocioso', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
+  { id: 3, name: 'Charlie', status: 'Ativo', photo: 'https://cdn.soft112.com/cartoon-maker-avatar-creator-anime/00/00/0H/DU/00000HDUTI/pad_screenshot.jpg' },
   // Adicione mais amigos conforme necessário
 ];
 
