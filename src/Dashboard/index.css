@@ -451,8 +451,8 @@
   .friend-list {
     display: flex;
     flex-direction: column;
-    width: 300px; /* Ajuste conforme necessário */
-    margin: 0 auto;
+    max-width: 200px; /* Ajuste conforme necessário */
+    margin: 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;

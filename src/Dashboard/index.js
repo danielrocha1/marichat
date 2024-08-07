@@ -45,7 +45,7 @@ const Sidebar = ({ user }) => {
         <div >
           <AvatarButton/>
         </div>
-        <div>
+        <div style={{marginTop:"30px"}}>
           <FriendList/>
         </div>
 
