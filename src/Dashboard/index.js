@@ -45,6 +45,9 @@ const Sidebar = ({ user }) => {
         <div >
           <AvatarButton/>
         </div>
+        <div>
+          <FriendList/>
+        </div>
 
       </div>
     </div>
@@ -59,6 +62,31 @@ const simulateWebSocket = (callback) => {
        });
   }, 5000);
 };
+
+const friends = [
+  { id: 1, name: 'Alice', status: 'Ativo', photo: 'url_da_foto_alice' },
+  { id: 2, name: 'Bob', status: 'Ocioso', photo: 'url_da_foto_bob' },
+  { id: 3, name: 'Charlie', status: 'Ativo', photo: 'url_da_foto_charlie' },
+  // Adicione mais amigos conforme necessário
+];
+
+const FriendList = () => {
+  return (
+    <div className="friend-list">
+      {friends.map(friend => (
+        <div key={friend.id} className="friend-card">
+          <img src={friend.photo} alt={friend.name} className="friend-photo" />
+          <div className="friend-info">
+            <h3 className="friend-name">{friend.name}</h3>
+            <p className="friend-status">{friend.status}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
 
 const TopHeader = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
