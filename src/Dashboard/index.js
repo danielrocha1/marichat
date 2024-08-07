@@ -73,7 +73,7 @@ const friends = [
 const FriendList = () => {
   return (
     <div className="friend-list">
-      <p>Amigos online</p>
+      <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
       {friends.map(friend => (
         <div key={friend.id} className="friend-card">
           <img src={friend.photo} alt={friend.name} className="friend-photo" />
