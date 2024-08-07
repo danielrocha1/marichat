@@ -453,7 +453,11 @@
 
 
   .friends-list0 {
- 
+    overflow-y: auto;
+  }
+
+  .friends {
+    
     display: flex;
     flex-direction: column;
     max-width: 185px; /* Ajuste conforme necessário */
@@ -463,11 +467,6 @@
     border-radius: 8px;
     background-color: #f9f9f9;
     max-height: 30vh;
-  }
-
-  .friends0 {
-    overflow-y: auto;
-   
   }
   
   .friend-card {

@@ -99,7 +99,7 @@ const FriendList = () => {
   return (
     <div className="friends">
       <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
-      <div className="friend-list0">
+      <div className="friend-list">
       {friends.map(friend => (
         <div key={friend.id} className="friend-card">
           <img src={friend.photo} alt={friend.name} className="friend-photo" />
