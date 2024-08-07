@@ -248,8 +248,8 @@ function ChatRoom() {
               <div className="modal-content-friend">
                 <span className="close" onClick={handleFriendModal}>&times;</span>
                 <h2>Amigos Online</h2>
-                {friendRequests.length ? (
-                  friendRequests.map((user, index) => (
+                {friendRequests?.length ? (
+                  friendRequests?.map((user, index) => (
                     <div key={index} className="notification-container">
                       <div className="notification-card">
                         <div className="friend-info">
