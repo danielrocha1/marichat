@@ -99,12 +99,12 @@ const FriendList = () => {
   return (
     <div className="friends">
       <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
-      <div className="friend-list">
+      <div className="friends-list">
       {friends.map(friend => (
-        <div key={friend.id} className="friend-card">
-          <img src={friend.photo} alt={friend.name} className="friend-photo" />
-          <div className="friend-info">
-            <h3 className="friend-name">{friend.name}</h3>
+        <div key={friend.id} className="friends-card">
+          <img src={friend.photo} alt={friend.name} className="friends-photo" />
+          <div className="friends-info">
+            <h3 className="friends-name">{friend.name}</h3>
           </div>
         </div>
       ))}
