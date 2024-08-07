@@ -39,13 +39,13 @@ const Sidebar = ({ user }) => {
       </div>
       <div className="user-info">
       <ImageHost user={user}/>
-        <p style={{marginTop:"30px"}}>Nome: {user.data.fullname}</p>
+        <p style={{marginTop:"20px"}}>Nome: {user.data.fullname}</p>
         <p>Email: {user.data.email}</p>
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
         <div >
           <AvatarButton/>
         </div>
-        <div style={{marginTop:"30px"}}>
+        <div style={{marginTop:"10px"}}>
           <FriendList/>
         </div>
 

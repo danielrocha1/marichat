@@ -445,15 +445,13 @@
 
 
 
-
-
-
   .friend-list {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    max-width: 200px; /* Ajuste conforme necessário */
+    max-width: 185px; /* Ajuste conforme necessário */
     margin: 0;
+    
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
