@@ -133,6 +133,14 @@
     z-index: 1;
   }
   
+  .user-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 52px;
+    right: 10px;
+    z-index: 1;
+  }
+
   .createChat {
     margin-left: auto;
     margin-top: 20px;
