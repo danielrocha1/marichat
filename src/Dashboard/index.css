@@ -453,7 +453,7 @@
 
 
   .friends-list0 {
-    overflow-y: auto;
+ 
     display: flex;
     flex-direction: column;
     max-width: 185px; /* Ajuste conforme necessário */
@@ -465,8 +465,8 @@
     max-height: 30vh;
   }
 
-  .friends {
-    
+  .friends0 {
+    overflow-y: auto;
    
   }
   

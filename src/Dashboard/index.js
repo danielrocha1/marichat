@@ -97,7 +97,7 @@ const friends = [
 
 const FriendList = () => {
   return (
-    <div className="friends">
+    <div className="friends0">
       <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
       <div className="friend-list0">
       {friends.map(friend => (
