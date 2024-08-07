@@ -45,6 +45,7 @@ const Sidebar = ({ user }) => {
         <div >
           <AvatarButton/>
         </div>
+
       </div>
     </div>
   );
@@ -320,7 +321,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
                     <div className="action-buttons">
                       <button
                         className="accept-button"
-                        onClick={() => handleAcceptRequest(index, user)}
+                        onClick={() => handleAcceptRequest(index, userData)}
                       >
                         Aceitar
                       </button>

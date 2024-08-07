@@ -272,7 +272,7 @@ function ChatRoom() {
                     </div>
                   ))
                 ) : (
-                  <p>No new requests</p>
+                  <p>Sem amigos online</p>
                 )}
               </div>
             </div>
