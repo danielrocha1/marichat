@@ -10,7 +10,7 @@ import CreateChat from '../Dashboard/CreateChat';
 import './index.css';
 
 // Componentes
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, setCurrentView }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
 
@@ -39,13 +39,13 @@ const Sidebar = ({ user }) => {
           <div className="bar2"></div>
           <div className="bar3"></div>
         </div>
-        <div onClick={toggleSidebar} className="user-btn" title="Infomações de Usuário">
+        <div onClick={ () => {setCurrentView('InfoUser')}}  className="user-btn" title="Infomações de Usuário">
         <FaUser size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
-        <div onClick={toggleSidebar} className="friend-btn" title="Lista de Amigos">
-        <FaUsers size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
+        <div onClick={ () => {setCurrentView('friends')}} className="friend-btn" title="Lista de Amigos">
+        <FaUsers size={40} color={"white"} style={{cursor: "pointer" }} />
         </div>
-        <div onClick={toggleSidebar} className="chat-btn" title="Chats"> 
+        <div onClick={ () => {setCurrentView('chat')}}  className="chat-btn" title="Chats"> 
         <FaCommentDots size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
       
@@ -124,6 +124,55 @@ const FriendList = ({userData}) => {
   );
 };
 
+
+const TotalFriendList = ({userData}) => {
+  const [friends, setFriends] = useState([]);
+
+
+  useEffect(() => {
+      
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        const data = await response.json();
+
+        setFriends(data);
+        
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+    };
+
+    fetchFriends();
+  }, [friends]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+
+  return (
+    <div className="total-friends">
+      <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
+      <div className="total-friends-list">
+      {friends.map(friend => (
+        <div key={friend.id} className="total-friends-card">
+          <img src={`data:image/jpeg;base64,${friend?.photo_url}`} alt={friend.name} className="total-friends-photo" />
+          <div className="total-friends-info">
+            <h3 className="total-friends-name">{friend.name}</h3>
+          </div>
+        </div>
+      ))}
+      </div>
+    </div>
+  );
+};
 
 
 const TopHeader = ({userData, handleLogout, navigate }) => {
@@ -645,31 +694,46 @@ const Dashboard = () => {
   const handleLogout = () => {
     navigate(`/`)
   };
+  const [currentView, setCurrentView] = useState('chat');
 
+  const renderView = () => {
+    switch (currentView) {
+      case 'chat':
+        return (
+          <>
+            <div className="containerchat">
+              <div className="createChat">
+                <EnterRoom />
+              </div>
+              <div className="createChat">
+                <CreateChat setChats={setChats} />
+              </div>
+            </div>
+            <div>
+              <ChatTable userData={userData} setChats={setChats} chats={chats} />
+            </div>
+            <div className="containerPublic">
+              <h1>Chats Públicos</h1>
+              <PublicChatTable userData={userData} setChats={setChats} chats={chats} />
+            </div>
+          </>
+        );
+      case 'friends':
+        return <TotalFriendList userData={userData} />;
+      case 'userInfo':
+        // return <UserInfoForm userData={userData} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div>
-      <TopHeader handleLogout={handleLogout} userData={userData} navigate={navigate}/>
+      <TopHeader handleLogout={handleLogout} userData={userData} navigate={navigate} />
       <div className="app">
-        <Sidebar user={userData} chats={chats} />
+        <Sidebar user={userData} chats={chats} setCurrentView={setCurrentView} />
         <div className="container">
-        <div className="containerchat">
-          <div className="createChat">
-            <EnterRoom />
-          </div>
-          <div className="createChat">
-            <CreateChat setChats={setChats} />
-            
-          </div>
-        </div>
-          <div className="">
-            <ChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
-          </div>
-         
-          <div className="containerPublic">
-            <h1>Chats Públicos</h1>
-            <PublicChatTable userData={userData} setChats={setChats} chats={chats} /> {/* passa um array vazio para chats */}
-          </div>
+          {renderView()}
         </div>
       </div>
     </div>

@@ -531,3 +531,56 @@
     color:#007bff;
   }
   
+
+
+
+
+
+  .total-friends-list {
+    overflow-y: auto;
+  }
+
+  .total-friends {
+    top:5vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center;     /* Centraliza horizontalmente */
+    max-width: 185px;
+    margin: 0 auto;          /* Centraliza o contêiner horizontalmente na página */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-height: 30vh;
+  }
+  
+  .total-friends-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .total-friends-card:last-child {
+    border-bottom: none; /* Remove a borda do último item */
+  }
+  
+  .total-friends-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Círculo */
+    margin-right: 10px;
+  }
+  
+  .total-friends-info {
+    flex-grow: 1; /* Ocupa todo o espaço disponível */
+  }
+  
+  .total-friends-name {
+    margin: 0;
+    font-size: 1.2em;
+    color:#007bff;
+  }
+  
