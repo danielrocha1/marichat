@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
 
-import { FaUser, FaUsers, FaCommentDots } from 'react-icons/fa';
+import { FaUser, FaUsers, FaCommentDots, FaUserPlus, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
 import ImageHost from './ImageHost';
 import EnterRoom from '../Dashboard/EnterRoom';
 import CreateChat from '../Dashboard/CreateChat';
@@ -321,7 +321,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
     <div className="top-header">
       <div className="messages-header" onClick={handleNotificationModal} >
         <p  className="messages">
-          Messages {
+        <FaEnvelope size={25} title='Notificações' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> {
             notifications.length > 0 && (
               <b className="messages-count">{notifications.length}</b>
             )
@@ -362,7 +362,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
      
       <div onClick={handleFriendModal}>
       <p className="friend">
-        FriendRequest {
+      <FaUserPlus size={25} title='Solicitações de amizades' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> {
           
           friendRequests?.length > 0 && (
             <b className="notification-count">{friendRequests.length}</b>
@@ -410,8 +410,8 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       )}
     </div>
       
-      <div onClick={handleLogout} style={{marginRight: "20px"}}>
-        <p style={{marginTop: "15px", padding:"5px",}}>Logout</p>
+      <div title="Sair" style={{marginRight: "20px"}}>
+      <FaSignOutAlt size={30} color={"white"} style={{cursor: "pointer", marginTop: "12px" }} onClick={handleLogout} />
       </div>
     </div>
   );
