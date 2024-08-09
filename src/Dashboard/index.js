@@ -76,7 +76,7 @@ const simulateWebSocket = (callback) => {
 
 const TotalFriendList = ({ userData }) => {
   const [friends, setFriends] = useState([{photo_url:"POATO",name:"GRaNDE", status:'offline'},{photo_url:"POATO",name:"GRaNDE", status:"online"},{photo_url:"POATO",name:"GRaNDE", status:"offline"},{photo_url:"POATO",name:"GRaNDE", status:"busy"}]);
-  const sortedFriends = friends.sort((a, b) => {
+  const sortedFriends = friends?.sort((a, b) => {
     if (a.status === 'online' && b.status !== 'online') return -1;
     if (a.status !== 'online' && b.status === 'online') return 1;
     if (a.status === 'offline' && b.status !== 'offline') return 1;
@@ -127,7 +127,7 @@ const TotalFriendList = ({ userData }) => {
     <div className="friends">
       <h5 style={{ color: "green", textAlign: "center" }}>Amigos online</h5>
       <div className="friends-list">
-        {sortedFriends.map(friend => (
+        {sortedFriends?.map(friend => (
           <div
             key={friend.id}
             className="friends-card"
