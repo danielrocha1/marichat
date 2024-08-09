@@ -289,9 +289,9 @@ func main() {
 
 		// Prepare SQL query
 		query := `
-			SELECT hostid1 OR hostd2
+			SELECT hostid1 OR hostid2
 			FROM friendships
-			WHERE hostid2 = $1 OR hostd2 = $1
+			WHERE hostid2 = $1 OR hostid2 = $1
 			 AND status = 'accepted'
 		`
 
