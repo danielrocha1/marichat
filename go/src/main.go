@@ -1,4 +1,4 @@
-	package main
+package main
 
 import (
 	"bytes"
@@ -6,14 +6,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+
 	// "io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
 	"github.com/google/uuid"
 
 	"database/sql"
+
 	_ "github.com/lib/pq"
 
 	"github.com/gofiber/fiber/v2"
@@ -21,23 +24,23 @@ import (
 )
 
 type Users struct {
-	Name   string `json:"username"`
-	ChatID string `json:"chatid"`
-	HostID string `json:"hostid"`
+	Name     string `json:"username"`
+	ChatID   string `json:"chatid"`
+	HostID   string `json:"hostid"`
 	PhotoURL []byte `json:"photo"`
 }
 
 type Chatroom struct {
-	Name   string
-	Users  []Users
-	HostID string
-	ChatID string
+	Name    string
+	Users   []Users
+	HostID  string
+	ChatID  string
 	Private bool
 }
 
 type MessageTyping struct {
 	User     string `json:"username"`
-	HostID 	string  `json:"hostid"`
+	HostID   string `json:"hostid"`
 	IsTyping bool   `json:"isTyping"`
 }
 
@@ -46,8 +49,8 @@ type Message struct {
 	Name      string
 	Message   string
 	Chatroom  string
-	HostID  string    
-	ChatID  string    
+	HostID    string
+	ChatID    string
 	Timestamp time.Time
 }
 
@@ -55,10 +58,10 @@ type MessageFile struct {
 	Type      string
 	Label     string
 	Name      string
-	HostID	  string
+	HostID    string
 	Message   string
 	Chatroom  string
-	ChatID	  string
+	ChatID    string
 	Upload    bool `json:"upload"`
 	Timestamp time.Time
 	File      []byte `json:"file,omitempty"`
@@ -87,7 +90,7 @@ type UserInfo struct {
 }
 
 type UserPhoto struct {
-	ID    int `json:"id"`
+	ID    int    `json:"id"`
 	Photo []byte `json:"photo"`
 }
 
@@ -128,63 +131,61 @@ func main() {
 	})
 
 	app.Post("/friendRequest", func(c *fiber.Ctx) error {
-        // Estrutura para receber os dados do corpo da solicitação
-        type FriendRequest struct {
-            HostID1 string `json:"hostid1"`
-            HostID2 string `json:"hostid2"`
-        }
+		// Estrutura para receber os dados do corpo da solicitação
+		type FriendRequest struct {
+			HostID1 string `json:"hostid1"`
+			HostID2 string `json:"hostid2"`
+		}
 
-        // Parsear os dados do corpo da solicitação para a estrutura FriendRequest
-        var friendRequest FriendRequest
-        if err := c.BodyParser(&friendRequest); err != nil {
-            return err
-        }
+		// Parsear os dados do corpo da solicitação para a estrutura FriendRequest
+		var friendRequest FriendRequest
+		if err := c.BodyParser(&friendRequest); err != nil {
+			return err
+		}
 
-        // Verificar se a solicitação de amizade já existe
-        var count int
-        err := db.QueryRow("SELECT COUNT(*) FROM friendships WHERE (hostid1 = $1 AND hostid2 = $2) OR (hostid1 = $2 AND hostid2 = $1)",
-            friendRequest.HostID1, friendRequest.HostID2).Scan(&count)
-        if err != nil {
-            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-                "error": "Erro ao verificar solicitação de amizade",
-            })
-        }
+		// Verificar se a solicitação de amizade já existe
+		var count int
+		err := db.QueryRow("SELECT COUNT(*) FROM friendships WHERE (hostid1 = $1 AND hostid2 = $2) OR (hostid1 = $2 AND hostid2 = $1)",
+			friendRequest.HostID1, friendRequest.HostID2).Scan(&count)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao verificar solicitação de amizade",
+			})
+		}
 
-        if count > 0 {
-            return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-                "error": "Solicitação de amizade já existe",
-            })
-        }
+		if count > 0 {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Solicitação de amizade já existe",
+			})
+		}
 
-        // Inserir a nova solicitação de amizade com timestamps
-        now := time.Now()
-        _, err = db.Exec("INSERT INTO friendships (hostid1, hostid2, status, created_at, updated_at) VALUES ($1, $2, 'pending', $3, $3)",
-            friendRequest.HostID1, friendRequest.HostID2, now)
-        if err != nil {
-            return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-                "error": "Erro ao criar solicitação de amizade",
-            })
-        }
+		// Inserir a nova solicitação de amizade com timestamps
+		now := time.Now()
+		_, err = db.Exec("INSERT INTO friendships (hostid1, hostid2, status, created_at, updated_at) VALUES ($1, $2, 'pending', $3, $3)",
+			friendRequest.HostID1, friendRequest.HostID2, now)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao criar solicitação de amizade",
+			})
+		}
 
-        return c.SendString("Solicitação de amizade enviada com sucesso!")
-    
-    })
+		return c.SendString("Solicitação de amizade enviada com sucesso!")
+
+	})
 
 	app.Post("/selectfriendRequest", func(c *fiber.Ctx) error {
 		// Estrutura para receber o usuário que está buscando os convites
 		type RequestBody struct {
 			HostID string `json:"hostid"`
 		}
-	
+
 		// Estrutura para representar um usuário com foto e nome
 		type User struct {
-			HostID  string `json:"hostid"`
-			Name    string `json:"name"`
+			HostID   string `json:"hostid"`
+			Name     string `json:"name"`
 			PhotoURL []byte `json:"photo_url"`
 		}
-	
-	
-	
+
 		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
 		var requestBody RequestBody
 		if err := c.BodyParser(&requestBody); err != nil {
@@ -192,15 +193,15 @@ func main() {
 				"error": "Erro ao analisar o corpo da solicitação",
 			})
 		}
-	
+
 		// Prepare SQL query
 		query := `
-			SELECT hostid1
+			SELECT hostid1 
 			FROM friendships
 			WHERE hostid2 = $1 
 			 AND status = 'pending'
 		`
-	
+
 		// Execute query
 		rows, err := db.Query(query, requestBody.HostID)
 		if err != nil {
@@ -209,7 +210,7 @@ func main() {
 			})
 		}
 		defer rows.Close()
-	
+
 		var hostIDs []string
 		for rows.Next() {
 			var hostid1 string
@@ -220,16 +221,16 @@ func main() {
 			}
 			hostIDs = append(hostIDs, hostid1)
 		}
-		fmt.Println("hostid",hostIDs)
-	
+		fmt.Println("hostid", hostIDs)
+
 		if err := rows.Err(); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Erro ao iterar sobre os resultados",
 			})
 		}
-	
+
 		var users []User
-	
+
 		for _, hostID := range hostIDs {
 			userRow, err := db.Query(`
 				SELECT up.photo, ui.username, ui.hostid
@@ -242,7 +243,7 @@ func main() {
 				})
 			}
 			defer userRow.Close() // Close userRow immediately after it's executed
-	
+
 			for userRow.Next() {
 				var user User
 				if err := userRow.Scan(&user.PhotoURL, &user.Name, &user.HostID); err != nil {
@@ -252,16 +253,16 @@ func main() {
 				}
 				users = append(users, user)
 			}
-	
+
 			if err := userRow.Err(); err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
 		}
-	
+
 		// Retornar os detalhes dos usuários como JSON
-		
+
 		return c.JSON(users)
 	})
 
@@ -270,16 +271,14 @@ func main() {
 		type RequestBody struct {
 			HostID string `json:"hostid"`
 		}
-	
+
 		// Estrutura para representar um usuário com foto e nome
 		type User struct {
-			HostID  string `json:"hostid"`
-			Name    string `json:"name"`
+			HostID   string `json:"hostid"`
+			Name     string `json:"name"`
 			PhotoURL []byte `json:"photo_url"`
 		}
-	
-	
-	
+
 		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
 		var requestBody RequestBody
 		if err := c.BodyParser(&requestBody); err != nil {
@@ -287,15 +286,15 @@ func main() {
 				"error": "Erro ao analisar o corpo da solicitação",
 			})
 		}
-	
+
 		// Prepare SQL query
 		query := `
-			SELECT hostid1
+			SELECT hostid1 OR hostd2
 			FROM friendships
-			WHERE hostid2 = $1 
+			WHERE hostid2 = $1 OR hostd2 = $1
 			 AND status = 'accepted'
 		`
-	
+
 		// Execute query
 		rows, err := db.Query(query, requestBody.HostID)
 		if err != nil {
@@ -304,7 +303,7 @@ func main() {
 			})
 		}
 		defer rows.Close()
-	
+
 		var hostIDs []string
 		for rows.Next() {
 			var hostid1 string
@@ -315,16 +314,16 @@ func main() {
 			}
 			hostIDs = append(hostIDs, hostid1)
 		}
-		fmt.Println("hostid",hostIDs)
-	
+		fmt.Println("hostid", hostIDs)
+
 		if err := rows.Err(); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Erro ao iterar sobre os resultados",
 			})
 		}
-	
+
 		var users []User
-	
+
 		for _, hostID := range hostIDs {
 			userRow, err := db.Query(`
 				SELECT up.photo, ui.username, ui.hostid
@@ -337,7 +336,7 @@ func main() {
 				})
 			}
 			defer userRow.Close() // Close userRow immediately after it's executed
-	
+
 			for userRow.Next() {
 				var user User
 				if err := userRow.Scan(&user.PhotoURL, &user.Name, &user.HostID); err != nil {
@@ -347,16 +346,16 @@ func main() {
 				}
 				users = append(users, user)
 			}
-	
+
 			if err := userRow.Err(); err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Erro ao iterar sobre os resultados dos usuários",
 				})
 			}
 		}
-	
+
 		// Retornar os detalhes dos usuários como JSON
-		
+
 		return c.JSON(users)
 	})
 
@@ -366,7 +365,7 @@ func main() {
 			HostID   string `json:"hostid"`
 			FriendID string `json:"friendid"`
 		}
-	
+
 		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
 		var requestBody RequestBody
 		if err := c.BodyParser(&requestBody); err != nil {
@@ -374,14 +373,14 @@ func main() {
 				"error": "Erro ao analisar o corpo da solicitação",
 			})
 		}
-	
+
 		// Prepare SQL query para atualizar o status da amizade para 'accepted'
 		query := `
 			UPDATE friendships
 			SET status = 'accepted'
 			WHERE hostid1 = $1 AND hostid2 = $2 AND status = 'pending'
 		`
-	
+
 		// Execute query
 		result, err := db.Exec(query, requestBody.FriendID, requestBody.HostID)
 		if err != nil {
@@ -389,7 +388,7 @@ func main() {
 				"error": "Erro ao atualizar o status da amizade",
 			})
 		}
-	
+
 		// Verificar se a linha foi atualizada
 		rowsAffected, err := result.RowsAffected()
 		if err != nil {
@@ -397,13 +396,13 @@ func main() {
 				"error": "Erro ao verificar as linhas afetadas",
 			})
 		}
-	
+
 		if rowsAffected == 0 {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"error": "Amizade não encontrada ou já aceita",
 			})
 		}
-	
+
 		// Retornar sucesso
 		return c.JSON(fiber.Map{
 			"message": "Amizade aceita com sucesso",
@@ -483,8 +482,7 @@ func main() {
 		if err := c.BodyParser(&registerReq); err != nil {
 			return err
 		}
-	
-	
+
 		// Executar a consulta SQL para inserir os dados do usuário na tabela UserInfo
 		_, err := db.Exec("INSERT INTO userinfo (hostid, fullname, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6)",
 			registerReq.HostID, registerReq.FullName, registerReq.Username, registerReq.Email, registerReq.Password, registerReq.Birthdate)
@@ -528,7 +526,7 @@ func main() {
 			var userInfo UserInfo
 			err := db.QueryRow("SELECT * FROM userinfo WHERE email = $1", loginReq.Email).Scan(
 				&userInfo.ID,
-				&userInfo.HostID,				
+				&userInfo.HostID,
 				&userInfo.FullName,
 				&userInfo.Username,
 				&userInfo.Email,
@@ -554,15 +552,15 @@ func main() {
 
 	app.Post("/upload-photo", func(c *fiber.Ctx) error {
 		var photoReq struct {
-			HostID string    `json:"hostid"`
-			Photo  []byte 	`json:"photo"`
+			HostID string `json:"hostid"`
+			Photo  []byte `json:"photo"`
 		}
 
 		// Parsear os dados do corpo da solicitação para a estrutura UserPhotoRequest
 		if err := c.BodyParser(&photoReq); err != nil {
 			return err
 		}
-		
+
 		fmt.Println(photoReq.Photo)
 
 		// Verificar se já existe uma foto para o hostid
@@ -588,7 +586,6 @@ func main() {
 
 		return c.SendString("Foto enviada com sucesso!")
 	})
-
 
 	// Rota WebSocket
 	app.Get("/websocket", websocket.New(func(c *websocket.Conn) {
@@ -621,7 +618,6 @@ func main() {
 			}
 		}
 	}))
-	
 
 	app.Post("/chatrooms", func(c *fiber.Ctx) error {
 		var requestData struct {
@@ -695,7 +691,6 @@ func main() {
 			ChatID   string `json:"chatid"`
 			HostID   string `json:"hostid"`
 			Active   bool   `json:"active"`
-			
 		}
 
 		var chatrooms []Chatroom
@@ -740,7 +735,7 @@ func main() {
 			})
 		}
 		fmt.Println(user)
-	
+
 		// Verifica se o chat existe
 		chatroom, exists := chatrooms[user.ChatID]
 		if !exists {
@@ -748,7 +743,7 @@ func main() {
 				"error": "Chatroom not found",
 			})
 		}
-	
+
 		// Verifica se o usuário já está na sala
 		for _, existingUser := range chatroom.Users {
 			if user.HostID == existingUser.HostID {
@@ -757,7 +752,7 @@ func main() {
 				})
 			}
 		}
-	
+
 		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
 		err := db.QueryRow("SELECT photo FROM userphotos WHERE hostid = $1", user.HostID).Scan(&photoURL)
@@ -766,7 +761,7 @@ func main() {
 				"error": err.Error(), // Retorna o erro como string
 			})
 		}
-	
+
 		// Serializa os dados do usuário para JSON
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
@@ -781,7 +776,7 @@ func main() {
 				"error": "Failed to serialize user data",
 			})
 		}
-	
+
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
@@ -790,7 +785,7 @@ func main() {
 				continue
 			}
 		}
-	
+
 		return nil // retorno nil para indicar sucesso na resposta
 	})
 
@@ -833,7 +828,7 @@ func main() {
 			// Se o usuário não estiver na sala, adiciona-o
 			chatroom.Users = append(chatroom.Users, Users{Name: requestData.Name, ChatID: requestData.ChatID, HostID: requestData.HostID})
 		}
-	
+
 		// Busca a foto do perfil do usuário no banco de dados
 		var photoURL []byte
 		err := db.QueryRow("SELECT photo FROM userphotos WHERE hostid = $1", requestData.HostID).Scan(&photoURL)
@@ -842,7 +837,7 @@ func main() {
 				"error": err.Error(), // Retorna o erro como string
 			})
 		}
-	
+
 		// Serializa os dados do usuário para JSON
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
@@ -857,7 +852,7 @@ func main() {
 				"error": "Failed to serialize user data",
 			})
 		}
-	
+
 		// Envia a mensagem para todos os clientes WebSocket informando sobre o novo usuário
 		for client := range clients {
 			err := client.WriteMessage(websocket.TextMessage, userJSON)
@@ -866,18 +861,18 @@ func main() {
 				continue
 			}
 		}
-	
+
 		return c.JSON(fiber.Map{
 			"message": "Usuário adicionado com sucesso à sala de chat",
 		})
 	})
-	
+
 	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/deletechat", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
-			HostID   string `json:"hostid"`
-			ChatID  string   `json:"chatid"`
+			HostID string `json:"hostid"`
+			ChatID string `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -885,13 +880,12 @@ func main() {
 			})
 		}
 		_, err := db.Exec("UPDATE Chatrooms SET active = false WHERE chatid = $1 AND hostid = $2;",
-		requestData.ChatID, requestData.HostID,)
+			requestData.ChatID, requestData.HostID)
 		if err != nil {
 			return err
 		}
 		return c.SendStatus(fiber.StatusOK)
 	})
-
 
 	// Rota para adicionar usuário a uma sala de bate-papo
 	app.Post("/createchat", func(c *fiber.Ctx) error {
@@ -901,7 +895,7 @@ func main() {
 			ChatName string `json:"chatname"`
 			HostID   string `json:"hostid"`
 			Private  bool   `json:"private"`
-			ChatID  string   `json:"chatid"`
+			ChatID   string `json:"chatid"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -909,31 +903,31 @@ func main() {
 			})
 		}
 
-	chatID, err := uuid.NewRandom()
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to generate chat ID",
-		})
-	}
+		chatID, err := uuid.NewRandom()
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to generate chat ID",
+			})
+		}
 
-	// Converte o UUID para string
-	requestData.ChatID = chatID.String()
-	fmt.Println(requestData.ChatID)
+		// Converte o UUID para string
+		requestData.ChatID = chatID.String()
+		fmt.Println(requestData.ChatID)
 		// Verifica se a sala de bate-papo existe
 		chatroom, exists := chatrooms[requestData.ChatID]
 		if !exists {
 			// Se não existir, cria uma nova sala de bate-papo
 			chatroom = &Chatroom{
-				Name: requestData.ChatName,
-				Users: []Users{},
+				Name:    requestData.ChatName,
+				Users:   []Users{},
 				Private: requestData.Private,
-				HostID: requestData.HostID,
-				ChatID: requestData.ChatID,
+				HostID:  requestData.HostID,
+				ChatID:  requestData.ChatID,
 			}
 			chatrooms[requestData.ChatID] = chatroom
 
 			_, err := db.Exec("INSERT INTO chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
-			requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
+				requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
 			if err != nil {
 				return err
 			}
@@ -946,18 +940,18 @@ func main() {
 			} else if chatroom.HostID != requestData.HostID {
 				// Se o ID do host for diferente, cria um novo chat com o mesmo nome
 				newChatroom := &Chatroom{
-					Name: requestData.ChatName,
-					Users: []Users{},
+					Name:    requestData.ChatName,
+					Users:   []Users{},
 					Private: requestData.Private,
-					HostID: requestData.HostID,
-					ChatID: requestData.ChatID, // Mantendo o ChatID igual
+					HostID:  requestData.HostID,
+					ChatID:  requestData.ChatID, // Mantendo o ChatID igual
 				}
 				chatrooms[requestData.ChatID] = newChatroom
 				_, err := db.Exec("INSERT INTO chatrooms (chatname, chatid, hostid, active, private) VALUES ($1, $2, $3, $4, $5)",
-			requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
-			if err != nil {
-				return err
-			}
+					requestData.ChatName, requestData.ChatID, requestData.HostID, true, requestData.Private)
+				if err != nil {
+					return err
+				}
 			} else {
 				// Se o ID do host for o mesmo, apenas adicione o usuário à sala de bate-papo existente
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -966,12 +960,11 @@ func main() {
 			}
 		}
 
-	
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "newUser",
-			"username":     requestData.ChatName,
-			"guestid": requestData.HostID,
-			"chatid":     requestData.ChatID,
+			"username": requestData.ChatName,
+			"guestid":  requestData.HostID,
+			"chatid":   requestData.ChatID,
 			"chatRoom": chatroom.Name,
 		})
 		if err != nil {
@@ -988,7 +981,6 @@ func main() {
 				continue
 			}
 		}
-
 
 		return nil // retorno nil para indicar sucesso na resposta
 	})
@@ -1027,11 +1019,10 @@ func main() {
 		// Envia uma mensagem informando aos clientes WebSocket sobre a remoção do usuário
 		userJSON, err := json.Marshal(map[string]interface{}{
 			"type":     "removeUser",
-			"username":     requestData.Username,
+			"username": requestData.Username,
 			"hostid":   requestData.HostID,
 			"chatRoom": requestData.RoomName,
-			"chatid": requestData.ChatID,
-			
+			"chatid":   requestData.ChatID,
 		})
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -1054,13 +1045,12 @@ func main() {
 	app.Post("/sender", func(c *fiber.Ctx) error {
 		// Parse dos dados do corpo da requisição
 		var requestData struct {
-			Type      string    `json:"type"`
-			Username  string    `json:"username"`
-			HostID  string    `json:"hostid"`
-			RoomName  string    `json:"roomname"`
-			ChatID  string    `json:"chatid"`
-			Message   string    `json:"message"`
-	
+			Type     string `json:"type"`
+			Username string `json:"username"`
+			HostID   string `json:"hostid"`
+			RoomName string `json:"roomname"`
+			ChatID   string `json:"chatid"`
+			Message  string `json:"message"`
 		}
 		if err := c.BodyParser(&requestData); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -1081,8 +1071,8 @@ func main() {
 		message := Message{
 			Type:      requestData.Type,
 			Name:      requestData.Username,
-			HostID:      requestData.HostID,
-			ChatID:      requestData.ChatID,
+			HostID:    requestData.HostID,
+			ChatID:    requestData.ChatID,
 			Message:   requestData.Message,
 			Chatroom:  chatroom.Name,
 			Timestamp: time.Now(),
@@ -1114,8 +1104,8 @@ func main() {
 			Type      string    `json:"type"`
 			Label     string    `json:"label"`
 			Username  string    `json:"username"`
-			HostID  string    `json:"hostid"`
-			ChatID  string    `json:"chatid"`
+			HostID    string    `json:"hostid"`
+			ChatID    string    `json:"chatid"`
 			Message   string    `json:"message"`
 			Upload    bool      `json:"upload"`
 			Timestamp time.Time `json:"timestamp"`
@@ -1140,9 +1130,9 @@ func main() {
 			Type:      requestData.Type,
 			Label:     requestData.Label,
 			Name:      requestData.Username,
-			HostID:      requestData.HostID,
+			HostID:    requestData.HostID,
 			Message:   requestData.Message,
-			ChatID:  requestData.ChatID,
+			ChatID:    requestData.ChatID,
 			Upload:    requestData.Upload,
 			Timestamp: time.Now(),
 		}
@@ -1209,7 +1199,7 @@ func main() {
 		}
 
 		for i, user := range room.Users {
-			
+
 			rows, err := db.Query("SELECT photo FROM userphotos WHERE hostid = $1", user.HostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -1225,7 +1215,7 @@ func main() {
 				}
 				// Adicionar PhotoURL ao User correspondente
 				room.Users[i] = Users{
-					Name: user.Name,
+					Name:     user.Name,
 					HostID:   user.HostID,
 					ChatID:   user.ChatID,
 					PhotoURL: photoURL,
@@ -1239,9 +1229,8 @@ func main() {
 		})
 	})
 
-
 	//ENDPOINTS PARA DUMP E CRIAÇÃO DO DBA
-	
+
 	app.Get("/dump", func(c *fiber.Ctx) error {
 		// Consulta para obter o nome de todas as tabelas no banco de dados
 		tablesQuery := `
@@ -1301,11 +1290,11 @@ func main() {
 
 				// Criar um mapa para armazenar as informações da coluna
 				column := map[string]interface{}{
-					"name":            columnName,
-					"type":            dataType,
-					"is_auto_inc":     isAutoIncrement,
-					"default_value":   columnDefault.String,
-					"is_nullable":     columnDefault.Valid,
+					"name":          columnName,
+					"type":          dataType,
+					"is_auto_inc":   isAutoIncrement,
+					"default_value": columnDefault.String,
+					"is_nullable":   columnDefault.Valid,
 				}
 				columns = append(columns, column)
 			}
@@ -1517,18 +1506,18 @@ func main() {
 	})
 
 	app.Delete("/drop-userinfo", func(c *fiber.Ctx) error {
-        // Executar o comando DROP TABLE
-        _, err := db.Exec("DROP TABLE IF EXISTS userinfo")
-        if err != nil {
-            return c.Status(fiber.StatusInternalServerError).SendString(fmt.Sprintf("Failed to drop table: %v", err))
-        }
+		// Executar o comando DROP TABLE
+		_, err := db.Exec("DROP TABLE IF EXISTS userinfo")
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString(fmt.Sprintf("Failed to drop table: %v", err))
+		}
 
-        // Responder com sucesso
-        return c.SendString("Table userinfo dropped successfully.")
-    })
-	
+		// Responder com sucesso
+		return c.SendString("Table userinfo dropped successfully.")
+	})
+
 	app.Post("/create-userinfo", func(c *fiber.Ctx) error {
-        createTableSQL := `
+		createTableSQL := `
         CREATE TABLE IF NOT EXISTS userinfo (
             id SERIAL PRIMARY KEY,
             hostid VARCHAR(255) UNIQUE NOT NULL,
@@ -1540,13 +1529,13 @@ func main() {
         );
         `
 
-        _, err := db.Exec(createTableSQL)
-        if err != nil {
-            return c.Status(fiber.StatusInternalServerError).SendString(fmt.Sprintf("Failed to create table: %v", err))
-        }
+		_, err := db.Exec(createTableSQL)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString(fmt.Sprintf("Failed to create table: %v", err))
+		}
 
-        return c.SendString("Table 'userinfo' created successfully.")
-    })
+		return c.SendString("Table 'userinfo' created successfully.")
+	})
 	// Inicializa o mapa de salas de bate-papo
 	chatrooms = make(map[string]*Chatroom)
 

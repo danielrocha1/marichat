@@ -20,7 +20,7 @@ const Sidebar = ({ user, setCurrentView }) => {
 
   const AvatarButton = () => {
     const handleClick = () => {
-      window.location.href = 'https://avatarmaker.com/';
+      window.open('https://avatarmaker.com/', '_blank');
     };
   
     return (
@@ -58,7 +58,7 @@ const Sidebar = ({ user, setCurrentView }) => {
           <AvatarButton/>
         </div>
         <div style={{marginTop:"10px"}}>
-          <FriendList userData={user}/>
+          <b style={{color:"#0ceb00", }}> Amigos online 05/10</b>
         </div>
       </div>
     </div>
@@ -74,13 +74,17 @@ const simulateWebSocket = (callback) => {
   }, 5000);
 };
 
-
-const FriendList = ({userData}) => {
-  const [friends, setFriends] = useState([]);
-
+const TotalFriendList = ({ userData }) => {
+  const [friends, setFriends] = useState([{photo_url:"POATO",name:"GRaNDE", status:'offline'},{photo_url:"POATO",name:"GRaNDE", status:"online"},{photo_url:"POATO",name:"GRaNDE", status:"offline"},{photo_url:"POATO",name:"GRaNDE", status:"busy"}]);
+  const sortedFriends = friends.sort((a, b) => {
+    if (a.status === 'online' && b.status !== 'online') return -1;
+    if (a.status !== 'online' && b.status === 'online') return 1;
+    if (a.status === 'offline' && b.status !== 'offline') return 1;
+    if (a.status !== 'offline' && b.status === 'offline') return -1;
+    return 0;
+  });
 
   useEffect(() => {
-      
     const fetchFriends = async () => {
       try {
         const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriend', {
@@ -88,7 +92,7 @@ const FriendList = ({userData}) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+          body: JSON.stringify({ hostid: userData.data.hostid }),
         });
 
         if (!response.ok) {
@@ -96,83 +100,100 @@ const FriendList = ({userData}) => {
         }
 
         const data = await response.json();
-        console.log(data)
         setFriends(data);
+      
         
+        // console.log(sortedFriends)
       } catch (error) {
         console.error('Erro:', error.message);
       }
     };
 
     fetchFriends();
-  }, [friends]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+  }, [userData.data.hostid]);
+
+  const getStatusBorderColor = (status) => {
+    switch (status) {
+      case 'online':
+        return ' rgb(19, 160, 4)';
+      case 'offline':
+        return 'gray';
+      default:
+        return 'red';
+    }
+  };
 
   return (
     <div className="friends">
-      <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
+      <h5 style={{ color: "green", textAlign: "center" }}>Amigos online</h5>
       <div className="friends-list">
-      {friends.map(friend => (
-        <div key={friend.id} className="friends-card">
-          <img src={`data:image/jpeg;base64,${friend?.photo_url}`} alt={friend.name} className="friends-photo" />
-          <div className="friends-info">
-            <h3 className="friends-name">{friend.name}</h3>
+        {sortedFriends.map(friend => (
+          <div
+            key={friend.id}
+            className="friends-card"
+            style={{ borderColor: getStatusBorderColor(friend.status) }}
+          >
+            <b style={{color: getStatusBorderColor(friend.status), }}>{friend.status}</b>
+            <img src={`data:image/jpeg;base64,${friend?.photo_url}`} alt={friend.name} className="friends-photo" />
+            <div className="friends-info">
+              <h3 className="friends-name">{friend.name}</h3>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
       </div>
     </div>
   );
 };
 
 
-const TotalFriendList = ({userData}) => {
-  const [friends, setFriends] = useState([]);
+// const TotalFriendList = ({userData}) => {
+//   const [friends, setFriends] = useState([]);
 
 
-  useEffect(() => {
+//   useEffect(() => {
       
-    const fetchFriends = async () => {
-      try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriend', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
-        });
+//     const fetchFriends = async () => {
+//       try {
+//         const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriend', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+//         });
 
-        if (!response.ok) {
-          throw new Error('Erro ao enviar os dados');
-        }
+//         if (!response.ok) {
+//           throw new Error('Erro ao enviar os dados');
+//         }
 
-        const data = await response.json();
+//         const data = await response.json();
 
-        setFriends(data);
+//         setFriends(data);
         
-      } catch (error) {
-        console.error('Erro:', error.message);
-      }
-    };
+//       } catch (error) {
+//         console.error('Erro:', error.message);
+//       }
+//     };
 
-    fetchFriends();
-  }, [friends]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+//     fetchFriends();
+//   }, [friends]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
 
-  return (
-    <div className="total-friends">
-      <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
-      <div className="total-friends-list">
-      {friends.map(friend => (
-        <div key={friend.id} className="total-friends-card">
-          <img src={`data:image/jpeg;base64,${friend?.photo_url}`} alt={friend.name} className="total-friends-photo" />
-          <div className="total-friends-info">
-            <h3 className="total-friends-name">{friend.name}</h3>
-          </div>
-        </div>
-      ))}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="total-friends">
+//       <h5 style={{color:"green", textAlign: "center" }}>Amigos online</h5>
+//       <div className="total-friends-list">
+//       {friends.map(friend => (
+//         <div key={friend.id} className="total-friends-card">
+//           <img src={`data:image/jpeg;base64,${friend?.photo_url}`} alt={friend.name} className="total-friends-photo" />
+//           <div className="total-friends-info">
+//             <h3 className="total-friends-name">{friend.name}</h3>
+//           </div>
+//         </div>
+//       ))}
+//       </div>
+//     </div>
+//   );
+// };
 
 
 const TopHeader = ({userData, handleLogout, navigate }) => {

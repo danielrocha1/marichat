@@ -27,21 +27,26 @@
   }
   
   .sidebar {
+   
     position: fixed;
-    margin-top: -10px;
+    margin-top: 0px;
     z-index: 5;
-    width: 280px;
+    width: 300px;
     height: 100vh;
     background-color: #1c71d8;
     color: #fff;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease-in-out;
     transform: translateX(-230px);
-    border: 2px solid #1a5fb4;
+    
   }
   
   .sidebar.open {
+    border-right-width:6px 3px ;
+    border-right-color:white ;
+    border-right-style:dashed ;
     background-color: #1a5fb4;
     transform: translateX(0);
+    
   }
   
   .user-info {
@@ -65,6 +70,11 @@
     padding: 10px;
     color: #fff;
     text-decoration: none;
+  }
+
+  .sidebar:hover{
+    background-color: #0d348b;
+    transition: transform 0.4s ease-in-out;
   }
   
   .sidebar a:hover {
@@ -321,9 +331,7 @@
     padding: 5px;
   }
   
-.friend{
-  
-}
+
 
   .modal-content {
     background: #0056b3;
@@ -488,47 +496,41 @@
 
 
   .friends-list {
-    overflow-y: auto;
-  }
-  
-  .friends {
-    display: flex;
-    flex-direction: column;
-    max-width: 185px; /* Ajuste conforme necessário */
-    margin: 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    max-height: 30vh;
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding-left: 10vw;
   }
   
   .friends-card {
-    display: flex;
-    align-items: center;
+    background-color: white;
+    position: relative;
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border: 5px double;
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s, border-color 0.2s;
   }
   
-  .friends-card:last-child {
-    border-bottom: none; /* Remove a borda do último item */
+  .friends-card:hover {
+    transform: scale(1.05);
   }
   
   .friends-photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%; /* Círculo */
-    margin-right: 10px;
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
   }
   
   .friends-info {
-    flex-grow: 1; /* Ocupa todo o espaço disponível */
+    margin-top: 10px;
   }
   
   .friends-name {
-    margin: 0;
-    font-size: 1.2em;
-    color:#007bff;
+    font-size: 1.2rem;
+    color: #333;
   }
   
 
@@ -552,7 +554,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #0ceb00;
     max-height: 30vh;
   }
   
