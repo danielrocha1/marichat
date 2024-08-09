@@ -288,13 +288,17 @@ func main() {
 		}
 
 		// Prepare SQL query
-		query := `
-			SELECT hostid1 OR hostid2
-			FROM friendships
-			WHERE hostid2 = $1 OR hostid2 = $1
-			 AND status = 'accepted'
-		`
-
+	query := `
+    SELECT hostid1
+    FROM friendships
+    WHERE hostid2 = $1
+    AND status = 'accepted'
+    UNION
+    SELECT hostid2
+    FROM friendships
+    WHERE hostid1 = $1
+    AND status = 'accepted'
+`
 		// Execute query
 		rows, err := db.Query(query, requestBody.HostID)
 		if err != nil {
