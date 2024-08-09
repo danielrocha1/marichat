@@ -14,8 +14,8 @@ function Toolbar({ chat, roomname, setShowEmoji, setText, theme, setColors }) {
   };
 
   const handleSelectEmoji = (event) => {
-    setText((prevText) => prevText + event.native);
-    setShowEmojiPicker(false);
+    setText((prevText) => (prevText ? prevText + event.native : event.native));
+    
   };
 
   const handleOpenModal = () => {

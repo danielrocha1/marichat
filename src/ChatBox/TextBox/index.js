@@ -26,9 +26,12 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleChange = (event) => {
+    
     const inputValue = event.target.value;
+    
+    console.log(showEmoji)
     setText(inputValue);
-    setIsTyping(inputValue.trim() !== '');
+    setIsTyping(true);
     sendTypingStatus(inputValue.trim() !== '');
   };
 
@@ -66,7 +69,11 @@ function TextInput({ showEmoji, chat, text, setText }) {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && isTyping) {
+    if (event.key === 'Enter' ) {
+      const inputValue = event.target.value;
+    
+      console.log(showEmoji)
+      setText(inputValue);
       event.preventDefault();
       handleSendMessage();
     }
@@ -85,9 +92,11 @@ function TextInput({ showEmoji, chat, text, setText }) {
       <div
         className="submitButton"
         onClick={() => {
-          if (isTyping && text.trim() !== '') {
+          console.log(text)
+
+     
             handleSendMessage();
-          }
+          
         }}
       >
         <span role="img" aria-label="Enviar">➡️</span>
