@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChatContext from '../ChatContext';
+import StatusIndicatorModal from './StatusIndicatorModal';
 
 import { FaUser, FaUsers, FaCommentDots, FaUserPlus, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
 import ImageHost from './ImageHost';
@@ -54,11 +55,12 @@ const Sidebar = ({ user, setCurrentView }) => {
         <p style={{marginTop:"10px"}}>Nome: {user.data.fullname}</p>
         <p>Email: {user.data.email}</p>
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
-        <div >
-          <AvatarButton/>
-        </div>
+        
         <div style={{marginTop:"10px"}}>
-          <b style={{color:"#0ceb00", }}> Amigos online 05/10</b>
+        <StatusIndicatorModal />
+        </div>    
+        <div style={{marginTop:"10px"}}>
+          <AvatarButton/>
         </div>
       </div>
     </div>

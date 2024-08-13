@@ -368,6 +368,58 @@ func main() {
 		return c.JSON(users)
 	})
 
+	app.Post("/updateUserStatus", func(c *fiber.Ctx) error {
+		// Estrutura para receber as informações da solicitação
+		type RequestBody struct {
+			HostID string `json:"hostid"`
+			Status string `json:"status"`
+		}
+	
+		// Parsear os dados do corpo da solicitação para a estrutura RequestBody
+		var requestBody RequestBody
+		if err := c.BodyParser(&requestBody); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Erro ao analisar o corpo da solicitação",
+			})
+		}
+	
+		// Validar se o status recebido é válido (opcional)
+		validStatuses := []string{"Online", "Offline", "Ocupado"} // Adapte conforme necessário
+		isValidStatus := false
+		for _, s := range validStatuses {
+			if requestBody.Status == s {
+				isValidStatus = true
+				break
+			}
+		}
+		if !isValidStatus {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Status inválido",
+			})
+		}
+	
+		// Prepare SQL query para atualizar o status do usuário
+		query := `
+			UPDATE user_status
+			SET status = $1
+			WHERE hostid = $2
+		`
+	
+		// Execute query
+		_, err := db.Exec(query, requestBody.Status, requestBody.HostID)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Erro ao atualizar o status",
+			})
+		}
+	
+		// Retornar uma resposta de sucesso
+		return c.JSON(fiber.Map{
+			"message": "Status atualizado com sucesso",
+		})
+	})
+
+
 	app.Post("/selectFriend", func(c *fiber.Ctx) error {
 		// Estrutura para receber o usuário que está buscando os convites
 		type RequestBody struct {

@@ -1,0 +1,75 @@
+.status-container {
+  position: relative; /* Necessário para o posicionamento absoluto do submenu */
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 8px;
+  max-width: 150px;
+  cursor: pointer; /* Indica que é clicável */
+}
+
+.status-indicator span {
+  margin-right: 8px;
+}
+
+.status-bubble {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-online {
+  background-color: green;
+}
+
+.status-ocupado {
+  background-color: red;
+}
+
+.status-offline {
+  background-color: gray;
+}
+
+.arrow {
+  margin-left: auto;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0.4vw;
+  background: rgb(13, 110, 200);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  width: 11.5vw;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Garante que o submenu fique acima dos outros elementos */
+}
+
+.submenu-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.submenu-option:hover {
+  background: rgb(114, 144, 171);
+}
+
+.submenu-option.selected {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.submenu-option span {
+  margin-right: 10px;
+}
