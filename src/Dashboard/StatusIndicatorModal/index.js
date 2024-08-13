@@ -5,9 +5,9 @@ import './index.css'; // Importa o arquivo CSS para estilos
 
 
 
-const StatusIndicator = ({userData}) => {
+const StatusIndicator = ({userData, setUserData}) => {
   const [submenuOpen, setSubmenuOpen] = useState(false);
-  const [status, setStatus] = useState('Online');
+  const [status, setStatus] = useState(userData.data.status);
 
   const handleStatusChange = async (newStatus) => {
     
@@ -28,7 +28,15 @@ const StatusIndicator = ({userData}) => {
   
       const data = await response.json();
       console.log("Sucesso:",data)
-      setStatus(newStatus);
+
+      setUserData((prevState) => ({
+        ...prevState,
+        data: {
+          ...prevState.data,
+          status: newStatus,
+        },
+      }));
+
       setSubmenuOpen(false);
     } catch (error) {
       console.error('Error:', error);
@@ -39,10 +47,10 @@ const StatusIndicator = ({userData}) => {
     <div className="status-container">
       {/* Status Indicator */}
       <div className="status-indicator" onClick={() => setSubmenuOpen(!submenuOpen)}>
-        <span className={`status-bubble ${status === 'Online' ? 'status-online' : 
-                                          status === 'Ocupado' ? 'status-ocupado' : 
+        <span className={`status-bubble ${userData.data.status === 'Online' ? 'status-online' : 
+                                          userData.data.status === 'Ocupado' ? 'status-ocupado' : 
                                           'status-offline'}`}></span>
-        <span>{status}</span>
+        <span>{userData.data.status}</span>
         <span className="arrow">{submenuOpen ? '▲' : '▼'}</span>
       </div>
 
@@ -50,7 +58,7 @@ const StatusIndicator = ({userData}) => {
       {submenuOpen && (
         <div className="submenu">
           <div
-            className={`submenu-option ${status === 'Online' ? 'selected' : ''}`}
+            className={`submenu-option ${userData.data.status === 'Online' ? 'selected' : ''}`}
             onClick={() => handleStatusChange('Online')}
           >
             <span className="status-bubble status-online"></span>
@@ -58,7 +66,7 @@ const StatusIndicator = ({userData}) => {
             
           </div>
           <div
-            className={`submenu-option ${status === 'Ocupado' ? 'selected' : ''}`}
+            className={`submenu-option ${userData.data.status === 'Ocupado' ? 'selected' : ''}`}
             onClick={() => handleStatusChange('Ocupado')}
           >
             <span className="status-bubble status-ocupado"></span>
@@ -66,7 +74,7 @@ const StatusIndicator = ({userData}) => {
             
           </div>
           <div
-            className={`submenu-option ${status === 'Offline' ? 'selected' : ''}`}
+            className={`submenu-option ${userData.data.status === 'Offline' ? 'selected' : ''}`}
             onClick={() => handleStatusChange('Offline')}
           >
             <span className="status-bubble status-offline"></span>

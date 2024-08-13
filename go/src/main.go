@@ -338,7 +338,7 @@ func main() {
 				FROM userphotos up
 				JOIN userinfo ui ON up.hostid = ui.hostid
 				JOIN user_status us ON ui.hostid = us.hostid
-				WHERE up.hostid = $1 AND us.status = 'online'`, hostID)
+				WHERE up.hostid = $1 AND us.status = 'Online'`, hostID)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Failed to fetch user data",

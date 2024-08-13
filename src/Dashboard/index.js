@@ -11,7 +11,7 @@ import CreateChat from '../Dashboard/CreateChat';
 import './index.css';
 
 // Componentes
-const Sidebar = ({ user, setCurrentView }) => {
+const Sidebar = ({ user, setCurrentView, setUserData }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
 
@@ -57,7 +57,7 @@ const Sidebar = ({ user, setCurrentView }) => {
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
         
         <div style={{marginTop:"10px"}}>
-        <StatusIndicatorModal userData={user} />
+        <StatusIndicatorModal userData={user} setUserData={setUserData}/>
         </div>    
         <div style={{marginTop:"10px"}}>
           <AvatarButton/>
@@ -70,12 +70,12 @@ const Sidebar = ({ user, setCurrentView }) => {
 
 
 const TotalFriendList = ({ userData }) => {
-  const [friends, setFriends] = useState([{photo_url:"POATO",name:"GRaNDE", status:'offline'},{photo_url:"POATO",name:"GRaNDE", status:"online"},{photo_url:"POATO",name:"GRaNDE", status:"offline"},{photo_url:"POATO",name:"GRaNDE", status:"busy"}]);
+  const [friends, setFriends] = useState([ {photo_url:"Loading",name:"Loading", status:"offline"}]);
   const sortedFriends = friends?.sort((a, b) => {
-    if (a.status === 'online' && b.status !== 'online') return -1;
-    if (a.status !== 'online' && b.status === 'online') return 1;
-    if (a.status === 'offline' && b.status !== 'offline') return 1;
-    if (a.status !== 'offline' && b.status === 'offline') return -1;
+    if (a.status === 'Online' && b.status !== 'Online') return -1;
+    if (a.status !== 'Online' && b.status === 'Online') return 1;
+    if (a.status === 'Offline' && b.status !== 'Offline') return 1;
+    if (a.status !== 'Offline' && b.status === 'Offline') return -1;
     return 0;
   });
 
@@ -109,9 +109,9 @@ const TotalFriendList = ({ userData }) => {
 
   const getStatusBorderColor = (status) => {
     switch (status) {
-      case 'online':
+      case 'Online':
         return ' rgb(19, 160, 4)';
-      case 'offline':
+      case 'Offline':
         return 'gray';
       default:
         return 'red';
@@ -705,9 +705,9 @@ const Dashboard = () => {
   
   return (
     <div>
-      <TopHeader handleLogout={handleLogout} userData={userData} navigate={navigate} />
+      <TopHeader handleLogout={handleLogout} userData={userData} setUserData={setUserData} navigate={navigate} />
       <div style={{backgroundColor: '#e0f7fa'}} className="app">
-        <Sidebar user={userData} chats={chats} setCurrentView={setCurrentView} />
+        <Sidebar user={userData} setUserData={setUserData} chats={chats} setCurrentView={setCurrentView} />
         <div className="container">
           {renderView()}
         </div>
