@@ -267,7 +267,7 @@ func main() {
 		return c.JSON(users)
 	})
 
-	app.Post("/selectFriend", func(c *fiber.Ctx) error {
+	app.Post("/selectFriendOnline", func(c *fiber.Ctx) error {
 		// Estrutura para receber o usuário que está buscando os convites
 		type RequestBody struct {
 			HostID string `json:"hostid"`
