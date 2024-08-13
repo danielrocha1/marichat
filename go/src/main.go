@@ -659,6 +659,11 @@ func main() {
 			return err
 		}
 
+		_, err = db.Exec("INSERT INTO user_status (hostid, status) VALUES ($1, $2)", registerReq.HostID, "Online")
+		if err != nil {
+			return err
+		}
+
 		return c.SendString("Usuário registrado com  sucesso!")
 	})
 
