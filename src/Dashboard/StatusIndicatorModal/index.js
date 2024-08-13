@@ -14,7 +14,7 @@ const StatusIndicator = ({userData}) => {
     setSubmenuOpen(false);
   
     try {
-      const response = await fetch('https://your-endpoint-url.com/status', {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/updateUserStatus', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
