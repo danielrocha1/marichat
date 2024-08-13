@@ -669,7 +669,25 @@ const Dashboard = () => {
   const { userData, setUserData, setChats, chats } = useContext(ChatContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/updateUserStatus', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ hostid:userData.data.hostid, status: 'Offline' }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.log("Sucesso:",data)      
+    } catch (error) {
+      console.error('Error:', error);
+    }
     navigate(`/`)
   };
   const [currentView, setCurrentView] = useState('chat');

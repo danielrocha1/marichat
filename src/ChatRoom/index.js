@@ -51,6 +51,17 @@ function ChatRoom() {
   const [userTypingStatus, setUserTypingStatus] = useState([]);
   const [users, setUsers] = useState([]);
 
+  const [filteredFriendRequests, setFilteredFriendRequests] = useState([]);
+
+  useEffect(() => {
+    // Filtrar solicitações de amizade removendo usuários que já estão na lista de usuários
+    const filteredRequests = friendRequests.filter(request => 
+      !users.some(user => user.hostid === request.hostid)
+    );
+    console.log("AQUI", users)
+    setFilteredFriendRequests(filteredRequests);
+  }, [friendRequests, users]); // Re-executar quando friendRequests ou users mudar
+
  
 
   
@@ -253,8 +264,8 @@ function ChatRoom() {
               <div className="modal-content-friend">
                 <span className="close" onClick={handleFriendModal}>&times;</span>
                 <h2>Amigos Online</h2>
-                {friendRequests?.length ? (
-                  friendRequests?.map((user, index) => (
+                {filteredFriendRequests?.length ? (
+                  filteredFriendRequests?.map((user, index) => (
                     <div key={index} className="notification-container">
                       <div className="notification-card">
                         <div className="friend-info">

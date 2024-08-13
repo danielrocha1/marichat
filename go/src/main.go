@@ -711,12 +711,27 @@ func main() {
 				c.SendString("Usuário nao encontrado 3")
 			}
 
+			query := `
+			UPDATE user_status
+			SET status = $1
+			WHERE hostid = $2
+		`
+	
+		// Execute query
+			_, err = db.Exec(query, "Online", userInfo.HostID)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": "Erro ao atualizar o status",
+				})
+			}
+			
+
 			err = db.QueryRow("SELECT status FROM user_status WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.Status)
 			if err != nil {
 				c.SendString("Usuário nao encontrado43")
 			}
-			fmt.Println(userInfo.Status)
 
+			
 			return c.JSON(userInfo)
 		} else {
 			// Credenciais inválidas, retornar uma resposta de erro
