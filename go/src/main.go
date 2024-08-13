@@ -347,7 +347,8 @@ func main() {
 
 			for userRow.Next() {
 				var user User
-				if err := userRow.Scan(&user.PhotoURL, &user.Name, &user.HostID, &user.Status); err != nil {
+				if err := userRow.Scan(&user.PhotoURL, &user.Name, &user.HostID, &user.Status); 
+				err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 						"error": "Erro ao ler os resultados da consulta de usuário",
 					})
