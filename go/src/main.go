@@ -87,6 +87,7 @@ type UserInfo struct {
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	Birthdate string `json:"birthdate"`
+	Status string `json:"status"`
 	UserPhoto UserPhoto
 }
 
@@ -636,6 +637,7 @@ func main() {
 			Email     string `json:"email"`
 			Password  string `json:"password"`
 			Birthdate string `json:"birthdate"`
+		
 			// Adicione outros campos conforme necessário
 		}
 
@@ -708,7 +710,12 @@ func main() {
 			if err != nil {
 				c.SendString("Usuário nao encontrado 3")
 			}
-			fmt.Println(userInfo.UserPhoto)
+
+			err = db.QueryRow("SELECT status FROM user_status WHERE hostid = $1", userInfo.HostID).Scan(&userInfo.Status)
+			if err != nil {
+				c.SendString("Usuário nao encontrado43")
+			}
+			fmt.Println(userInfo.Status)
 
 			return c.JSON(userInfo)
 		} else {
