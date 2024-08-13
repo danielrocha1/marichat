@@ -1,0 +1,35 @@
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form {
+    width: 300px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .modal-overlay {
+    background: transparent;
+    position: fixed;
+    top: 27vh;
+    left: 70vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-50px); /* Move o modal para cima */
+    transition: transform 0.3s ease-in-out; /* Adiciona transição suave */
+    z-index: 1000; /* Garante que o modal esteja acima de outros elementos */
+  }

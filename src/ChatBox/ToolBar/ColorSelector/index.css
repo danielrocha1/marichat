@@ -1,0 +1,71 @@
+/* Sidebar Styles */
+.sidebarChat {
+  background-color: #1c71d8;
+  border: 2px solid #0c2e58;
+  color: #fff;
+  height: 100vh; /* Ajustado para ocupar toda a altura da viewport */
+  position: fixed;
+  right: -255px; /* Inicialmente fora da tela à direita */
+  transform: translateX(0); /* Inicia na posição fora da tela */
+  transition: right 0.6s ease-in-out; /* Suaviza a transição do movimento */
+  width: 245px; /* Largura do sidebar */
+  z-index: 1000;
+  border-radius: 10px 0 0 10px;
+}
+
+.sidebarChat.open {
+  top: 0.5vh;
+  right: 0; /* Move o sidebar para dentro da tela */
+}
+
+.sidebarChat.closed {  
+  top: 0.5vh;
+  right: -255px; /* Move o sidebar para fora da tela, para a direita */
+}
+.hex-color-picker-container {
+  position: absolute;
+  top: 25vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Aumentado para garantir que esteja acima de outros elementos */
+  width: auto; /* Ajuste conforme necessário */
+  height: auto; /* Ajuste conforme necessário */
+}
+
+.color-options-container {
+  position: relative;
+  overflow: visible; /* Garante que o conteúdo não seja cortado */
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap; /* Permite que as opções de cor se movam para uma nova linha se necessário */
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%; /* Ajuste conforme necessário */
+  max-width: 300px; /* Ajuste conforme necessário */
+  overflow-x: auto; /* Permite rolar horizontalmente, se necessário */
+}
+
+/* Estilo para a seleção de cor */
+.color-option {
+  margin: 5px; /* Adiciona uma margem ao redor das opções de cor */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* Torna o elemento circular */
+  cursor: pointer;
+  transition: border 0.3s ease; /* Suaviza a transição da borda */
+}
+
+/* Seleção de cor */
+.color-option.selected {
+  border: 3px groove rgb(112, 181, 221); /* Destaca a cor selecionada com uma borda destacada */
+}
+
+/* Estilo para a cor selecionada */
+.selected-color {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff; /* Adiciona uma cor de fundo para a área selecionada */
+}

@@ -1,0 +1,170 @@
+/* Estilo padrão do elemento .kick */
+.kick {
+  display: none; /* Inicialmente, esconde o elemento */
+  border-radius: 5px 0px 0px 5px;
+  background-color: rgb(4, 38, 189);
+  cursor: pointer;
+}
+
+/* Quando .guestBox estiver em estado de hover, mostra o elemento .kick */
+.box:hover .kick {
+  display: block;
+}
+
+/* Estilo quando .kick está em estado de hover */
+.kick:hover {
+  background-color: rgb(3, 20, 145);
+}
+
+/* Estilo dos elementos .guestBox */
+.guestBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: calc(5px + 2vmin);
+  margin-right: 10px;
+  border: 7px double #ffffff;
+  border-radius: 8px;
+  padding: 1px;
+  width: auto;
+  background-color: #6d2082;
+  
+}
+
+.guestPhoto {
+  height: 12vmin;
+  pointer-events: none;
+}
+
+.guestName {
+  font-size: 9px;
+  font-weight: 700;
+  margin-left: 15px;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .guestName {
+    font-size: 11px;
+  }
+}
+
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .guestName {
+    font-size: 12px;
+  }
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .guestName {
+    font-size: 13px;
+  }
+}
+
+
+/* Estilos para o componente principal */
+.box {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+}
+
+
+.Bar1, .Bar2, .Bar3 {
+  background-color: #ebebeb;
+  height: 4px;
+  margin: 8px;
+  transition: .4s;
+  width: 15px;
+  margin-top: 14px;
+}
+
+.guestBox {
+  display: flex;
+  align-items: center;
+}
+
+.guestPhoto {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.guestInfo {
+  margin-left: 10px;
+}
+
+.guestName {
+  margin: 0;
+}
+
+.typingIndicator {
+  margin: 0;
+  font-style: italic;
+}
+
+/* Estilos para o Modal */
+
+.modal-overlay1 {
+  position: absolute;
+  background:  #032244; /* Transparent background */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  z-index: 1000; /* Ensures modal is above other content */
+  transition: background-color 0.3s ease; /* Smooth transition for background-color */
+  top: 0.3vh;
+}
+
+.modal-content1 {
+  background: #0056b3;
+  position: relative;
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 6vh;
+  right: -22px;
+  background: rgb(64, 64, 202);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-option {
+  display: block;
+  margin: 4px;
+  padding: 4px;
+  width: 13vw;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-option:hover {
+  background-color: #0056b3;
+}
+
+
+
+
+

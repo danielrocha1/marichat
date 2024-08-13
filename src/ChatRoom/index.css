@@ -1,0 +1,136 @@
+.App {
+  text-align: center;
+}
+
+/* Estilização da barra de rolagem */
+::-webkit-scrollbar {
+  width: 7px; /* Largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+  border: 1px solid #060000; /* Define a borda com 2px de largura e cor preta */
+  background-color: #ffffff; /* Cor do indicador da barra de rolagem */
+  border-radius: 5px; /* Borda arredondada do indicador da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666666; /* Cor do indicador da barra de rolagem ao passar o mouse sobre ele */
+}
+
+.nameHost {
+  font-weight: 700;
+}
+
+.Box {
+  border: 2px;
+  background-color: #482436;
+  border-radius: 17px;
+  border: 1px outset #ffffff;  
+}
+
+.senderMessage {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  width: max-content;
+  align-self: flex-end; /* Adicionando esta linha para alinhar à direita */
+}
+
+.senderImage {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 10px;
+  padding-top: 0px;
+  margin-bottom: 10px;
+  max-width: 50%;
+  width: max-content;
+  align-self: flex-end; /* Adicionando esta linha para alinhar à direita */
+}
+
+.receiverMessage {
+  background-color: #dda6a6;
+  color: #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 60%;
+  width: fit-content;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+}
+
+.flexBox {
+  display: flex;
+  justify-content: center; /* Alinha os itens ao centro */
+}
+
+.columnFlexBox {
+  overflow: auto;
+  display: flex;
+  flex-direction: column; /* Coloca os itens um embaixo do outro */
+}
+
+.ChatBox {
+  margin-left: 0px; /* Adapte conforme necessário para a distância desejada */
+}
+
+@media (max-width: 768px) {
+  .senderMessage {
+      font-size: 13px;
+  }
+  .receiverMessage {
+      font-size: 13px;
+  }
+}
+
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .senderMessage {
+      font-size: 16px;
+  }
+  .receiverMessage {
+      font-size: 16px;
+  }
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .senderMessage {
+      font-size: 19px;
+  }
+  .receiverMessage {
+      font-size: 19px;
+  }
+}
+
+
+.modal-friend {
+  position: absolute; /* Posiciona o modal de forma absoluta em relação ao pai */
+  top: 11vh; /* Posiciona o modal logo abaixo do elemento pai */
+  left: 31vw; /* Alinha o modal com o lado esquerdo do elemento pai */
+  background: transparent; /* Fundo transparente */
+  border: 1px solid #ddd; /* Borda do modal */
+  border-radius: 5px; /* Bordas arredondadas */
+  max-width: 40vw; /* Largura máxima do modal */
+  z-index: 1000; /* Garante que o modal fique acima de outros conteúdos */
+  transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+  padding: 5px; /* Espaçamento interno do modal */
+}
+
+/* Define o estilo do conteúdo do modal */
+.modal-content-friend {
+  background: #0056b3; /* Cor de fundo do conteúdo do modal */
+  padding: 15px; /* Espaçamento interno do conteúdo do modal */
+  max-height: 50vh; /* Altura máxima do conteúdo do modal */
+  overflow-y: auto; /* Adiciona rolagem se o conteúdo for grande demais */
+  position: relative; /* Relativo ao modal */
+}
+
+/* Define o estilo do elemento pai */
+.friend-list {
+  position: relative; /* Faz com que o modal seja posicionado em relação a este elemento */
+  padding: 5px; /* Espaçamento interno do elemento pai */
+}

@@ -1,0 +1,96 @@
+.chatBox {
+  border-left: 3px outset #ffffff;
+  border-radius: 15px;
+
+  margin-left: 1px;
+  background-color: #7d3e5d;
+  padding: 9px;
+  display: flex;
+  position: relative; /* Adiciona posição relativa para alinhar o menu */
+  flex-direction: column;
+}
+
+.chatScreen {
+  border: 2px outset #442424;
+  border-radius: 15px;
+  width: 700px;
+  height: 400px;
+  background-image: url('../Image/txture.jpg'); /* Escolha a imagem que deseja usar */
+  background-color: rgb(255, 255, 255);
+  overflow-y: auto;
+  display: flex;
+  padding: 15px;
+  flex-direction: column;
+}
+
+
+
+.menu {
+  width: 50px;
+  height: 50px;
+  background-color: #7d3e5d;
+  position: absolute;
+  right: -65px; /* Posiciona o menu à direita do chatBox */
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px outset #ffffff;
+  border-radius: 8px;
+}
+
+.line {
+  width: 40px;
+  height: 2px;
+  background-color: #fff;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+
+/* Estilos para telas pequenas */
+@media (max-width: 768px) {
+  .chatBox {
+    width: 270px;
+    height: 480px;
+    padding: 10px;
+  }
+  .chatScreen {
+    width: 250px;
+    height: 450px;
+    padding: 10px;
+  }
+}
+
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+   .chatBox {
+    width: 390px;
+    height: 480px;
+    padding: 10px;
+  }
+  .chatScreen {
+    width: 93%;
+    height: 370px;
+    padding: 12px;
+  }
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .chatScreen {
+    width: 700px;
+    height: 400px;
+    padding: 15px;
+  }
+}

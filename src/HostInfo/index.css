@@ -1,0 +1,55 @@
+.hostBox {
+  height: 220px;
+  margin-top: auto;
+  border: 7px double #ffffff;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.hostPhoto {
+  height: 29vmin;
+  pointer-events: none;
+}
+
+.nameHost {
+  font-weight: 700;
+}
+
+.App-header {
+  background-color: #0a2d71;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .nameHost {
+    font-size: 21px;
+  }
+  .hostBox {
+    height: auto;
+  }
+}
+
+/* Estilos para telas médias */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nameHost {
+    font-size: 19px;
+  }
+  .hostBox {
+    height: auto;
+  }
+}
+
+/* Estilos para telas grandes */
+@media (min-width: 1025px) {
+  .nameHost {
+    font-size: 17px;
+  }
+  .hostBox {
+    height: auto;
+  }
+}
