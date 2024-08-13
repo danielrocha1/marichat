@@ -118,7 +118,7 @@ function ChatRoom() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriend', {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectFriendOnline', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
