@@ -57,7 +57,7 @@ const Sidebar = ({ user, setCurrentView }) => {
         <p>Data de Nascimento: {user.data.birthdate ? new Date(user.data.birthdate).toLocaleDateString('pt-BR') : 'Data de nascimento não disponível'}</p>
         
         <div style={{marginTop:"10px"}}>
-        <StatusIndicatorModal />
+        <StatusIndicatorModal userData={userData} />
         </div>    
         <div style={{marginTop:"10px"}}>
           <AvatarButton/>

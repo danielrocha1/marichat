@@ -5,7 +5,7 @@ import './index.css'; // Importa o arquivo CSS para estilos
 
 
 
-const StatusIndicator = () => {
+const StatusIndicator = ({userData}) => {
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [status, setStatus] = useState('Online');
 
