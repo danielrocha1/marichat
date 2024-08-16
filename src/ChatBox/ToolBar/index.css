@@ -3,8 +3,8 @@
   justify-content: space-between;
   padding: 0;
   margin-top: 5px;
-  width: 550px;
-  margin-left: 60px;
+  width: 45vw;
+  margin-left: 3vw;
 }
 
 input {
@@ -12,7 +12,7 @@ input {
 }
 
 .icon {
-  margin-left: 12px;
+  margin-left: 0.1vw;
   cursor: pointer;
   font-size: 1px;
 }
@@ -22,20 +22,7 @@ p {
 }
 
 
-
-/* Estilos para telas pequenas */
-@media (max-width: 768px) {
-  .icon {
-    margin-right: 12px;
-  }
-}
-
-/* Estilos para telas médias */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .icon {
-    margin-right: 50px;
-  }
-}
+ 
 
 
 .emoji-picker-container {

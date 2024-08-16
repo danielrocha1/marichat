@@ -13,13 +13,13 @@
 .chatScreen {
   border: 2px outset #442424;
   border-radius: 15px;
-  width: 700px;
-  height: 400px;
+  width: 50vw;
+  height: 50vh;
   background-image: url('../Image/txture.jpg'); /* Escolha a imagem que deseja usar */
   background-color: rgb(255, 255, 255);
   overflow-y: auto;
   display: flex;
-  padding: 15px;
+  padding: 35px;
   flex-direction: column;
 }
 
@@ -56,41 +56,4 @@ input[type="text"] {
 }
 
 
-
-
-/* Estilos para telas pequenas */
-@media (max-width: 768px) {
-  .chatBox {
-    width: 270px;
-    height: 480px;
-    padding: 10px;
-  }
-  .chatScreen {
-    width: 250px;
-    height: 450px;
-    padding: 10px;
-  }
-}
-
-/* Estilos para telas médias */
-@media (min-width: 769px) and (max-width: 1024px) {
-   .chatBox {
-    width: 390px;
-    height: 480px;
-    padding: 10px;
-  }
-  .chatScreen {
-    width: 93%;
-    height: 370px;
-    padding: 12px;
-  }
-}
-
-/* Estilos para telas grandes */
-@media (min-width: 1025px) {
-  .chatScreen {
-    width: 700px;
-    height: 400px;
-    padding: 15px;
-  }
-}
+ 

@@ -55,8 +55,8 @@ function ChatRoom() {
 
   useEffect(() => {
     // Filtrar solicitações de amizade removendo usuários que já estão na lista de usuários
-    const filteredRequests = friendRequests.filter(request => 
-      !users.some(user => user.hostid === request.hostid)
+    const filteredRequests = friendRequests?.filter(request => 
+      !users?.some(user => user.hostid === request.hostid)
     );
     console.log("AQUI", users)
     setFilteredFriendRequests(filteredRequests);

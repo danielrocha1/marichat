@@ -22,10 +22,10 @@
 }
 
 .Box {
-  border: 2px;
+  
   background-color: #482436;
   border-radius: 17px;
-  border: 1px outset #ffffff;  
+  border: 3px inset #ffffff;  
 }
 
 .senderMessage {

@@ -5,7 +5,7 @@ import StatusIndicatorModal from './StatusIndicatorModal';
 
 import { FaUser, FaUsers, FaCommentDots, FaUserPlus, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
 import ImageHost from './ImageHost';
-import EnterRoom from '../Dashboard/EnterRoom';
+
 import CreateChat from '../Dashboard/CreateChat';
 
 import './index.css';
@@ -722,9 +722,9 @@ const Dashboard = () => {
 
   
   return (
-    <div>
+    <div style={{backgroundColor: '#e0f7fa'}}>
       <TopHeader handleLogout={handleLogout} userData={userData} setUserData={setUserData} navigate={navigate} />
-      <div style={{backgroundColor: '#e0f7fa'}} className="app">
+      <div  className="app">
         <Sidebar user={userData} setUserData={setUserData} chats={chats} setCurrentView={setCurrentView} />
         <div className="container">
           {renderView()}

@@ -19,8 +19,8 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/websocket/v2"
+	fiber "github.com/gofiber/fiber/v2"
+	websocket "github.com/gofiber/websocket/v2"
 )
 
 type Users struct {
