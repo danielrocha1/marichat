@@ -31,6 +31,28 @@ const Sidebar = ({ user, setCurrentView, setUserData }) => {
     );
   };
 
+  const handleLogout = async (navigate) => {
+    try {
+      const response = await fetch('https://marichat-go-xtcz.onrender.com/updateUserStatus', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ hostid:user.data.hostid, status: 'Offline' }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.log("Sucesso:",data)      
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    navigate(`/`)
+  };
+
 
 
   return (
@@ -40,15 +62,25 @@ const Sidebar = ({ user, setCurrentView, setUserData }) => {
           <div className="bar2"></div>
           <div className="bar3"></div>
         </div>
+
         <div onClick={ () => {setCurrentView('InfoUser')}}  className="user-btn" title="Infomações de Usuário">
-        <FaUser size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
+          <FaUser size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
+
         <div onClick={ () => {setCurrentView('friends')}} className="friend-btn" title="Lista de Amigos">
-        <FaUsers size={40} color={"white"} style={{cursor: "pointer" }} />
+          <FaUsers size={40} color={"white"} style={{cursor: "pointer" }} />
         </div>
+
         <div onClick={ () => {setCurrentView('chat')}}  className="chat-btn" title="Chats"> 
-        <FaCommentDots size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
+          <FaCommentDots size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
         </div>
+
+        <div title="Sair" style={{marginRight: "20px"}}>
+          <FaSignOutAlt size={30} color={"white"} style={{cursor: "pointer", marginTop: "12px" }} onClick={handleLogout} />
+        </div>
+
+
+
       
       <div className="user-info">
       <ImageHost user={user}/>
@@ -139,42 +171,11 @@ const TotalFriendList = ({ userData }) => {
     </div>
   );
 };
- 
-const TopHeader = ({userData, handleLogout, navigate }) => {
+  
+
+const NotificationModal = ({userData, handleLogout, navigate }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [showFriendModal, setShowFriendModal] = useState(false);
-  const [friendRequests, setFriendRequests] = useState([]);
-
-  useEffect(() => {
-      
-    const fetchRequest = async () => {
-      try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectfriendRequest', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao enviar os dados');
-        }
-
-        const data = await response.json();
-        console.log(data)
-        setFriendRequests(data);
-        
-      } catch (error) {
-        console.error('Erro:', error.message);
-      }
-    };
-
-    fetchRequest();
-  }, [friendRequests]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
-
-
 
   useEffect(() => {
     
@@ -183,7 +184,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
 
       // Função para lidar com novas mensagens do WebSocket
       socket.onmessage = (event) => {
-        
         const newMessage = JSON.parse(event.data);
         if(newMessage.type === 'notification' && newMessage.guestid === userData.data.hostid){
           setNotifications(prev => [...prev, newMessage]);
@@ -217,15 +217,6 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
   // Função para exibir o modal
   const handleNotificationModal = () => {
     setShowNotificationModal(!showNotificationModal);
-    console.log(notifications)
-  };
-
-  const handleFriendModal = () => {
-    setShowFriendModal(!showFriendModal);
-   
-      console.log(friendRequests)
-  
-    
   };
 
 
@@ -234,72 +225,7 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
       prevNotifications.filter((_, i) => i !== index)
     );
   };
-  const handleDeclineRequest = async ( index, userData ) => {
-   
-
-    const queryString = new URLSearchParams({
-          chatid: notifications[index].chatid,
-          username: userData.data.username,
-          hostid: userData.data.hostid,
-          chathostid:notifications[index].hostid
-      }).toString();
-    
-     
-      try {
-          const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ 
-                  username: userData.data.username,
-                  hostid: userData.data.hostid,
-                  chatid: notifications[index].chatid,
-                  chathostid:notifications[index].hostid
-              }),
-          });
-    
-          if (!response.ok) {
-              throw new Error('Erro ao enviar os dados');
-          }
-    
-          navigate(`/chatroom?${queryString}`);
-      } catch (error) {
-          console.error('Erro:', error.message);
-      }
-  };
-
-  const handleAcceptRequest = async (index, userData) => {
-
-    try {
-        const response = await fetch('https://marichat-go-xtcz.onrender.com/acceptFriendRequest', { // Atualize a URL com o endereço correto do seu backend
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                hostid: userData.data.hostid,
-                friendid: friendRequests[index].hostid  // Assume-se que o friendid é parte das notificações
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro ao enviar os dados');
-        }
-
-        // Se necessário, processe a resposta aqui
-        const result = await response.json();
-        console.log('Sucesso:', result);
-
-    } catch (error) {
-        console.error('Erro:', error.message);
-    }
-};
-
-
-
-
-
+  
 
   const handleAcceptNotification = async ( index, userData ) => {
   const queryString = new URLSearchParams({
@@ -384,65 +310,11 @@ const TopHeader = ({userData, handleLogout, navigate }) => {
             </div>
           </div>
         )}
-      </div>
-
-     
-      <div onClick={handleFriendModal}>
-      <p className="friend">
-      <FaUserPlus size={25} title='Solicitações de amizades' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> {
-          
-          friendRequests?.length > 0 && (
-            <b className="notification-count">{friendRequests.length}</b>
-          )
-        }
-      </p>
-      {showFriendModal && (
-        <div style={{left:"60vw",}} className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleFriendModal}>&times;</span>
-            <h3>Solicitações de Amizade</h3>
-            {friendRequests?.length ? (
-              friendRequests.map((user, index) => {
-                console.log("User:", user); // Adicione este log para verificar cada usuário
-                return (
-                  <div className="notification-container">
-                  <div key={index} className="notification-card">
-                    <div className="friend-info">
-                      <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
-                      <p className="friend-name">{user?.name}</p>
-                    </div>
-                    <div className="action-buttons">
-                      <button
-                        className="accept-button"
-                        onClick={() => handleAcceptRequest(index, userData)}
-                      >
-                        Aceitar
-                      </button>
-                      <button
-                        className="decline-button"
-                        onClick={() => handleDeclineRequest(index)}
-                      >
-                        Recusar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                );
-              })
-            ) : (
-              <p>Sem novas solicitações</p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-      
-      <div title="Sair" style={{marginRight: "20px"}}>
-      <FaSignOutAlt size={30} color={"white"} style={{cursor: "pointer", marginTop: "12px" }} onClick={handleLogout} />
-      </div>
+      </div>     
     </div>
   );
 }
+
 
 const ChatTable = ({ userData, setChats, chats }) => {
 const navigate = useNavigate();
@@ -669,27 +541,7 @@ const Dashboard = () => {
   const { userData, setUserData, setChats, chats } = useContext(ChatContext);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('https://marichat-go-xtcz.onrender.com/updateUserStatus', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ hostid:userData.data.hostid, status: 'Offline' }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const data = await response.json();
-      console.log("Sucesso:",data)      
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    navigate(`/`)
-  };
+ 
   const [currentView, setCurrentView] = useState('chat');
 
   const renderView = () => {
@@ -723,7 +575,6 @@ const Dashboard = () => {
   
   return (
     <div style={{backgroundColor: '#e0f7fa'}}>
-      <TopHeader handleLogout={handleLogout} userData={userData} setUserData={setUserData} navigate={navigate} />
       <div  className="app">
         <Sidebar user={userData} setUserData={setUserData} chats={chats} setCurrentView={setCurrentView} />
         <div className="container">
