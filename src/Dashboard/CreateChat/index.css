@@ -21,6 +21,16 @@
     margin-bottom: 5px;
   }
 
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(100vw); /* Começa fora da tela, na direita */
+    }
+    100% {
+      transform: translateX(0); /* Termina na posição final */
+    }
+  }
+  
+
   .modal-chat {
     position: absolute;
     background: transparent; /* Transparent background */
@@ -32,6 +42,7 @@
     padding: 5px;
     left: 70vw;
     top: 15vh;
+    animation: slideInFromRight 0.5s forwards;
   }
 
   .modal-chat:hover{

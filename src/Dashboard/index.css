@@ -364,6 +364,7 @@
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
     padding: 5px;
     top: -12vh;
+    animation: slideInFromBottom 0.5s forwards;
   }
 
   .modal-friend:hover{
@@ -372,6 +373,15 @@
 
   }
 
+  
+  @keyframes slideInFromBottom {
+    0% {
+      transform: translateY(100vh); /* Começa fora da tela, na parte inferior */
+    }
+    100% {
+      transform: translateY(0); /* Termina na posição final */
+    }
+  }
   
   .modal {
     position: absolute;
@@ -384,7 +394,11 @@
     padding: 5px;
     left: -15.7vw;
     top: -15vh;
+    transform: translateY(100vh); /* Inicialmente fora da tela */
+    animation: slideInFromBottom 0.5s forwards; /* Aplica a animação */
   }
+
+
   
   .modal:hover{
     background-color: #0d348b;
