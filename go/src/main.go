@@ -170,6 +170,7 @@ func main() {
 				"error": "Erro ao criar solicitação de amizade",
 			})
 		}
+		fmt.Println(friendRequest)
 
 		return c.SendString("Solicitação de amizade enviada com sucesso!")
 

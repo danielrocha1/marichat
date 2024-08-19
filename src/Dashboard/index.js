@@ -266,8 +266,9 @@ const NotificationModal = ({userData, }) => {
   
   return (
       <div className="messages-header" onClick={handleNotificationModal} >
+      <FaEnvelope size={25} title='Notificações' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> 
       <p  className="messages">
-        <FaEnvelope size={25} title='Notificações' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> {
+       {
             notifications.length > 0 && (
               <b className="messages-count">{notifications.length}</b>
             )
