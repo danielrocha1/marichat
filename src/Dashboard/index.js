@@ -177,6 +177,7 @@ const TotalFriendList = ({ userData }) => {
 const NotificationModal = ({userData, }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     
@@ -229,7 +230,7 @@ const NotificationModal = ({userData, }) => {
   };
   
 
-  const handleAcceptNotification = async ( index, userData, navigate ) => {
+  const handleAcceptNotification = async ( index, userData ) => {
   const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
         username: userData.data.username,
@@ -265,16 +266,17 @@ const NotificationModal = ({userData, }) => {
   
   return (
       <div className="messages-header" onClick={handleNotificationModal} >
-      
+      <p  className="messages">
         <FaEnvelope size={25} title='Notificações' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> {
             notifications.length > 0 && (
               <b className="messages-count">{notifications.length}</b>
             )
           }
-          
+        </p>   
         {showNotificationModal && (
-          <div style={{ }} className="modal">
+          <div style={{  }} className="modal">
             <div className="modal-content">
+            <span className="close" onClick={() => {handleNotificationModal()}}>&times;</span>
               <h2>Notificações</h2>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
@@ -423,6 +425,7 @@ const FriendModal = ({userData, }) => {
     {showFriendModal && (
     <div style={{left:"-20vw",}} className="modal-friend">
       <div className="modal-content">
+      <span className="close" onClick={() => {handleFriendModal()}}>&times;</span>
         <h3>Solicitações de Amizade</h3>
         {friendRequests?.length ? (
           friendRequests.map((user, index) => {
@@ -736,7 +739,7 @@ const Dashboard = () => {
         <div className="container">
           {renderView()}
         </div>
-        <NotificationModal navigate={navigate}/>
+        <NotificationModal userData={userData}  />
         <FriendModal />
       </div>
     </div>

@@ -260,7 +260,7 @@ function ChatRoom() {
         <div>
           <b classname="friend-list" style={{ cursor: "pointer" }} onClick={handleFriendModal}>Convidar Amigo</b>
           {showFriendModal && (
-            <div className="modal-friend">
+            <div style={{top:" 13vh"}} className="modal-friend">
               <div className="modal-content-friend">
                 <span className="close" onClick={handleFriendModal}>&times;</span>
                 <h2>Amigos Online</h2>

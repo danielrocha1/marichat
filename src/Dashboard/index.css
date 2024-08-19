@@ -308,9 +308,8 @@
   .messages {
     cursor: pointer;
     
-    
-    
   }
+
   .friend {
     box-shadow: 2px 2px 2px rgba(252, 248, 248, 0.946);
 
@@ -324,19 +323,21 @@
     transition: background-color 0.3s ease;
     background-color: #037af8;
   }
-
-  .messages-header {
-    box-shadow: 2px 2px 2px rgba(252, 248, 248, 0.946);
-
-    border: 1px solid white;
-    padding: 0.5%;
-    top: 70vh;
-    position: relative; 
-    cursor: pointer;
-    border-radius: 100%;
-    transition: background-color 0.3s ease;
-    background-color: #037af8;
-  }
+.messages-header {
+  display: flex;
+  align-items: center;  /* Centraliza verticalmente */
+  justify-content: center;  /* Centraliza horizontalmente */
+  box-shadow: 2px 2px 2px rgba(252, 248, 248, 0.946);
+  border: 1px solid white;
+  width: 3vw;
+  height: 6vh;
+  top: 70vh;
+  position: relative; 
+  cursor: pointer;
+  border-radius: 100%;
+  transition: background-color 0.3s ease;
+  background-color: #037af8;
+}
   
   .messages .messages-count {
     position: absolute;
@@ -425,12 +426,13 @@
 
   .close {
     position: absolute;
-    top: 10px;
+    top: 2px;
     right: 10px;
     cursor: pointer;
     font-size: 30px;
-    color: #978d8d;
+    color: #c5c4c4;
   }
+  
   
   .containerPublic {
     position: relative;
@@ -466,7 +468,7 @@
 
 
   .close:hover {
-    color: rgb(255, 255, 255);
+      color: rgb(249, 205, 205);
   }
   
   .notification {
