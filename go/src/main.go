@@ -710,7 +710,7 @@ func main() {
 			if err != nil {
 				c.SendString("Usuário nao encontrado 3")
 			}
-
+			fmt.Println(userInfo.HostID)
 			query := `
 			UPDATE user_status
 			SET status = $1
