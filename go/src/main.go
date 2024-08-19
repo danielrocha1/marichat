@@ -694,7 +694,6 @@ func main() {
 			// Credenciais válidas, retornar uma resposta de sucesso
 			var userInfo UserInfo
 			err := db.QueryRow("SELECT * FROM userinfo WHERE email = $1", loginReq.Email).Scan(
-				&userInfo.ID,
 				&userInfo.HostID,
 				&userInfo.FullName,
 				&userInfo.Username,
