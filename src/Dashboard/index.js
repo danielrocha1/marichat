@@ -275,7 +275,7 @@ const NotificationModal = ({userData, }) => {
           }
         </p>   
         {showNotificationModal && (
-          <div style={{  }} className="modal">
+          <div style={{  left: notifications?.length > 0 ? "-29vw" : "-16.8vw", top: notifications?.length > 0 ? "-18vh" : "-15.5vh"  }} className="modal">
             <div className="modal-content">
             <span className="close" onClick={() => {handleNotificationModal()}}>&times;</span>
               <h2>Notificações</h2>
@@ -319,7 +319,7 @@ const NotificationModal = ({userData, }) => {
 
 
 
-const FriendModal = ({userData, }) => {
+const FriendModal = ({userData}) => {
   const [showFriendModal, setShowFriendModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
 
@@ -386,7 +386,7 @@ const FriendModal = ({userData, }) => {
 };
 
   useEffect(() => {
-      
+      console.log(userData, "SQWUIQSUQS")
     const fetchRequest = async () => {
       try {
         const response = await fetch('https://marichat-go-xtcz.onrender.com/selectfriendRequest', {
@@ -400,9 +400,9 @@ const FriendModal = ({userData, }) => {
         if (!response.ok) {
           throw new Error('Erro ao enviar os dados');
         }
-
+        
         const data = await response.json();
-        console.log(data)
+        
         setFriendRequests(data);
         
       } catch (error) {
@@ -424,7 +424,7 @@ const FriendModal = ({userData, }) => {
       )
     }
     {showFriendModal && (
-    <div style={{left:"-20vw",}} className="modal-friend">
+    <div style={{  left: friendRequests?.length > 0 ? "-23vw" : "-21vw", top:friendRequests?.length > 0  ? "-40vh" : "-13vh" }} className="modal-friend">
       <div className="modal-content">
       <span className="close" onClick={() => {handleFriendModal()}}>&times;</span>
         <h3>Solicitações de Amizade</h3>
@@ -741,7 +741,7 @@ const Dashboard = () => {
           {renderView()}
         </div>
         <NotificationModal userData={userData}  />
-        <FriendModal />
+        <FriendModal userData={userData} />
       </div>
     </div>
   );

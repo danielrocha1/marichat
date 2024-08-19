@@ -65,6 +65,8 @@ const GuestInfo = (props) => {
           hostid2: props.hostid,
         }),
       });
+      console.log( "hostid1:", userData.data.hostid,
+        "hostid2:", props.hostid,)
 
       if (!response.ok) {
         throw new Error('Erro ao enviar os dados');
