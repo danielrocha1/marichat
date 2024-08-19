@@ -27,17 +27,19 @@
   }
   
   .sidebar {
-   
+    box-shadow: 1px 4px 6px rgba(252, 248, 248, 0.946);
+
+    border: 1px solid white;
     position: fixed;
-    margin-top: 0px;
+    top: 6vh;
     z-index: 5;
-    width: 300px;
-    height: 100vh;
+    width: 280px;
+    height: 90vh;
     background-color: #1c71d8;
     color: #fff;
     transition: transform 0.4s ease-in-out;
     transform: translateX(-230px);
-    
+    border-radius: 6px;
   }
   
   .sidebar.open {
@@ -119,12 +121,7 @@
     transition: background-color 0.3s ease;
   }
 
-  .messages-header {
-    margin-left: 25vw;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
+
   
   .top-header div:hover {
     background-color: #0d348b;
@@ -171,6 +168,19 @@
     z-index: 1;
   }
 
+  .logout-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 82vh;
+    right: 10px;
+    z-index: 1;
+  }
+  .logout-btn:hover {
+    cursor: pointer;
+    right: 5px;
+    z-index: 1;
+  }
+
   .friend-btn {
     cursor: pointer;
     position: absolute;
@@ -186,7 +196,7 @@
 
   .createChat {
     margin-left: auto;
-    margin-top: 20px;
+    margin-top: 1px;
   }
   .containerchat {
     display: flex;
@@ -257,12 +267,13 @@
     font-family: Arial,sans-serif;
     justify-content: center;
     overflow-x: auto;
-    margin-left: 25%;
-    width: 50%;
+    margin-left: 15%;
+    width: 70%;
+    margin-bottom: 10px;
   }
   
   .table-container table {
-    border-collapse: collapse;
+    border-collapse:separate;
     width: 100%;
   }
   
@@ -283,19 +294,48 @@
   }
   
   .table-container tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #037af8;
+   
   }
   
   .table-container tr:hover {
-    background-color: #dddddd;
+    background-color: #194ac4;
+    color:black;
   }
   
 
   
   .messages {
     cursor: pointer;
-    position: relative;
     
+    
+    
+  }
+  .friend {
+    box-shadow: 2px 2px 2px rgba(252, 248, 248, 0.946);
+
+    border: 1px solid white;
+    padding: 0.5%;
+    top: 90vh;
+    left:-2.9vw;
+    position: relative; 
+    cursor: pointer;
+    border-radius: 100%;
+    transition: background-color 0.3s ease;
+    background-color: #037af8;
+  }
+
+  .messages-header {
+    box-shadow: 2px 2px 2px rgba(252, 248, 248, 0.946);
+
+    border: 1px solid white;
+    padding: 0.5%;
+    top: 70vh;
+    position: relative; 
+    cursor: pointer;
+    border-radius: 100%;
+    transition: background-color 0.3s ease;
+    background-color: #037af8;
   }
   
   .messages .messages-count {
@@ -313,17 +353,37 @@
     line-height: 16px;
     animation: blink 1s infinite; /* Adiciona a animação de piscar */
   }
-  
-  .modal {
+
+  .modal-friend {
     position: absolute;
     background: transparent; /* Transparent background */
-    border: 1px solid #ddd;
+    border: 2px solid #ffffff;
     border-radius: 5px;
     max-width: 40vw;
     z-index: 1000; /* Ensures modal is above other content */
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
     padding: 5px;
-    left: 70vw;
+    top: -12vh;
+  }
+
+  .modal-friend:hover{
+    background-color: #0d348b;
+    border-radius: 5px;
+
+  }
+
+  
+  .modal {
+    position: absolute;
+    background: transparent; /* Transparent background */
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    max-width: 40vw;
+    z-index: 1000; /* Ensures modal is above other content */
+    transition: background-color 0.3s ease; /* Smooth transition for background-color */
+    padding: 5px;
+    left: -15.7vw;
+    top: -15vh;
   }
   
   .modal:hover{
@@ -360,9 +420,31 @@
   
   .containerPublic {
     position: relative;
-    top: 25vh;
+    top: 10vh;
+    background-color:#037af8;
+    max-width: 78vw;
+    left: 11vw;
+    border-radius: 20px;
+    box-shadow: 1px 4px 6px rgba(252, 248, 248, 0.946);
+    max-height: 40vh;
+    border: 1px solid white;
+  }
+
+  .containerPrivate {
+    box-shadow: 1px 4px 6px rgba(252, 248, 248, 0.946);
+
+    position: relative;
+    top: 1vh;
+    background-color:#037af8;
+    max-width: 78vw;
+    left: 11vw;
+    border-radius: 20px;
+    overflow-y: auto;
+    max-height: 40vh;
+    border: 1px solid white;
   }
   
+
   h1 {
     position: relative;
     text-align: center;
@@ -380,7 +462,7 @@
 
   .friend .notification-count {
     position: absolute;
-    top: 1px;
+    top: 4vh;
     width: 18px;
     height: 18px;
     background-color: red;

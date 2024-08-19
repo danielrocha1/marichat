@@ -20,6 +20,25 @@
     display: block;
     margin-bottom: 5px;
   }
+
+  .modal-chat {
+    position: absolute;
+    background: transparent; /* Transparent background */
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    max-width: 40vw;
+    z-index: 1000; /* Ensures modal is above other content */
+    transition: background-color 0.3s ease; /* Smooth transition for background-color */
+    padding: 5px;
+    left: 70vw;
+    top: 15vh;
+  }
+
+  .modal-chat:hover{
+    background-color: #0d348b;
+    border-radius: 5px;
+
+  }
   
   .modal-overlay {
     background: transparent;

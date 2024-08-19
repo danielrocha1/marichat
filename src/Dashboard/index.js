@@ -13,7 +13,7 @@ import './index.css';
 // Componentes
 const Sidebar = ({ user, setCurrentView, setUserData }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -31,7 +31,8 @@ const Sidebar = ({ user, setCurrentView, setUserData }) => {
     );
   };
 
-  const handleLogout = async (navigate) => {
+  const handleLogout = async () => {
+    
     try {
       const response = await fetch('https://marichat-go-xtcz.onrender.com/updateUserStatus', {
         method: 'POST',
@@ -64,19 +65,19 @@ const Sidebar = ({ user, setCurrentView, setUserData }) => {
         </div>
 
         <div onClick={ () => {setCurrentView('InfoUser')}}  className="user-btn" title="Infomações de Usuário">
-          <FaUser size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
+          <FaUser size={30} color={"white"} style={{cursor: "pointer" }}   />
         </div>
 
         <div onClick={ () => {setCurrentView('friends')}} className="friend-btn" title="Lista de Amigos">
-          <FaUsers size={40} color={"white"} style={{cursor: "pointer" }} />
+          <FaUsers size={30} color={"white"} style={{cursor: "pointer" }} />
         </div>
 
         <div onClick={ () => {setCurrentView('chat')}}  className="chat-btn" title="Chats"> 
-          <FaCommentDots size={40} color={"white"} style={{cursor: "pointer" }} onClick={() => {}} />
+          <FaCommentDots size={30} color={"white"} style={{cursor: "pointer" }}   />
         </div>
 
-        <div title="Sair" style={{marginRight: "20px"}}>
-          <FaSignOutAlt size={30} color={"white"} style={{cursor: "pointer", marginTop: "12px" }} onClick={handleLogout} />
+        <div onClick={handleLogout} className="logout-btn" title="Sair"  >
+          <FaSignOutAlt size={30} color={"white"} style={{cursor: "pointer",  }} />
         </div>
 
 
@@ -173,7 +174,7 @@ const TotalFriendList = ({ userData }) => {
 };
   
 
-const NotificationModal = ({userData, handleLogout, navigate }) => {
+const NotificationModal = ({userData, }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
@@ -217,6 +218,7 @@ const NotificationModal = ({userData, handleLogout, navigate }) => {
   // Função para exibir o modal
   const handleNotificationModal = () => {
     setShowNotificationModal(!showNotificationModal);
+    console.log(notifications)
   };
 
 
@@ -227,7 +229,7 @@ const NotificationModal = ({userData, handleLogout, navigate }) => {
   };
   
 
-  const handleAcceptNotification = async ( index, userData ) => {
+  const handleAcceptNotification = async ( index, userData, navigate ) => {
   const queryString = new URLSearchParams({
         chatid: notifications[index].chatid,
         username: userData.data.username,
@@ -262,19 +264,17 @@ const NotificationModal = ({userData, handleLogout, navigate }) => {
 
   
   return (
-    <div className="top-header">
       <div className="messages-header" onClick={handleNotificationModal} >
-        <p  className="messages">
+      
         <FaEnvelope size={25} title='Notificações' color={"white"} style={{cursor: "pointer" }} onClick={() => {}} /> {
             notifications.length > 0 && (
               <b className="messages-count">{notifications.length}</b>
             )
           }
-        </p>        
+          
         {showNotificationModal && (
-          <div style={{left:"20vw",}} className="modal">
+          <div style={{ }} className="modal">
             <div className="modal-content">
-              <span className="close" onClick={() => {handleNotificationModal()}}>&times;</span>
               <h2>Notificações</h2>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
@@ -311,9 +311,158 @@ const NotificationModal = ({userData, handleLogout, navigate }) => {
           </div>
         )}
       </div>     
-    </div>
   );
 }
+
+
+
+const FriendModal = ({userData, }) => {
+  const [showFriendModal, setShowFriendModal] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
+
+
+  const handleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
+      console.log(friendRequests)
+  };
+
+
+  const handleDeclineRequest = async ( index, userData ) => {
+   
+
+ 
+      try {
+          const response = await fetch('https://marichat-go-xtcz.onrender.com/addUser', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ 
+                  username: userData.data.username,
+                  hostid: userData.data.hostid,
+                  // chatid: notifications[index].chatid,
+                  // chathostid:notifications[index].hostid
+              }),
+          });
+    
+          if (!response.ok) {
+              throw new Error('Erro ao enviar os dados');
+          }
+    
+          // navigate(`/chatroom?${queryString}`);
+      } catch (error) {
+          console.error('Erro:', error.message);
+      }
+  };
+
+  const handleAcceptRequest = async (index, userData) => {
+
+    try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/acceptFriendRequest', { // Atualize a URL com o endereço correto do seu backend
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                hostid: userData.data.hostid,
+                friendid: friendRequests[index].hostid  // Assume-se que o friendid é parte das notificações
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao enviar os dados');
+        }
+
+        // Se necessário, processe a resposta aqui
+        const result = await response.json();
+        console.log('Sucesso:', result);
+
+    } catch (error) {
+        console.error('Erro:', error.message);
+    }
+};
+
+  useEffect(() => {
+      
+    const fetchRequest = async () => {
+      try {
+        const response = await fetch('https://marichat-go-xtcz.onrender.com/selectfriendRequest', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ hostid: userData.data.hostid }), // remove as aspas desnecessárias
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao enviar os dados');
+        }
+
+        const data = await response.json();
+        console.log(data)
+        setFriendRequests(data);
+        
+      } catch (error) {
+        console.error('Erro:', error.message);
+      }
+    };
+
+    fetchRequest();
+  }, [friendRequests]); // Adiciona userData.data.hostid como dependência para recarregar os chats quando mudar
+
+ 
+  return (
+  <div className="friend" onClick={handleFriendModal}>
+  
+  <FaUserPlus size={25} title='Solicitações de amizades' color={"white"} style={{cursor: "pointer" }} /> {
+      
+      friendRequests?.length > 0 && (
+        <b className="notification-count">{friendRequests.length}</b>
+      )
+    }
+    {showFriendModal && (
+    <div style={{left:"-20vw",}} className="modal-friend">
+      <div className="modal-content">
+        <h3>Solicitações de Amizade</h3>
+        {friendRequests?.length ? (
+          friendRequests.map((user, index) => {
+            console.log("User:", user); // Adicione este log para verificar cada usuário
+            return (
+              <div className="notification-container">
+              <div key={index} className="notification-card">
+                <div className="friend-info">
+                  <img src={`data:image/jpeg;base64,${user?.photo_url}`} alt="User photo" className="friend-photo" />
+                  <p className="friend-name">{user?.name}</p>
+                </div>
+                <div className="action-buttons">
+                  <button
+                    className="accept-button"
+                    onClick={() => handleAcceptRequest(index, userData)}
+                  >
+                    Aceitar
+                  </button>
+                  <button
+                    className="decline-button"
+                    onClick={() => handleDeclineRequest(index)}
+                  >
+                    Recusar
+                  </button>
+                </div>
+              </div>
+            </div>
+            );
+          })
+        ) : (
+          <p>Sem novas solicitações</p>
+        )}
+      </div>
+    </div>
+  )}
+</div>
+  )
+}
+
+
 
 
 const ChatTable = ({ userData, setChats, chats }) => {
@@ -415,7 +564,7 @@ const navigate = useNavigate();
           </thead>
           <tbody>
           {chats && chats.map((chat) => (
-            <tr key={chat.chatid}>
+            <tr  style={{color:"white"}} key={chat.chatid}>
               <td>{chat.chatname}</td>
               <td>{chat.chatid}</td>
               <td>
@@ -509,9 +658,9 @@ const PublicChatTable = ({ userData }) => {
                 <th>Ações</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
             {publicChats && publicChats.map((chat) => (
-              <tr key={chat.chatid}>
+              <tr style={{color:"white", }} key={chat.chatid}>
                 <td>{chat.chatname}</td>
                 <td>{chat.chatid}</td>
                 <td>
@@ -554,14 +703,21 @@ const Dashboard = () => {
                 <CreateChat setChats={setChats} />
               </div>
             </div>
-            <div>
+            <div className="containerPrivate"  >
+              <h1  style={{color:"white"}}> Seus Chats Privados</h1>
+              <div   > 
               <ChatTable userData={userData} setChats={setChats} chats={chats} />
+              </div>
             </div>
-            <div className="containerPublic">
-              <h1>Chats Públicos</h1>
+
+
+              <div className="containerPublic">
+              <h1 style={{color:"white"}}>Chats Públicos</h1>
+              <div   > 
               <PublicChatTable userData={userData} setChats={setChats} chats={chats} />
-            </div>
-          </>
+              </div>
+              </div>
+              </>
         );
       case 'friends':
         return <TotalFriendList userData={userData} />;
@@ -574,12 +730,14 @@ const Dashboard = () => {
 
   
   return (
-    <div style={{backgroundColor: '#e0f7fa'}}>
+    <div style={{backgroundColor: "rgb(24, 63, 136)"}}>
       <div  className="app">
         <Sidebar user={userData} setUserData={setUserData} chats={chats} setCurrentView={setCurrentView} />
         <div className="container">
           {renderView()}
         </div>
+        <NotificationModal navigate={navigate}/>
+        <FriendModal />
       </div>
     </div>
   );
