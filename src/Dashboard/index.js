@@ -153,7 +153,7 @@ const TotalFriendList = ({ userData }) => {
 
   return (
     <div className="friends">
-      <h5 style={{ color: "green", textAlign: "center" }}>Amigos online</h5>
+      <h5 style={{ color: "white", textAlign: "center" }}>Sua lista de Amigos</h5>
       <div className="friends-list">
         {sortedFriends?.map(friend => (
           <div
@@ -740,8 +740,10 @@ const Dashboard = () => {
         <div className="container">
           {renderView()}
         </div>
-        <NotificationModal userData={userData}  />
-        <FriendModal userData={userData} />
+        <div  style={{ position:'relative' ,top:"65vh", display: "grid", gridTemplateColumns: "1fr", gap: "90px", marginBottom:"30px" }}>
+          <NotificationModal userData={userData}  />
+          <FriendModal userData={userData} />
+        </div>
       </div>
     </div>
   );
