@@ -72,11 +72,11 @@ var chatrooms map[string]*Chatroom
 var clients = make(map[*websocket.Conn]bool)
 
 const (
-	host     = "dpg-cr1a6ho8fa8c73a7g2gg-a"
+	host     = "dpg-csgue5o8fa8c7393p90g-a"
 	port     = 5432
 	user     = "admin"
-	password = "i7Ah5Xik7okiFeV1raVzThdCvtmoPnYj"
-	dbname   = "marichat_db"
+	password = "lv5mhYwyRmtGGmdgUzTTwLuq4cFaFYHo"
+	dbname   = "marichat_db_ritm"
 )
 
 type UserInfo struct {
